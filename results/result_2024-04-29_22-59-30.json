@@ -1,0 +1,62 @@
+{
+    "jnfe_6": {
+        "AbstractNFeAdaptadorBean": {
+            "Improvement": {
+                "Line coverage": {
+                    "%p": 14,
+                    "%": 17.72151898734177
+                },
+                "Mutations killed": {
+                    "%p": 0,
+                    "%": 0.0
+                }
+            },
+            "Baseline_test": {
+                "Line coverage": {
+                    "%p": 79
+                },
+                "Mutations killed": {
+                    "%p": 94
+                }
+            },
+            "Improved_test": {
+                "Line coverage": {
+                    "%p": 93
+                },
+                "Mutations killed": {
+                    "%p": 94
+                }
+            }
+        }
+    },
+    "templateit_5": {
+        "OpMatcher": {
+            "Improvement": {
+                "Line coverage": {
+                    "%p": 4,
+                    "%": 5.797101449275362
+                },
+                "Mutations killed": {
+                    "%p": 7,
+                    "%": 14.583333333333334
+                }
+            },
+            "Baseline_test": {
+                "Line coverage": {
+                    "%p": 69
+                },
+                "Mutations killed": {
+                    "%p": 48
+                }
+            },
+            "Improved_test": {
+                "Line coverage": {
+                    "%p": 73
+                },
+                "Mutations killed": {
+                    "%p": 55
+                }
+            }
+        }
+    }
+}
