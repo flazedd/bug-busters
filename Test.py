@@ -1,19 +1,18 @@
 import utils
-import re
+
 
 class Test:
-    def __init__(self, folder, test_name):
+    def __init__(self, folder, class_name):
         self.folder = folder
-        self.test_name = test_name
+        self.target = class_name + 'Test_LLM'
         self.begin_template = (
-                "package " + folder + ";\n"
-                                      "import org.junit.jupiter.api.Test;\n"
-                                      "import static org.junit.jupiter.api.Assertions.*;\n"
-                                      "public class " + test_name + "_Improved {\n"
+                "package " + folder + ";\n" +
+                utils.get_imports(folder, class_name + 'Test_EvoSuite') +
+                "public class " + self.target + " {\n"
         )
         self.end_template = "}"
-        self.classname = test_name.split("Test")[0]
-        self.benchmark_tests = self.get_benchmark_tests()
+        self.classname = class_name
+        # self.benchmark_tests = self.get_benchmark_tests()
         self.tests = []
 
     def test_extractor(self, java_code):
@@ -23,16 +22,17 @@ class Test:
         return '\t' + begin[:last_brace_index] + begin[last_brace_index + 1:]
 
     def get_benchmark_tests(self):
-        with (open('JavaProgramUnderTest/lib/src/test/java/' + self.folder + '/' + self.test_name + '.java', 'r')
+        with (open('JavaProgramUnderTest/lib/src/test/java/' + self.folder + '/' + self.classname + 'Test_EvoSuite.java',
+                   'r')
               as java_file):
             # Read the contents of the file
             java_code = java_file.read()
-            # print(f'java code found: {java_code}')
+            # print(f'Java code found: {java_code}')
             return self.test_extractor(java_code)
 
     def get_contents(self):
         result = self.begin_template
-        result += self.benchmark_tests
+        # result += self.benchmark_tests
         # print(self.tests)
         for test in self.tests:
             result += test
@@ -42,8 +42,8 @@ class Test:
 
     def write(self):
         code = self.get_contents()
-        improved_test = self.test_name + "_Improved"
-        utils.write_code(self.folder, improved_test, code)
+        # improved_test = self.classname + "_LLM"
+        utils.write_code(self.folder, self.target, code)
 
     def add_test(self, t):
         self.tests.append(t)
@@ -53,4 +53,3 @@ class Test:
 
     def remove_last_test(self):
         self.tests.pop()
-

@@ -1,23 +1,35 @@
-import json
-from datetime import datetime
-import os
+import constant
 
-def save_results(results, filename):
-    # Create the results directory if it doesn't exist
-    os.makedirs("results", exist_ok=True)
+r = """"
+package templateit_5;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+public class OpMatcherTest_EvoSuite {
 
-    # Generate a filename based on the current date and time
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename_with_timestamp = f"results/{filename}_{timestamp}.json"
+    @Test
+    public void test0()  throws Throwable  {
+        OpMatcher opMatcher0 = new OpMatcher();
+        assertNotNull(opMatcher0);
+"""
 
-    # Save the results to the JSON file with indentation for readability
-    with open(filename_with_timestamp, 'w') as file:
-        json.dump(results, file, indent=4)
 
-# Example usage
-results = [{"Line Coverage %": "69", "Mutations killed %": "48"},
-           {"Line Coverage %": "75", "Mutations killed %": "52"},
-           {"Line Coverage %": "80", "Mutations killed %": "55"},
-           {"Line Coverage %": "85", "Mutations killed %": "60"}]
+def get_imports(package, test_name):
+    with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java', 'r') as java_test_file:
+        # Read the contents of the file
+        contents = java_test_file.read()
+        result = ""
+        s2 = 0
+        while True:
+            s1 = contents.find('import', s2)
+            if s1 == -1:
+                break
+            s2 = contents.find('\n', s1)
+            if s2 == -1:
+                with constant.PRINT_LOCK:
+                    print('Could not find newline after import was found')
+            result += contents[s1:s2] + '\n'
+        return result
 
-save_results(results, "results")
+
+k = get_imports('a4j_2', 'DirectorsTest_EvoSuite')
+print(k)

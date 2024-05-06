@@ -1,6 +1,6 @@
 import threading
 
-RETRIES = 3  # amount of retries for getting a test suite that passes
+RETRIES = 1  # amount of retries for getting a test suite that passes
 PRINT_LOCK = threading.Lock()
 MODEL = 1
 JSON_NAME = 'result'

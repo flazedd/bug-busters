@@ -44,17 +44,29 @@ def set_pitest_in_gradle(package, classname, testname):
 
 
 def get_java_code(ai_output):
-    pattern = r"(@Test\s+public void \w+\(\) \{([^}]+)\})"
-
-    # Find all test functions
-    test_functions = re.findall(pattern, ai_output)
+    # pattern = r"(@Test\s+public void \w+\(\) \{([^}]+)\})"
+    #
+    # # Find all test functions
+    # test_functions = re.findall(pattern, ai_output)
+    # result = ''
+    # try:
+    #     result = test_functions[0][0]
+    # except IndexError:
+    #     return None
+    # # print(type(result))
+    # # print(f'returning: {result}')
+    # print(f'output: {ai_output}')
     result = ''
-    try:
-        result = test_functions[0][0]
-    except IndexError:
+    s1 = ai_output.find('```java')
+    if s1 == -1:
         return None
-    # print(type(result))
-    # print(f'returning: {result}')
+    s2 = ai_output.find('@Test', s1)
+    if s2 == -1:
+        return None
+    s3 = ai_output.find('```', s2)
+    if s3 == -1:
+        return None
+    result += ai_output[s2:s3]
     return result
 
 
@@ -65,8 +77,8 @@ def get_args():
         folder_path = os.path.join(directory, folder)
         if os.path.isdir(folder_path):
             for file in os.listdir(folder_path):
-                if file.endswith("Test.java"):
-                    file_name = file.split("Test.java")[0]
+                if file.endswith("Test_EvoSuite.java"):
+                    file_name = file.split("Test_EvoSuite.java")[0]
                     arg = (folder, file_name, constant.MODEL)
                     args.append(arg)
     return args
@@ -193,15 +205,35 @@ def concatenate_files_except(package, filename):
     return concatenated_content
 
 
-def get_prompt(package, classname, testname):
+def get_imports(package, test_name):
+    with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java', 'r') as java_test_file:
+        # Read the contents of the file
+        contents = java_test_file.read()
+        result = ""
+        s2 = 0
+        while True:
+            s1 = contents.find('import', s2)
+            if s1 == -1:
+                break
+            s2 = contents.find('\n', s1)
+            if s2 == -1:
+                with constant.PRINT_LOCK:
+                    print('Could not find newline after import was found')
+            result += contents[s1:s2] + '\n'
+        return result
+
+
+def get_prompt(package, class_name):
     prompt = ''
-    with open('JavaProgramUnderTest/lib/src/main/java/' + package + '/' + classname + '.java', 'r') as java_file:
+    with open('JavaProgramUnderTest/lib/src/main/java/' + package + '/' + class_name + '.java', 'r') as java_file:
         # Read the contents of the file
         prompt += java_file.read()
-    improved_name = classname + 'Test_Improved'
-    with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + testname + '.java', 'r') as java_test_file:
-        # Read the contents of the file
-        prompt += java_test_file.read()
+    target = class_name + 'Test_LLM'
+    imports = get_imports(package, target)
+    prompt += '\nyou can use these imports only\n' + imports
+    # with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java', 'r') as java_test_file:
+    #     # Read the contents of the file
+    #     prompt += java_test_file.read()
     prompt += (
         f'give me back 1 additional test case that starts with @Test, it should only make 1 assertion and '
         f'it should pass.')
@@ -209,8 +241,8 @@ def get_prompt(package, classname, testname):
 
 
 # expects tuple with (folder, file_name, model_number)
-def worker(folder, file_name, selection):
-    test_name = file_name + 'Test'
+def worker(folder, class_name, selection):
+    test_name = class_name + 'Test'
     start = time.time()
     chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
     chatbot.switch_llm(selection)
@@ -219,9 +251,9 @@ def worker(folder, file_name, selection):
         print(f'{folder} has switched to {l[selection].name}')
     id = chatbot.new_conversation()
     chatbot.change_conversation(id)
-    prompt = get_prompt(folder, file_name, test_name)
+    prompt = get_prompt(folder, class_name)
     tests_required = constant.RETRIES
-    test_handle = Test.Test(folder, test_name)
+    test_handle = Test.Test(folder, class_name)
     iterations = 0
     failing_tests = 0
     replies_without_tests = 0
@@ -233,20 +265,26 @@ def worker(folder, file_name, selection):
         response.wait_until_done()
         new_test_case = get_java_code(response.text)
         if new_test_case is None:
+            with constant.PRINT_LOCK:
+                print('No test case found in reply')
             replies_without_tests += 1
             prompt = 'try again. remember, 1 test case. 1 assertion'
             continue
         test_handle.add_test(new_test_case)
         test_handle.write()
-        improved_test = test_name + "_Improved"
+        improved_test = test_name + "_LLM"
         result = exec_test(folder, improved_test)
         if did_test_fail(result):
+            with constant.PRINT_LOCK:
+                print('Did find a test but it failed')
             failing_tests += 1
             test_handle.remove_last_test()
             error = get_test_errors(result, improved_test)
             prompt = error + "make it pass, different function name than the ones you sent before"
             continue
         else:
+            with constant.PRINT_LOCK:
+                print('Test case found and compiles')
             prompt = ('It passed. Now give another completely new test case.')
             tests_required -= 1
     end = time.time()

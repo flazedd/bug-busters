@@ -1,4 +1,6 @@
 import threading
+import time
+
 import utils
 
 
@@ -10,12 +12,25 @@ import utils
 # t2 = ('jnfe_6', 'AbstractNFeAdaptadorBean', 1)
 
 args = utils.get_args()
+print(args)
 threads = []
-for arg in args:
-    thread = threading.Thread(target=utils.worker, args=arg)
-    threads.append(thread)
-    thread.start()
+# args = [args[0]]
+# print(args)
 
-# Wait for all threads to complete
-for thread in threads:
-    thread.join()
+start = time.time()
+
+for arg in args:
+    utils.worker(arg[0], arg[1], arg[2])
+
+# for arg in args:
+#     thread = threading.Thread(target=utils.worker, args=arg)
+#     threads.append(thread)
+#     thread.start()
+#
+# # Wait for all threads to complete
+# for thread in threads:
+#     thread.join()
+
+end = time.time()
+print(f'\n\nCompleted in {end - start} seconds')
+

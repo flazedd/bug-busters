@@ -1,8 +1,13 @@
 package templateit_5;
+
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-public class OpMatcherTest_Improved {
-	@Test
+
+
+public class OpMatcherTest_Manual
+{
+    @Test
     public void testMmatchTemplateBegin()
     {
 
@@ -69,17 +74,4 @@ public class OpMatcherTest_Improved {
             }
         }
     }
-
-@Test
-public void testMatchTemplateEnd() {
-    assertTrue(OpMatcher.matchTemplateEnd("@template_end"));
-}
-@Test
-public void testMatchTemplateName() {
-    assertTrue(OpMatcher.matchTemplateName("validTemplateName"));
-}
-@Test
-public void testMatchTemplateParameter() {
-    assertEquals("param1", OpMatcher.matchTemplateParameter("#param1"));
-}
 }
