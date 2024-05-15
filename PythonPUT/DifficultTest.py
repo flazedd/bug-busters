@@ -1,5 +1,5 @@
 # DifficultTest.py
-from PythonPUT.src.Difficult import Difficult
+from PythonPUT.Difficult import Difficult
 
 def test_calculate_positive():
     difficult = Difficult()

@@ -2,3 +2,5 @@ pip install mutpy
 change isAlive to is_alive! running mutpy will tell u this.
 
 mut.py --target src/Difficult.py --unit-test test/DifficultTest.py
+mut.py --target PythonPUT/dummy.py --unit-test PythonPUT/test_dummy.py
+
