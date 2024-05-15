@@ -1,4 +1,4 @@
-# Difficult.py
+# difficult.py
 
 class Difficult:
     def calculate(self, n, arr, reverse=False, square=False, multiply=1):

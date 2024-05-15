@@ -5,5 +5,9 @@ mut.py --target src/Difficult.py --unit-test test/DifficultTest.py
 mut.py --target PythonPUT/dummy.py --unit-test PythonPUT/test_dummy.py
 
 pytest PythonPUT/test_dummy.py
-pynguin --project-path PythonPUT --module-name dummy --output-path PythonPUT --algorithm DYNAMOSA
+pynguin --project-path PythonPUT --module-name difficult.py --output-path PythonPUT --algorithm DYNAMOSA
+
+mut.py --target PythonPUT/calculator.py --unit-test PythonPUT/test_calculator.py --runner pytest
+pynguin --project-path PythonPUT --module-name difficult --output-path PythonPUT --assertion-generation SIMPLE --algorithm MIO
+# generated mutation score on difficult class ^
 

@@ -1,6 +1,6 @@
 # CalculatorTest.py
 import unittest
-from PythonPUT.Calculator import Calculator
+from PythonPUT.calculator import Calculator
 
 class TestCalculator(unittest.TestCase):
 
