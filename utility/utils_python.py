@@ -2,12 +2,8 @@ import os
 import subprocess
 import time
 
-from hugchat import hugchat
-from hugchat.login import Login
 import re
-import Test
-import config
-import constant
+from config import constant
 
 
 def set_pitest_in_gradle(package, classname, testname):

@@ -1,4 +1,4 @@
-import utils
+from utility import utils
 
 
 class Test:
@@ -7,7 +7,9 @@ class Test:
         self.target = class_name + 'Test_LLM'
         self.begin_template = (
                 "package " + folder + ";\n" +
-                utils.get_imports(folder, class_name + 'Test_EvoSuite') +
+                "import org.junit.jupiter.api.Test;\n" +
+                "import static org.junit.jupiter.api.Assertions.*;\n" +
+                utils.get_imports(folder, class_name) +
                 "public class " + self.target + " {\n"
         )
         self.end_template = "}"

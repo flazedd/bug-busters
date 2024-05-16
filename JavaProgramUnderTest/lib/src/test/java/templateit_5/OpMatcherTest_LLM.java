@@ -1,16 +1,15 @@
 package templateit_5;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class OpMatcherTest_LLM {
 @Test
-void testMatchTemplateBegin() {
-    String text = "@template_begin(name, param1, param2)";
-    String[] names = OpMatcher.matchTemplateBegin(text);
-    assertNotNull(names);
-    assertEquals(3, names.length);
-    assertEquals("name", names[0]);
-    assertEquals("param1", names[1]);
-    assertEquals("param2", names[2]);
+public void testMatchTemplateBegin() {
+    String text = "@template_begin(name, param1, param2, param3)";
+    String[] expected = {"name", "param1", "param2", "param3"};
+    String[] actual = OpMatcher.matchTemplateBegin(text);
+    assertArrayEquals(expected, actual);
 }
 
 }

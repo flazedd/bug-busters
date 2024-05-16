@@ -2,12 +2,8 @@ import os
 import subprocess
 import time
 
-from hugchat import hugchat
-from hugchat.login import Login
 import re
-import Test
-import config
-import constant
+from config import constant
 
 
 def set_pitest_in_gradle(package, classname, testname):
@@ -109,7 +105,7 @@ def write_code(package, test_name, code):
         except FileNotFoundError as f:
             with constant.PRINT_LOCK:
                 print(f'{package}/{test_name} has encountered FileNotFoundError. Retrying...')
-                time.sleep(1)
+                time.sleep(constant.SLEEP)
 
 
 def get_signature(test_string):
@@ -160,10 +156,9 @@ def get_test_errors(output, test_name_improved):
     return result
 
 
-def get_imports(package, test_name):
-    with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java', 'r') as java_test_file:
-        # Read the contents of the file
-        contents = java_test_file.read()
+def get_imports(package, class_name):
+    with open(f'JavaProgramUnderTest/lib/src/main/java/{package}/{class_name}.java') as java_file:
+        contents = java_file.read()
         result = ""
         s2 = 0
         while True:
@@ -179,10 +174,30 @@ def get_imports(package, test_name):
 
 
 def get_program_under_test(package, class_name):
-    with open('JavaProgramUnderTest/lib/src/main/java/' + package + '/' + class_name + '.java', 'r') as java_file:
-        # Read the contents of the file
-        prompt = java_file.read()
-        return prompt
+    put = ''
+    file_path = f'JavaProgramUnderTest/lib/src/main/java/{package}/{class_name}.java'
+    while True:
+        try:
+            with open(file_path, 'r') as java_file:
+                # Read the contents of the file
+                put += java_file.read()
+                break
+        except FileNotFoundError as f:
+            with constant.PRINT_LOCK:
+                print(f'{package}/{class_name} has encountered FileNotFoundError. Retrying...')
+                time.sleep(constant.SLEEP)
+    return put
+
+    # while True:
+    #     try:
+    #         with (open(path, 'w') as java_test_file):
+    #             # Read the contents of the file
+    #             java_test_file.write(code)
+    #             break
+    #     except FileNotFoundError as f:
+    #         with constant.PRINT_LOCK:
+    #             print(f'{package}/{test_name} has encountered FileNotFoundError. Retrying...')
+    #             time.sleep(1)
 
 def get_specific_prompt():
     return 'your code snippet should start with @Test'

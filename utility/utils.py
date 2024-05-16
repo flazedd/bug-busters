@@ -1,26 +1,19 @@
-import os
-import subprocess
 import time
 
-from hugchat import hugchat
-from hugchat.login import Login
-import re
-import Test
-import config
-import constant
-import utils_java
-import utils_python
 
-cookie_path_dir = "./cookies/"  # NOTE: trailing slash (/) is required to avoid errors
-sign = Login(config.MAIL, config.PASSWORD)
-cookies = sign.login(cookie_dir_path=cookie_path_dir, save_cookies=True)
+from config import constant
+from utility import utils_java, credentails, Test
+
+# cookie_path_dir = "./cookies/"  # NOTE: trailing slash (/) is required to avoid errors
+# sign = Login(config.MAIL, config.PASSWORD)
+# cookies = sign.login(cookie_dir_path=cookie_path_dir, save_cookies=True)
 
 
 def set_pitest_in_gradle(package, classname, testname):
     target_class = package + "." + classname
     target_test = package + "." + testname
     # Read the build.gradle file
-    with open("JavaProgramUnderTest/lib/build.gradle", 'r') as file:
+    with open("../JavaProgramUnderTest/lib/build.gradle", 'r') as file:
         build_gradle_content = file.read()
 
     # Search for targetClasses
@@ -39,7 +32,7 @@ def set_pitest_in_gradle(package, classname, testname):
         )
 
         # Write back to build.gradle
-        with open("JavaProgramUnderTest/lib/build.gradle", 'w') as file:
+        with open("../JavaProgramUnderTest/lib/build.gradle", 'w') as file:
             file.write(modified_build_gradle_content)
     else:
         print("targetClasses and/or targetTests not found in build.gradle")
@@ -108,7 +101,7 @@ def get_prompt(package, class_name, language):
         prompt += utils_java.get_program_under_test(package, class_name)
     # elif language == 'python':
     #     prompt += utils_python.get_program_under_test(package, class_name)
-    imports = get_imports(package, class_name + 'Test_LLM')
+    imports = get_imports(package, class_name)
     prompt += '\nyou can use these imports only\n' + imports
     prompt += 'give me back 1 single test case, it should only make 1 single assertion and it should pass!. '
     prompt += utils_java.get_specific_prompt()
@@ -119,7 +112,7 @@ def get_prompt(package, class_name, language):
 def worker(folder, class_name, selection, language):
     test_name = class_name + 'Test'
     start = time.time()
-    chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
+    chatbot = credentails.get_chatbot()
     chatbot.switch_llm(selection)
     l = chatbot.get_remote_llms()
     with constant.PRINT_LOCK:

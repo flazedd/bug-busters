@@ -1,6 +1,6 @@
 import json
-import utils
-import constant
+from utility import utils
+from config import constant
 from datetime import datetime
 
 

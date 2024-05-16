@@ -1,8 +1,6 @@
-import threading
 import time
 
-import utils
-
+from utility import utils
 
 # templateit_5.OpMatcherTest_Improved
 # jnfe_6.AbstractNFeAdaptadorBeanTest_Improved
@@ -34,5 +32,5 @@ for arg in args:
 #     thread.join()
 
 end = time.time()
-print(f'[+] \n\nCompleted in {end - start} seconds')
+print(f'[+] Completed in {end - start} seconds')
 

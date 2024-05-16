@@ -1,15 +1,13 @@
-from hugchat import hugchat
-from hugchat.login import Login
+from utility import credentails
 
-import config
-
-# Log in to huggingface and grant authorization to huggingchat
-cookie_path_dir = "./cookies/"  # NOTE: trailing slash (/) is required to avoid errors
-sign = Login(config.MAIL, config.PASSWORD)
-cookies = sign.login(cookie_dir_path=cookie_path_dir, save_cookies=True)
-
-# Create a chatbot connection
-chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
+# # Log in to huggingface and grant authorization to huggingchat
+# cookie_path_dir = "./cookies/"  # NOTE: trailing slash (/) is required to avoid errors
+# sign = Login(config.MAIL, config.PASSWORD)
+# cookies = sign.login(cookie_dir_path=cookie_path_dir, save_cookies=True)
+#
+# # Create a chatbot connection
+# chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
+chatbot = credentails.get_chatbot()
 
 # New a conversation (ignore error)
 id = chatbot.new_conversation()
