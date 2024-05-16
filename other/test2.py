@@ -1,14 +1,26 @@
-def print_first_three_words(file_path):
-    with open(file_path, 'r') as file:
-        # Read the file
-        content = file.read()
+# Parent class
+class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
 
-        # Extract the first three words
-        first_three_words = ' '.join(content.split()[:3])
-        print(first_three_words)
+    def display_info(self):
+        print(f"Brand: {self.brand}")
+        print(f"Model: {self.model}")
 
-# File path
-file_path = "../JavaProgramUnderTest/lib/src/main/java/templateit_5/OpMatcher.java"
+# Child class inheriting from Vehicle
+class Car(Vehicle):
+    def __init__(self, brand, model, color):
+        super().__init__(brand, model)
+        self.color = color
 
-# Print the first three words
-print_first_three_words(file_path)
+
+# Creating an instance of the Vehicle class
+vehicle = Vehicle("Toyota", "Corolla")
+vehicle.display_info()
+
+print()
+
+# Creating an instance of the Car class
+car = Car("Toyota", "Corolla", "Red")
+car.display_info()

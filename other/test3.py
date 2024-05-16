@@ -1,3 +1,4 @@
-import utility.utils_java
+from utility.utils import get_identifier
 
-print(utility.utils_java.get_program_under_test('templateit_5', 'OpMatcher'))
+
+print(get_identifier("CohereForAI/c4ai-command-r-plus"))
