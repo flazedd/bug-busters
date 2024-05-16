@@ -8,6 +8,8 @@ import re
 import Test
 import config
 import constant
+import utils_java
+import utils_python
 
 cookie_path_dir = "./cookies/"  # NOTE: trailing slash (/) is required to avoid errors
 sign = Login(config.MAIL, config.PASSWORD)
@@ -44,214 +46,87 @@ def set_pitest_in_gradle(package, classname, testname):
 
 
 def get_java_code(ai_output):
-    # pattern = r"(@Test\s+public void \w+\(\) \{([^}]+)\})"
-    #
-    # # Find all test functions
-    # test_functions = re.findall(pattern, ai_output)
-    # result = ''
-    # try:
-    #     result = test_functions[0][0]
-    # except IndexError:
-    #     return None
-    # # print(type(result))
-    # # print(f'returning: {result}')
-    # print(f'output: {ai_output}')
-    result = ''
-    s1 = ai_output.find('```java')
-    if s1 == -1:
-        return None
-    s2 = ai_output.find('@Test', s1)
-    if s2 == -1:
-        return None
-    s3 = ai_output.find('```', s2)
-    if s3 == -1:
-        return None
-    result += ai_output[s2:s3]
-    return result
+    return utils_java.get_java_code(ai_output)
 
 
 def get_args():
-    directory = 'JavaProgramUnderTest/lib/src/test/java'
-    args = []
-    for folder in os.listdir(directory):
-        folder_path = os.path.join(directory, folder)
-        if os.path.isdir(folder_path):
-            for file in os.listdir(folder_path):
-                if file.endswith("Test_EvoSuite.java"):
-                    file_name = file.split("Test_EvoSuite.java")[0]
-                    arg = (folder, file_name, constant.MODEL)
-                    args.append(arg)
-    return args
+    return utils_java.get_args()
 
 
-def find_numbers_before_percent(string):
-    i = -1
-    while True:
-        if string[i] == '%':
-            i -= 1
-            break
-        i -= 1
-
-    numbers = ''
-    while True:
-        if string[i].isdigit():
-            numbers = string[i] + numbers
-            i -= 1
-        else:
-            break
-
-    return int(numbers) if numbers else None
-
+# removed def find_numbers_before_percent(string):
 
 def get_statistics(terminal_output):
-    start = terminal_output.find("- Statistics")
-    result = terminal_output[start:]
-    s1 = result.find(">> Line Coverage (for mutated classes only):")
-    s2 = result.find(">> Generated")
-    s3 = result.find(">> Mutations")
-    s4 = result.find(">> Ran")
-    part1 = result[s1:s2]
-    part2 = result[s2:s3]
-    part3 = result[s3:s4]
-    statistics = {'Line coverage %': find_numbers_before_percent(part1),
-                  'Mutations killed %': find_numbers_before_percent(part2),
-                  # 'Mutations': find_numbers_before_percent(part3)
-                  }
-    return statistics
+    return utils_java.get_statistics(terminal_output)
 
 
 def exec_pitest():
-    # Get the current directory
-    current_dir = os.getcwd()
-
-    # Change directory to the 'JavaProgramUnderTest' directory
-    os.chdir(os.path.join(current_dir, 'JavaProgramUnderTest'))
-
-    # # Execute a list command in the current directory
-    # os.system("dir" if os.name == "nt" else "ls")
-
-    result = subprocess.run(["gradlew", "pitest", "--rerun-tasks"], shell=True, stdout=subprocess.PIPE, text=True)
-    result = result.stdout
-    os.chdir(current_dir)
-    return result
+    return utils_java.exec_pitest()
 
 
 def write_code(package, test_name, code):
-    path = 'JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java'
-    with constant.PRINT_LOCK:
-        print(f'{package}/{test_name} is writing code')
-    while True:
-        try:
-            with (open(path, 'w') as java_test_file):
-                # Read the contents of the file
-                java_test_file.write(code)
-                break
-        except FileNotFoundError as f:
-            with constant.PRINT_LOCK:
-                print(f'{package}/{test_name} has encountered FileNotFoundError. Retrying...')
-                time.sleep(1)
+    utils_java.write_code(package, test_name, code)
 
 
-def exec_test(package, test_name):
-    # Get the current directory
-    current_dir = os.getcwd()
-
-    # Change directory to the 'JavaProgramUnderTest' directory
-    os.chdir(os.path.join(current_dir, 'JavaProgramUnderTest'))
-
-    # # Execute a list command in the current directory
-    # os.system("dir" if os.name == "nt" else "ls")
-    test = package + "." + test_name
-    result = subprocess.run(["gradlew", "test", "--tests", test, "--info"], shell=True, stdout=subprocess.PIPE,
-                            text=True)
-    result = result.stdout
-    os.chdir(current_dir)
-    return result
+def exec_test(package, test_name, test_string):
+    return utils_java.exec_test(package, test_name, test_string)
 
 
 def did_test_fail(output):
-    target = "FAILED"
-    start_index = output.find(target)
-    return start_index >= 0
+    return utils_java.did_test_fail(output)
 
 
 def get_test_errors(output, test_name_improved):
-    # print(f"[get_test_errors]output received: {output}")
-    pattern = rf'{test_name_improved}\s>\s(\w+)\(\) FAILED[\s\S](.*)'
-    matches = re.findall(pattern, output)
-    result = ''
-    for i in range(0, len(matches)):
-        result += matches[i][-1] + '\n'
-    return result
+    return utils_java.get_test_errors(output, test_name_improved)
 
-
-def concatenate_files_except(package, filename):
-    filename = filename + ".java"
-    file_path = f"JavaProgramUnderTest/lib/src/main/java/{package}"
-    concatenated_content = ""
-
-    # Check if the directory exists
-    if os.path.exists(file_path) and os.path.isdir(file_path):
-        # Loop through each file in the directory
-        for file in os.listdir(file_path):
-            file_path = os.path.join(file_path, file)
-
-            # Check if the item is a file and is not the specified filename
-            if os.path.isfile(file_path) and file != filename:
-                # Read the content of the file and concatenate it
-                with open(file_path, 'r') as f:
-                    concatenated_content += f.read()
-
-    return concatenated_content
+# def concatenate_files_except(package, filename):
+#     filename = filename + ".java"
+#     file_path = f"JavaProgramUnderTest/lib/src/main/java/{package}"
+#     concatenated_content = ""
+#
+#     # Check if the directory exists
+#     if os.path.exists(file_path) and os.path.isdir(file_path):
+#         # Loop through each file in the directory
+#         for file in os.listdir(file_path):
+#             file_path = os.path.join(file_path, file)
+#
+#             # Check if the item is a file and is not the specified filename
+#             if os.path.isfile(file_path) and file != filename:
+#                 # Read the content of the file and concatenate it
+#                 with open(file_path, 'r') as f:
+#                     concatenated_content += f.read()
+#
+#     return concatenated_content
 
 
 def get_imports(package, test_name):
-    with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java', 'r') as java_test_file:
-        # Read the contents of the file
-        contents = java_test_file.read()
-        result = ""
-        s2 = 0
-        while True:
-            s1 = contents.find('import', s2)
-            if s1 == -1:
-                break
-            s2 = contents.find('\n', s1)
-            if s2 == -1:
-                with constant.PRINT_LOCK:
-                    print('Could not find newline after import was found')
-            result += contents[s1:s2] + '\n'
-        return result
+    return utils_java.get_imports(package, test_name)
 
 
-def get_prompt(package, class_name):
+def get_prompt(package, class_name, language):
     prompt = ''
-    with open('JavaProgramUnderTest/lib/src/main/java/' + package + '/' + class_name + '.java', 'r') as java_file:
-        # Read the contents of the file
-        prompt += java_file.read()
-    target = class_name + 'Test_LLM'
-    imports = get_imports(package, target)
+    if language == 'java':
+        prompt += utils_java.get_program_under_test(package, class_name)
+    # elif language == 'python':
+    #     prompt += utils_python.get_program_under_test(package, class_name)
+    imports = get_imports(package, class_name + 'Test_LLM')
     prompt += '\nyou can use these imports only\n' + imports
-    # with open('JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java', 'r') as java_test_file:
-    #     # Read the contents of the file
-    #     prompt += java_test_file.read()
-    prompt += (
-        f'give me back 1 additional test case that starts with @Test, it should only make 1 assertion and '
-        f'it should pass.')
+    prompt += 'give me back 1 single test case, it should only make 1 single assertion and it should pass!. '
+    prompt += utils_java.get_specific_prompt()
     return prompt
 
 
 # expects tuple with (folder, file_name, model_number)
-def worker(folder, class_name, selection):
+def worker(folder, class_name, selection, language):
     test_name = class_name + 'Test'
     start = time.time()
     chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
     chatbot.switch_llm(selection)
     l = chatbot.get_remote_llms()
     with constant.PRINT_LOCK:
-        print(f'{folder} has switched to {l[selection].name}')
+        print(f'[+] {folder} has switched to {l[selection].name}')
     id = chatbot.new_conversation()
     chatbot.change_conversation(id)
-    prompt = get_prompt(folder, class_name)
+    prompt = get_prompt(folder, class_name, language)
     tests_required = constant.RETRIES
     test_handle = Test.Test(folder, class_name)
     iterations = 0
@@ -260,23 +135,23 @@ def worker(folder, class_name, selection):
     while tests_required > 0:
         iterations += 1
         with constant.PRINT_LOCK:
-            print(f'{folder} is on iteration {iterations}')
+            print(f'[+] {folder} is on iteration {iterations}')
         response = chatbot.chat(prompt)
         response.wait_until_done()
         new_test_case = get_java_code(response.text)
         if new_test_case is None:
             with constant.PRINT_LOCK:
-                print('No test case found in reply')
+                print('[+] No test case found in reply')
             replies_without_tests += 1
             prompt = 'try again. remember, 1 test case. 1 assertion'
             continue
         test_handle.add_test(new_test_case)
         test_handle.write()
         improved_test = test_name + "_LLM"
-        result = exec_test(folder, improved_test)
+        result = exec_test(folder, improved_test, new_test_case)
         if did_test_fail(result):
             with constant.PRINT_LOCK:
-                print('Did find a test but it failed')
+                print('[+] Did find a test but it failed')
             failing_tests += 1
             test_handle.remove_last_test()
             error = get_test_errors(result, improved_test)
@@ -284,12 +159,12 @@ def worker(folder, class_name, selection):
             continue
         else:
             with constant.PRINT_LOCK:
-                print('Test case found and compiles')
+                print('[+] Test case found and compiles')
             prompt = ('It passed. Now give another completely new test case.')
             tests_required -= 1
     end = time.time()
     with constant.PRINT_LOCK:
-        print(f'{folder} finished in {end - start} seconds. '
+        print(f'[+] {folder} finished in {end - start} seconds. '
               f'Iterations: {iterations}. ',
               f'Stricly needed iterations: {constant.RETRIES}. '
               f'Tests that failed:  {failing_tests}. '

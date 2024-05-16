@@ -1,0 +1,1 @@
+./gradlew test --tests a4j_2.DirectorsTest_LLM.testToString --info

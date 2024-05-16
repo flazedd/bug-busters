@@ -11,16 +11,18 @@ import utils
 # t1 = ('templateit_5', 'OpMatcher', 1)
 # t2 = ('jnfe_6', 'AbstractNFeAdaptadorBean', 1)
 
-args = utils.get_args()
-print(args)
-threads = []
-# args = [args[0]]
+# args = utils.get_args()
 # print(args)
+threads = []
+# [('a4j_2', 'Directors', 1), ('templateit_5', 'OpMatcher', 1), ('tullibee_1', 'Contract', 1), ('tullibee_1', 'Util', 1)]
+# [('a4j_2', 'Directors', 1)]
+args = [('templateit_5', 'OpMatcher', 1)]
+print(args)
 
 start = time.time()
 
 for arg in args:
-    utils.worker(arg[0], arg[1], arg[2])
+    utils.worker(arg[0], arg[1], arg[2], 'java')
 
 # for arg in args:
 #     thread = threading.Thread(target=utils.worker, args=arg)
@@ -32,5 +34,5 @@ for arg in args:
 #     thread.join()
 
 end = time.time()
-print(f'\n\nCompleted in {end - start} seconds')
+print(f'[+] \n\nCompleted in {end - start} seconds')
 
