@@ -126,7 +126,6 @@ def get_identifier(ai_model_name):
 
 # expects tuple with (folder, file_name, model_number)
 def worker(folder, class_name, selection, oracle):
-    test_name = class_name + 'Test'
     start = time.time()
     chatbot = credentails.get_chatbot()
     chatbot.switch_llm(selection)
@@ -137,34 +136,36 @@ def worker(folder, class_name, selection, oracle):
     chatbot.change_conversation(id)
     prompt = oracle.get_prompt(folder, class_name)
     tests_required = constant.RETRIES
-    test_handle = oracle.get_test_instance(folder, class_name)  #Test(folder, class_name)
     iterations = 0
     failing_tests = 0
     replies_without_tests = 0
+    # Name without extension .java, .py
+    test_name = oracle.create_file(folder, class_name, get_identifier(l[selection].name))
+    test_handle = oracle.get_test_instance(folder, class_name, test_name)
     while tests_required > 0:
         iterations += 1
         with constant.PRINT_LOCK:
             print(f'[+] {folder} is on iteration {iterations}')
         response = chatbot.chat(prompt)
+        time.sleep(constant.SLEEP)
         response.wait_until_done()
         new_test_case = oracle.get_code(response.text) #get_java_code(response.text)
         if new_test_case is None:
             with constant.PRINT_LOCK:
                 print('[+] No test case found in reply')
             replies_without_tests += 1
-            prompt = 'try again. remember, 1 test case. 1 assertion'
+            prompt = 'try again. remember, 1 test case. 1 assertion and format the code with ``````'
             continue
         test_handle.add_test(new_test_case)
         test_handle.write()
-        improved_test = test_name + "_LLM"
-        result = oracle.exec_test(folder, improved_test, new_test_case) #exec_test(folder, improved_test, new_test_case)
+        result = oracle.exec_test(folder, test_name, new_test_case) #exec_test(folder, improved_test, new_test_case)
         if oracle.did_test_fail(result):
             with constant.PRINT_LOCK:
                 print('[+] Did find a test but it failed')
             failing_tests += 1
             test_handle.remove_last_test()
-            error = oracle.get_test_errors(result, improved_test)
-            prompt = error + "make it pass, different function name than the ones you sent before"
+            error = oracle.get_test_errors(result, test_name)
+            prompt = error + "make it pass, different function name than the ones you sent in messages before"
             continue
         else:
             with constant.PRINT_LOCK:

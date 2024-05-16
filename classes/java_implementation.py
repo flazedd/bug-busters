@@ -1,27 +1,37 @@
 import os
-import re
 import subprocess
 import time
 
 from classes.abstract_language import LanguageImplementation
 from classes.java_test import JavaTestImplementation
 from config import constant
-
+from classes.prompt import Prompt
 
 class JavaImplementation(LanguageImplementation):
     def get_code(self, ai_output):
-        result = ''
-        s1 = ai_output.find('```java')
-        if s1 == -1:
+        start = ai_output.find('```java')
+        if start == -1:
+            print('[+] begin java code not found')
             return None
-        s2 = ai_output.find('@Test', s1)
-        if s2 == -1:
-            return None
-        s3 = ai_output.find('```', s2)
-        if s3 == -1:
-            return None
-        result += ai_output[s2:s3]
-        return result
+        begin = ai_output.find("@Test")
+        if begin == -1:
+            return None  # @Test not found
+
+        counter = 0
+        end = begin
+
+        for char in ai_output[begin:]:
+            if char == "{":
+                counter += 1
+            elif char == "}":
+                counter -= 1
+
+            if counter < 0 or char == '`':
+                return ai_output[begin:end]
+
+            end += 1
+
+        return ai_output[begin:end]
 
     def get_args(self):
         directory = 'JavaProgramUnderTest/lib/src/test/java'
@@ -121,6 +131,7 @@ class JavaImplementation(LanguageImplementation):
     def exec_test(self, package, test_name, test_string):
         # Get the current directory
         current_dir = os.getcwd()
+        # print(f'current dir is: {current_dir}')
 
         # Change directory to the 'JavaProgramUnderTest' directory
         os.chdir(os.path.join(current_dir, 'JavaProgramUnderTest'))
@@ -129,9 +140,9 @@ class JavaImplementation(LanguageImplementation):
         # os.system("dir" if os.name == "nt" else "ls")
         newly_added_test = self.get_signature(test_string)
         test = package + "." + test_name + "." + newly_added_test
-        result = subprocess.run(["gradlew", "test", "--tests", test, "--info"], shell=True, stdout=subprocess.PIPE,
-                                text=True)
-        result = result.stdout
+        result = subprocess.run(["gradlew", "test", "--tests", test], shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True)
+        result = f'{result.stderr}'
         os.chdir(current_dir)
         return result
 
@@ -141,13 +152,16 @@ class JavaImplementation(LanguageImplementation):
         return start_index >= 0
 
     def get_test_errors(self, output, test_name_improved):
-        # print(f"[get_test_errors]output received: {output}")
-        pattern = rf'{test_name_improved}\s>\s(\w+)\(\) FAILED[\s\S](.*)'
-        matches = re.findall(pattern, output)
-        result = ''
-        for i in range(0, len(matches)):
-            result += matches[i][-1] + '\n'
-        return result
+        print(f"[get_test_errors]output received: {output}")
+        # begin = output.find('error:')
+        # end = output.find('FAILURE', begin)
+        return output
+        # pattern = rf'{test_name_improved}\s>\s(\w+)\(\) FAILED[\s\S](.*)'
+        # matches = re.findall(pattern, output)
+        # result = ''
+        # for i in range(0, len(matches)):
+        #     result += matches[i][-1] + '\n'
+        # return result
 
     def get_imports(self, package, class_name):
         with open(f'JavaProgramUnderTest/lib/src/main/java/{package}/{class_name}.java') as java_file:
@@ -181,13 +195,27 @@ class JavaImplementation(LanguageImplementation):
         return put
 
     def get_prompt(self, package, class_name):
-        prompt = ''
-        prompt += self.get_program_under_test(package, class_name)
+        class_code = self.get_program_under_test(package, class_name)
         imports = self.get_imports(package, class_name)
-        prompt += '\nyou can use these imports only\n' + imports
-        prompt += 'give me back 1 single test case, it should only make 1 single assertion and it should pass!. '
-        prompt += 'your code snippet should start with @Test'
-        return prompt
+        extra = ('your code snippet should start with @Test '
+                 'and examples of asserting methods: assertEquals(), assertArrayEquals()')
+        return Prompt.get_input(class_code, imports, extra)
 
-    def get_test_instance(self, folder, class_name):
-        return JavaTestImplementation(folder, class_name, self)
+
+    def get_test_instance(self, folder, class_name, test_name):
+        return JavaTestImplementation(folder, class_name, self, test_name)
+
+    def create_file(self, folder, class_name, ai_model):
+        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}'
+        file = f'Test_{class_name}_{ai_model}'
+        file_name = f'{file}.java'
+        file_path = os.path.join(path, file_name)
+        if not os.path.exists(file_path):
+            with open(file_path, 'w'):
+                pass
+            print(f"[+] File '{file_name}' created in '{path}'")
+        else:
+            print(f"[+] File '{file_name}' already exists in '{path}'")
+        # Return file without .java extension
+        return file
+

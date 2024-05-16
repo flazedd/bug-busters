@@ -38,7 +38,11 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
-    def get_test_instance(self, folder, class_name):
+    def get_test_instance(self, folder, class_name, test_name):
+        pass
+
+    @abstractmethod
+    def create_file(self, folder, class_name, ai_model):
         pass
 
 

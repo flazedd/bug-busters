@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class HandleTestImplementation(ABC):
     @abstractmethod
-    def __init__(self, folder, class_name, oracle):
+    def __init__(self, folder, class_name, oracle, test_name):
         pass
 
     @abstractmethod
@@ -14,7 +14,7 @@ class HandleTestImplementation(ABC):
         pass
 
     @abstractmethod
-    def add_test(self):
+    def add_test(self, test):
         pass
 
     @abstractmethod

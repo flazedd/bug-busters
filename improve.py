@@ -23,7 +23,7 @@ start = time.time()
 for oracle in oracles:
     # args = oracle.get_args()
     print(oracle.get_args())
-    args = [('templateit_5', 'OpMatcher', 1)]
+    args = [('templateit_5', 'OpMatcher', 0)]
     for arg in args:
         utils.worker(arg[0], arg[1], arg[2], oracle)
 

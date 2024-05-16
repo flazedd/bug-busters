@@ -3,16 +3,16 @@ from config import constant
 
 
 class JavaTestImplementation(HandleTestImplementation):
-    def __init__(self, folder, class_name, oracle):
+    def __init__(self, folder, class_name, oracle, test_name):
         self.oracle = oracle
         self.folder = folder
-        self.target = class_name + 'Test_LLM'
+        self.test_name = test_name #class_name + 'Test_LLM'
         self.begin_template = (
                 "package " + folder + ";\n" +
                 "import org.junit.jupiter.api.Test;\n" +
                 "import static org.junit.jupiter.api.Assertions.*;\n" +
                 oracle.get_imports(folder, class_name) +
-                "public class " + self.target + " {\n"
+                "public class " + self.test_name + " {\n"
         )
         self.end_template = "}"
         self.classname = class_name
@@ -32,10 +32,10 @@ class JavaTestImplementation(HandleTestImplementation):
     def write(self):
         code = self.get_contents()
         # improved_test = self.classname + "_LLM"
-        self.oracle.write_code(self.folder, self.target, code)
+        self.oracle.write_code(self.folder, self.test_name, code)
 
-    def add_test(self, t):
-        self.tests.append(t)
+    def add_test(self, test):
+        self.tests.append(test)
 
     def remove_last_test(self):
         self.tests.pop()
