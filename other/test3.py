@@ -58,7 +58,7 @@ plt.figure(figsize=(10, 6))  # Optional: specify the figure size
 plt.bar(categories, values, color='blue')  # You can change the color as needed
 
 # Add titles and labels
-plt.title('Averge mutation score achieved per model')
+plt.title('Average mutation score achieved per model')
 plt.xlabel('Categories')
 plt.ylabel('Mutation score percentage')
 

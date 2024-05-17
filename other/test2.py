@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # Dummy data
-categories = ['Category A', 'Category B', 'Category C', 'Category D']
+categories = ['Meta-Llama-3-70B-Instruct', 'Mixtral-8x7B-Instruct-v0.1', 'Category C', 'Category D']
 values = [23, 45, 56, 78]
 
 # Create a bar chart

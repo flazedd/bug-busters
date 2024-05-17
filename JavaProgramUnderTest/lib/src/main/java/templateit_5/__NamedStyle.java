@@ -1,13 +1,13 @@
 package templateit_5;
 
-class NamedStyle
+class __NamedStyle
 {
     private final String name;
     private final boolean hasParam;
     private int row;
     private int column;
 
-    public NamedStyle(String name, boolean hasParam)
+    public __NamedStyle(String name, boolean hasParam)
     {
         this.name = name;
         this.hasParam = hasParam;

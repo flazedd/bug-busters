@@ -41,16 +41,19 @@ def save_results(results, filename):
 
 def get_identifier(ai_model_name):
     start_index = ai_model_name.find('/')
-    end_index = ai_model_name.find('-', start_index)
-    return ai_model_name[start_index + 1:end_index]
+    s = ai_model_name[start_index+1:]
+    sr = s.replace('-', '_')
+    return sr
 
 
 # expects tuple with (folder, file_name, model_number)
 def worker(folder, class_name, selection, oracle):
     start = time.time()
     chatbot = credentails.get_chatbot()
-    chatbot.switch_llm(selection)
     l = chatbot.get_remote_llms()
+    ident = get_identifier(l[selection].name)
+    chatbot.switch_llm(selection)
+
     with constant.PRINT_LOCK:
         print(f'[+] {folder} has switched to {l[selection].name}')
     id = chatbot.new_conversation()
@@ -61,7 +64,8 @@ def worker(folder, class_name, selection, oracle):
     failing_tests = 0
     replies_without_tests = 0
     # Name without extension .java, .py
-    test_name = oracle.create_file(folder, class_name, get_identifier(l[selection].name))
+
+    test_name = oracle.create_file(folder, class_name, ident)
     test_handle = oracle.get_test_instance(folder, class_name, test_name)
     while tests_required > 0:
         iterations += 1
@@ -83,7 +87,7 @@ def worker(folder, class_name, selection, oracle):
         if oracle.did_test_fail(result):
             with constant.PRINT_LOCK:
                 print('[+] Did find a test but it failed')
-            test_handle.empty_file() # Empty the file with failing test so project can compile
+            # test_handle.empty_file() # Empty the file with failing test so project can compile
             failing_tests += 1
             test_handle.remove_last_test()
             error = oracle.get_test_errors(result, test_name)

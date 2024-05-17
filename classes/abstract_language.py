@@ -53,5 +53,9 @@ class LanguageImplementation(ABC):
     def __str__(self):
         pass
 
+    @abstractmethod
+    def work_already_satisfied(self, folder, class_name, ai_model):
+        pass
+
 
 

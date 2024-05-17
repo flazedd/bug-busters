@@ -3,19 +3,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-public class Test_OpMatcher_gemma {
+public class Test__OpMatcher__Meta_Llama_3_70B_Instruct {
 @Test
 public void testMatchTemplateBegin() {
     String text = "@template_begin(name, param1, param2)";
-    String[] names = OpMatcher.matchTemplateBegin(text);
-    assertArrayEquals(new String[]{"name", "param1", "param2"}, names);
+    String[] expected = {"name", "param1", "param2"};
+    assertArrayEquals(expected, OpMatcher.matchTemplateBegin(text));
 }
 
 @Test
 public void testMatchTemplateName() {
-    String text = "templateName";
-    boolean result = OpMatcher.matchTemplateName(text);
-    assertTrue(result);
+    String text = "ValidTemplateName";
+    assertTrue(OpMatcher.matchTemplateName(text));
 }
 
 }

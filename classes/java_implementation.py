@@ -36,16 +36,17 @@ class JavaImplementation(LanguageImplementation):
         return ai_output[begin:end]
 
     def get_args(self):
-        directory = 'JavaProgramUnderTest/lib/src/test/java'
+        directory = 'JavaProgramUnderTest/lib/src/main/java'
         args = []
         for folder in os.listdir(directory):
             folder_path = os.path.join(directory, folder)
             if os.path.isdir(folder_path):
                 for file in os.listdir(folder_path):
-                    if file.endswith("Test_EvoSuite.java"):
-                        file_name = file.split("Test_EvoSuite.java")[0]
-                        arg = (folder, file_name, constant.MODEL)
-                        args.append(arg)
+                    if file.startswith('__'):
+                        continue
+                    file_name = file.split('.java')[0]
+                    arg = (folder, file_name, constant.MODEL)
+                    args.append(arg)
         return args
 
     @staticmethod
@@ -149,16 +150,16 @@ class JavaImplementation(LanguageImplementation):
             ai_number = arg[2]
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
-                if file.startswith(f"Test_{class_name}"):
+                if file.startswith(f"Test__{class_name}"):
                     # print(file)
                     test_name = file.split('.')[0]
-                    ai_model_abbrev = test_name.split("_")[2]
-                    print(f'[+] ai model abbrev is {ai_model_abbrev}')
+                    ai_model = test_name.split("__")[2]
+                    print(f'[+] ai model abbrev is {ai_model}')
                     print(f'[+] Getting mutation score for {test_name}')
                     score = self.get_mutation_score(folder, class_name, test_name)
                     print(f'[+] Mutation score for {test_name} is: {score}%')
-                    result.setdefault(ai_model_abbrev, {})
-                    result[ai_model_abbrev][class_name] = score
+                    result.setdefault(ai_model, {})
+                    result[ai_model][class_name] = score
                     # print(test_name)
 
 
@@ -212,7 +213,7 @@ class JavaImplementation(LanguageImplementation):
         test = package + "." + test_name + "." + newly_added_test
         result = subprocess.run(["gradlew", "test", "--tests", test], shell=True, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, text=True)
-        result = f'{result.stderr}'
+        result = f'{result.stdout} {result.stderr}'
         os.chdir(current_dir)
         return result
 
@@ -223,7 +224,9 @@ class JavaImplementation(LanguageImplementation):
 
     def get_test_errors(self, output, test_name_improved):
         print(f"[get_test_errors]output received: {output}")
-        return output
+        begin = max(output.find('FAILED'), 0)
+        end = output.find('FAILURE')
+        return output[begin:end]
 
     def get_imports(self, package, class_name):
         with open(f'JavaProgramUnderTest/lib/src/main/java/{package}/{class_name}.java') as java_file:
@@ -268,7 +271,11 @@ class JavaImplementation(LanguageImplementation):
 
     def create_file(self, folder, class_name, ai_model):
         path = f'JavaProgramUnderTest/lib/src/test/java/{folder}'
-        file = f'Test_{class_name}_{ai_model}'
+        # Check if the directory exists
+        if not os.path.exists(path):
+            # If it doesn't exist, create it
+            os.makedirs(path)
+        file = f'Test__{class_name}__{ai_model}'
         file_name = f'{file}.java'
         file_path = os.path.join(path, file_name)
         if not os.path.exists(file_path):
@@ -282,3 +289,6 @@ class JavaImplementation(LanguageImplementation):
 
     def __str__(self):
         return 'Java'
+
+    def work_already_satisfied(self):
+        pass

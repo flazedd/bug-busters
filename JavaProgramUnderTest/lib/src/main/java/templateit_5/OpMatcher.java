@@ -111,9 +111,9 @@ final class OpMatcher
     private static final Pattern stylePattern = Pattern.compile("@style\\s*\\(\\s*(\\p{Alpha}\\w*)\\s*\\)");
     private static final Pattern styleWithParamPattern = Pattern.compile("@style\\s*\\(\\s*(\\p{Alpha}\\w*)\\s*,\\s*((true)|(false))\\s*\\)");
 
-    public static NamedStyle matchStyle(String text)
+    public static __NamedStyle matchStyle(String text)
     {
-        NamedStyle style = null;
+        __NamedStyle style = null;
         String styleName = null;
         if (text != null)
         {
@@ -122,7 +122,7 @@ final class OpMatcher
             if (found && matcher.groupCount() == 1)
             {
                 styleName = matcher.group(1);
-                style = new NamedStyle(styleName,false);
+                style = new __NamedStyle(styleName,false);
             }
             else
             {
@@ -133,7 +133,7 @@ final class OpMatcher
                     styleName = matcher.group(1);
                     String paramFlag = matcher.group(2);
                     boolean flag = Boolean.parseBoolean(paramFlag);
-                    style = new NamedStyle(styleName,flag);
+                    style = new __NamedStyle(styleName,flag);
                 }
             }
         }

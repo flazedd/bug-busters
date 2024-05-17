@@ -26,7 +26,7 @@ public class Contract implements Cloneable {
     public Vector m_comboLegs = new Vector();
 
     // delta neutral
-    public UnderComp m_underComp;
+    public __UnderComp m_underComp;
 
     public Contract() {
         m_conId = 0;
