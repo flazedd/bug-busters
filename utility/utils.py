@@ -42,8 +42,8 @@ def save_results(results, filename):
 def get_identifier(ai_model_name):
     start_index = ai_model_name.find('/')
     s = ai_model_name[start_index+1:]
-    sr = s.replace('-', '_')
-    return sr
+    s = s.replace('-', '_').replace('.', '_')
+    return s
 
 
 # expects tuple with (folder, file_name, model_number)
@@ -52,8 +52,12 @@ def worker(folder, class_name, selection, oracle):
     chatbot = credentails.get_chatbot()
     l = chatbot.get_remote_llms()
     ident = get_identifier(l[selection].name)
+    if oracle.work_already_satisfied(folder, class_name, ident):
+        print(f'[+] Work satisfied for {folder}/{class_name}/{ident}')
+        return
+    else:
+        print(f'[+] Worker active on {folder}/{class_name}/{ident}')
     chatbot.switch_llm(selection)
-
     with constant.PRINT_LOCK:
         print(f'[+] {folder} has switched to {l[selection].name}')
     id = chatbot.new_conversation()

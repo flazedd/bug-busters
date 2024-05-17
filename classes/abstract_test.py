@@ -25,3 +25,7 @@ class HandleTestImplementation(ABC):
     def remove_last_test(self):
         pass
 
+    @abstractmethod
+    def add_imports(self, response):
+        pass
+

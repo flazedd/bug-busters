@@ -7,26 +7,31 @@ class JavaTestImplementation(HandleTestImplementation):
         self.oracle = oracle
         self.folder = folder
         self.test_name = test_name #class_name + 'Test_LLM'
-        self.begin_template = (
-                "package " + folder + ";\n" +
-                "import org.junit.jupiter.api.Test;\n" +
-                "import static org.junit.jupiter.api.Assertions.*;\n" +
-                oracle.get_imports(folder, class_name) +
-                "public class " + self.test_name + " {\n"
-        )
-        self.end_template = "}"
+        self.package = "package " + folder + ";\n"
+        self.begin_class = "public class " + self.test_name + " {\n"
+        self.end_class = "}"
         self.classname = class_name
         # self.benchmark_tests = self.get_benchmark_tests()
         self.tests = []
+        self.imports = {
+            "import org.junit.jupiter.api.Test;\n",
+            "import static org.junit.jupiter.api.Assertions.*;\n",
+        }
+        self.add_imports(oracle.get_imports(folder, class_name))
 
     def get_contents(self):
-        result = self.begin_template
+        result = self.package
+        imp = ''
+        for line in self.imports:
+            imp += line
+        result += imp
+        result += self.begin_class
         # result += self.benchmark_tests
         # print(self.tests)
         for test in self.tests:
             result += test
             result += "\n"
-        result += self.end_template
+        result += self.end_class
         return result
 
     def write(self):
@@ -42,3 +47,15 @@ class JavaTestImplementation(HandleTestImplementation):
 
     def remove_last_test(self):
         self.tests.pop()
+
+    def add_imports(self, response):
+        res = []
+        end = 0
+        while True:
+            start = response.find('import', end)
+            end = response.find(';\n', start)
+            if start == -1 or end == -1:
+                break
+            res.append(response[start:end + 2])
+        for element in res:
+            self.imports.add(element)

@@ -211,7 +211,7 @@ class JavaImplementation(LanguageImplementation):
         # os.system("dir" if os.name == "nt" else "ls")
         newly_added_test = self.get_signature(test_string)
         test = package + "." + test_name + "." + newly_added_test
-        result = subprocess.run(["gradlew", "test", "--tests", test], shell=True, stdout=subprocess.PIPE,
+        result = subprocess.run(["gradlew", "test", "--tests", test, "--info"], shell=True, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, text=True)
         result = f'{result.stdout} {result.stderr}'
         os.chdir(current_dir)
@@ -223,7 +223,14 @@ class JavaImplementation(LanguageImplementation):
         return start_index >= 0
 
     def get_test_errors(self, output, test_name_improved):
-        print(f"[get_test_errors]output received: {output}")
+        id = ':lib:test FAILED'
+        semi = output.find(id) + len(id)
+        output = output[semi:]
+        print(f"[+] Semi-filtered test error:\n\n {output}")
+        suitable = output.find('error: no suitable method found')
+        suitable2 = output.find('^', suitable)
+        if suitable != -1:
+            return output[suitable:suitable2]
         begin = max(output.find('FAILED'), 0)
         end = output.find('FAILURE')
         return output[begin:end]
@@ -270,7 +277,7 @@ class JavaImplementation(LanguageImplementation):
         return JavaTestImplementation(folder, class_name, self, test_name)
 
     def create_file(self, folder, class_name, ai_model):
-        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}'
+        path = f'./JavaProgramUnderTest/lib/src/test/java/{folder}'
         # Check if the directory exists
         if not os.path.exists(path):
             # If it doesn't exist, create it
@@ -290,5 +297,17 @@ class JavaImplementation(LanguageImplementation):
     def __str__(self):
         return 'Java'
 
-    def work_already_satisfied(self):
-        pass
+    def work_already_satisfied(self, folder, class_name, ai_model):
+        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/Test__{class_name}__{ai_model}.java'
+        if not os.path.exists(path):
+            # If it doesn't exist, create it
+            return False
+        with open(path, 'r') as java_file:
+            count = 0
+            for line in java_file:
+                # Check if the line contains the @Test annotation
+                if "@Test" in line:
+                    count += 1
+            return count == constant.RETRIES
+
+

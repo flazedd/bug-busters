@@ -3,7 +3,7 @@ from classes.java_implementation import JavaImplementation
 
 RETRIES = 2  # amount of retries for getting a test suite that passes
 PRINT_LOCK = threading.Lock()
-MODEL = 1
+MODEL = 0
 JSON_NAME = 'result'
 SLEEP = 2
 ORACLES = [JavaImplementation()]
