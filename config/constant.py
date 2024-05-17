@@ -3,7 +3,7 @@ from classes.java_implementation import JavaImplementation
 
 RETRIES = 2  # amount of retries for getting a test suite that passes
 PRINT_LOCK = threading.Lock()
-MODEL = 0
+MODEL = 1
 JSON_NAME = 'result'
 SLEEP = 2
 ORACLES = [JavaImplementation()]
@@ -25,6 +25,6 @@ ORACLES = [JavaImplementation()]
 # Choose 3 for: mistralai/Mixtral-8x7B-Instruct-v0.1 works
 # Choose 4 for: NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO model is overloaded
 # Choose 5 for: 01-ai/Yi-1.5-34B-Chat stupid
-# Choose 6 for: google/gemma-1.1-7b-it works
-# Choose 7 for: mistralai/Mistral-7B-Instruct-v0.2 works
-# Choose 8 for: microsoft/Phi-3-mini-4k-instruct works
+# Choose 6 for: google/gemma-1.1-7b-it stupid
+# Choose 7 for: mistralai/Mistral-7B-Instruct-v0.2 stupid model
+# Choose 8 for: microsoft/Phi-3-mini-4k-instruct after a while just starts producing garbage

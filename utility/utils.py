@@ -95,7 +95,7 @@ def worker(folder, class_name, selection, oracle):
             failing_tests += 1
             test_handle.remove_last_test()
             error = oracle.get_test_errors(result, test_name)
-            prompt = error + "make it pass, different function name than the ones you sent in messages before"
+            prompt = error + "Fix the error so that the test case passes"
             continue
         else:
             with constant.PRINT_LOCK:

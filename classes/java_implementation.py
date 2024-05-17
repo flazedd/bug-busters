@@ -231,7 +231,7 @@ class JavaImplementation(LanguageImplementation):
         suitable2 = output.find('^', suitable)
         if suitable != -1:
             return output[suitable:suitable2]
-        begin = max(output.find('FAILED'), 0)
+        begin = max(output.find(': error: '), 0)
         end = output.find('FAILURE')
         return output[begin:end]
 
@@ -269,8 +269,7 @@ class JavaImplementation(LanguageImplementation):
     def get_prompt(self, package, class_name):
         class_code = self.get_program_under_test(package, class_name)
         imports = self.get_imports(package, class_name)
-        extra = ('your code snippet should start with @Test '
-                 'and examples of asserting methods: assertEquals(), assertArrayEquals()')
+        extra = 'example response: \n@Test\npublic void exampleTestName() {\nassertEquals(0, 0);\n}\n'
         return Prompt.get_input(class_code, imports, extra)
 
     def get_test_instance(self, folder, class_name, test_name):

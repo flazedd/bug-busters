@@ -1,5 +1,3 @@
-#
-
 import matplotlib.pyplot as plt
 import json
 import numpy as np
@@ -9,46 +7,48 @@ recent_file = utils.get_most_recent_file('./results')
 print(recent_file)
 data = utils.load_json_file(f'./results/{recent_file}')
 print(data)
-#
-# # Load data from JSON file
-# with open('results/result_2024-04-29_22-59-30.json', 'r') as file:
-#     data = json.load(file)
-# x = []
-# y1 = []
-# y2 = []
-#
-#
-# # Plotting the data for each key
-# for key, value in data.items():
-#     print(key)
-#     for subkey, subvalue in value.items():
-#         print("    ", subkey)
-#         x.append(subkey)
-#         y1.append(subvalue['Improvement']['Line coverage']['%'])
-#         y2.append(subvalue['Improvement']['Mutations killed']['%'])
-#
-#
-#
-# # # Data
-# # x = ['A', 'B', 'C', 'D']
-# # y1 = [10, 20, 15, 25]
-# # y2 = [15, 25, 20, 30]
-# #
-# # Width of the bars
-# bar_width = 0.35
-#
-# # Plot
-# fig, ax = plt.subplots()
-# bar1 = ax.bar(np.arange(len(x)), y1, bar_width, label='Line coverage % increase')
-# bar2 = ax.bar(np.arange(len(x)) + bar_width, y2, bar_width, label='Mutations killed % increase')
-#
-# # Add labels, title, and legend
-# ax.set_xlabel('Classes under test')
-# ax.set_ylabel('Percentage')
-# ax.set_title('Test suite improvement with AI generated testcases')
-# ax.set_xticks(np.arange(len(x)) + bar_width / 2)
-# ax.set_xticklabels(x)
-# ax.legend()
-#
-# # Show plot
-# plt.show()
+
+# Dummy data
+data_points = []
+
+for main_key, sub_dict in data.items():
+    for llm_key, metrics in sub_dict.items():
+        average = np.mean(list(metrics.values()))
+        data_points.append((llm_key, average))
+
+# Sort the list of tuples by the second element in descending order
+sorted_data = sorted(data_points, key=lambda x: x[1], reverse=True)
+
+# Assuming sorted_data is already defined
+categories = [x[0] for x in sorted_data]
+values = [x[1] for x in sorted_data]
+
+# Create a colormap from matplotlib
+cmap = plt.get_cmap('coolwarm')  # You can choose other colormaps like 'plasma', 'inferno', 'magma', etc.
+colors = cmap(np.linspace(0, 1, len(categories)))
+
+# Set a maximum width for bars
+max_bar_width = 0.1  # Adjust this value as needed
+
+# Create a bar chart
+plt.figure(figsize=(10, 6))
+bars = plt.bar(categories, values, color=colors)
+
+# # Adjust bar width if necessary
+# for bar in bars:
+#     bar.set_width(min(bar.get_width(), max_bar_width))
+
+# Add titles and labels
+plt.title('Average Mutation Score Achieved per Model')
+plt.xlabel('Categories')
+plt.ylabel('Mutation Score Percentage')
+
+# Optionally rotate the x-axis labels if they are too long
+plt.xticks(rotation=45)
+
+# Set the y-axis range from 0 to 100
+plt.ylim(0, 100)
+
+# Show the plot
+plt.tight_layout()
+plt.show()

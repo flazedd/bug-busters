@@ -1,0 +1,11 @@
+{
+    "Java": {
+        "Meta_Llama_3_70B_Instruct": {
+            "Directors": 18,
+            "AbstractNFeAdaptadorBean": 94,
+            "OpMatcher": 31,
+            "Contract": 56,
+            "Util": 25
+        }
+    }
+}

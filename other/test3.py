@@ -50,22 +50,26 @@ sorted_data = sorted(data_points, key=lambda x: x[1], reverse=True)
 print(f'data points: {data_points}')
 print(f'sorted data points: {sorted_data}')
 
+# Assuming sorted_data is already defined
 categories = [x[0] for x in sorted_data]
 values = [x[1] for x in sorted_data]
 
+# Set a fancy color palette from seaborn
+palette = sns.color_palette("coolwarm", len(categories))  # You can change "viridis" to other palettes like "plasma", "coolwarm", etc.
+
 # Create a bar chart
-plt.figure(figsize=(10, 6))  # Optional: specify the figure size
-plt.bar(categories, values, color='blue')  # You can change the color as needed
+plt.figure(figsize=(10, 6))
+plt.bar(categories, values, color=palette)
 
 # Add titles and labels
-plt.title('Average mutation score achieved per model')
+plt.title('Average Mutation Score Achieved per Model')
 plt.xlabel('Categories')
-plt.ylabel('Mutation score percentage')
+plt.ylabel('Mutation Score Percentage')
 
 # Optionally rotate the x-axis labels if they are too long
 plt.xticks(rotation=45)
 
 # Show the plot
-plt.tight_layout()  # Adjusts the plot to ensure everything fits without overlap
+plt.tight_layout()
 plt.show()
 
