@@ -14,6 +14,10 @@ class HandleTestImplementation(ABC):
         pass
 
     @abstractmethod
+    def empty_file(self):
+        pass
+
+    @abstractmethod
     def add_test(self, test):
         pass
 

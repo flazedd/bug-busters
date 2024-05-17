@@ -1,7 +1,7 @@
 import time
 
+from config import constant
 from utility import utils
-from classes.java_implementation import JavaImplementation
 
 # templateit_5.OpMatcherTest_Improved
 # jnfe_6.AbstractNFeAdaptadorBeanTest_Improved
@@ -12,18 +12,18 @@ from classes.java_implementation import JavaImplementation
 
 # args = utils.get_args()
 # print(args)
-oracles = [JavaImplementation()]
+oracles = constant.ORACLES
 threads = []
 # [('a4j_2', 'Directors', 1), ('templateit_5', 'OpMatcher', 1), ('tullibee_1', 'Contract', 1), ('tullibee_1', 'Util', 1)]
 # [('a4j_2', 'Directors', 1)]
-args = [('templateit_5', 'OpMatcher', 1)]
-print(args)
+# args = [('templateit_5', 'OpMatcher', 1)]
+# print(args)
 
 start = time.time()
 for oracle in oracles:
-    # args = oracle.get_args()
-    print(oracle.get_args())
-    args = [('templateit_5', 'OpMatcher', 0)]
+    args = oracle.get_args()
+    # print(oracle.get_args())
+    # args = [('templateit_5', 'OpMatcher', 0)]
     for arg in args:
         utils.worker(arg[0], arg[1], arg[2], oracle)
 
@@ -40,5 +40,5 @@ for oracle in oracles:
 #     thread.join()
 
 end = time.time()
-print(f'[+] Completed in {end - start} seconds')
+print(f'[+] Completed in {end - start:.2f} seconds')
 

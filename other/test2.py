@@ -1,26 +1,21 @@
-# Parent class
-class Vehicle:
-    def __init__(self, brand, model):
-        self.brand = brand
-        self.model = model
+import matplotlib.pyplot as plt
 
-    def display_info(self):
-        print(f"Brand: {self.brand}")
-        print(f"Model: {self.model}")
+# Dummy data
+categories = ['Category A', 'Category B', 'Category C', 'Category D']
+values = [23, 45, 56, 78]
 
-# Child class inheriting from Vehicle
-class Car(Vehicle):
-    def __init__(self, brand, model, color):
-        super().__init__(brand, model)
-        self.color = color
+# Create a bar chart
+plt.figure(figsize=(10, 6))  # Optional: specify the figure size
+plt.bar(categories, values, color='blue')  # You can change the color as needed
 
+# Add titles and labels
+plt.title('Bar Chart Example')
+plt.xlabel('Categories')
+plt.ylabel('Values')
 
-# Creating an instance of the Vehicle class
-vehicle = Vehicle("Toyota", "Corolla")
-vehicle.display_info()
+# Optionally rotate the x-axis labels if they are too long
+plt.xticks(rotation=45)
 
-print()
-
-# Creating an instance of the Car class
-car = Car("Toyota", "Corolla", "Red")
-car.display_info()
+# Show the plot
+plt.tight_layout()  # Adjusts the plot to ensure everything fits without overlap
+plt.show()

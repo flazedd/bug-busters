@@ -34,6 +34,9 @@ class JavaTestImplementation(HandleTestImplementation):
         # improved_test = self.classname + "_LLM"
         self.oracle.write_code(self.folder, self.test_name, code)
 
+    def empty_file(self):
+        self.oracle.write_code(self.folder, self.test_name, '')
+
     def add_test(self, test):
         self.tests.append(test)
 

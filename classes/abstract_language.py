@@ -14,6 +14,10 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
+    def get_dict(self, folder, file_name, test_name):
+        pass
+
+    @abstractmethod
     def write_code(self, package, test_name, code):
         pass
 
@@ -45,6 +49,9 @@ class LanguageImplementation(ABC):
     def create_file(self, folder, class_name, ai_model):
         pass
 
+    @abstractmethod
+    def __str__(self):
+        pass
 
 
 

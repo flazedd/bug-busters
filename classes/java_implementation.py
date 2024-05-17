@@ -7,14 +7,16 @@ from classes.java_test import JavaTestImplementation
 from config import constant
 from classes.prompt import Prompt
 
+
 class JavaImplementation(LanguageImplementation):
     def get_code(self, ai_output):
-        start = ai_output.find('```java')
-        if start == -1:
-            print('[+] begin java code not found')
-            return None
+        # start = ai_output.find('```java')
+        # if start == -1:
+        #     print('[+] begin java code not found')
+        #     return None
         begin = ai_output.find("@Test")
         if begin == -1:
+            print('[+] @Test annotation not found')
             return None  # @Test not found
 
         counter = 0
@@ -46,7 +48,8 @@ class JavaImplementation(LanguageImplementation):
                         args.append(arg)
         return args
 
-    def find_numbers_before_percent(self, string):
+    @staticmethod
+    def find_numbers_before_percent(string):
         i = -1
         while True:
             if string[i] == '%':
@@ -81,10 +84,8 @@ class JavaImplementation(LanguageImplementation):
         # return statistics
         return self.find_numbers_before_percent(part2)
 
-    def get_mutation_score(self, folder, file_name, test_name):
-        pass
-
-    def exec_pitest(self):
+    @staticmethod
+    def exec_pitest():
         # Get the current directory
         current_dir = os.getcwd()
 
@@ -94,9 +95,78 @@ class JavaImplementation(LanguageImplementation):
         # # Execute a list command in the current directory
         # os.system("dir" if os.name == "nt" else "ls")
 
-        result = subprocess.run(["gradlew", "pitest", "--rerun-tasks"], shell=True, stdout=subprocess.PIPE, text=True)
+        result = subprocess.run(["gradlew", "pitest", "--rerun-tasks"], shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True)
         result = result.stdout
         os.chdir(current_dir)
+        return result
+
+    @staticmethod
+    def set_pitest_in_gradle(folder, class_name, test_name):
+        target_class = folder + "." + class_name
+        target_test = folder + "." + test_name
+        # Read the build.gradle file
+        with open("./JavaProgramUnderTest/lib/build.gradle", 'r') as file:
+            build_gradle_content = file.read()
+
+        # Search for targetClasses
+        start_class = build_gradle_content.find("targetClasses = ['") + len("targetClasses = ['")
+        end_class = build_gradle_content.find("']", start_class)
+        start_test = build_gradle_content.find("targetTests = ['") + len("targetTests = ['")
+        end_test = build_gradle_content.find("']", start_test)
+
+        if start_class != -1 and end_class != -1 and start_test != -1 and end_test != -1:
+            modified_build_gradle_content = (
+                    build_gradle_content[:start_class]
+                    + target_class
+                    + build_gradle_content[end_class:start_test]
+                    + target_test
+                    + build_gradle_content[end_test:]
+            )
+
+            # Write back to build.gradle
+            with open("./JavaProgramUnderTest/lib/build.gradle", 'w') as file:
+                file.write(modified_build_gradle_content)
+        else:
+            print("targetClasses and/or targetTests not found in build.gradle")
+
+    def get_mutation_score(self, folder, class_name, test_name):
+        self.set_pitest_in_gradle(folder, class_name, test_name)
+        result = self.exec_pitest()
+        return self.get_statistics(result)
+
+    # ('a4j_2', 'Directors', 1)
+    # ('templateit_5', 'OpMatcher', 1)
+    # ('tullibee_1', 'Contract', 1)
+    # ('tullibee_1', 'Util', 1)
+    def get_dict(self):
+        directory = 'JavaProgramUnderTest/lib/src/test/java'
+        result = {}
+        args = self.get_args()
+        for arg in args:
+            folder = arg[0]
+            class_name = arg[1]
+            ai_number = arg[2]
+            cpath = f'{directory}/{folder}'
+            for file in os.listdir(cpath):
+                if file.startswith(f"Test_{class_name}"):
+                    # print(file)
+                    test_name = file.split('.')[0]
+                    ai_model_abbrev = test_name.split("_")[2]
+                    print(f'[+] ai model abbrev is {ai_model_abbrev}')
+                    print(f'[+] Getting mutation score for {test_name}')
+                    score = self.get_mutation_score(folder, class_name, test_name)
+                    print(f'[+] Mutation score for {test_name} is: {score}%')
+                    result.setdefault(ai_model_abbrev, {})
+                    result[ai_model_abbrev][class_name] = score
+                    # print(test_name)
+
+
+        # for folder in os.listdir(directory):
+        #     folder_path = os.path.join(directory, folder)
+        #     if os.path.isdir(folder_path):
+        #         for file in os.listdir(folder_path):
+
         return result
 
     def write_code(self, package, test_name, code):
@@ -153,15 +223,7 @@ class JavaImplementation(LanguageImplementation):
 
     def get_test_errors(self, output, test_name_improved):
         print(f"[get_test_errors]output received: {output}")
-        # begin = output.find('error:')
-        # end = output.find('FAILURE', begin)
         return output
-        # pattern = rf'{test_name_improved}\s>\s(\w+)\(\) FAILED[\s\S](.*)'
-        # matches = re.findall(pattern, output)
-        # result = ''
-        # for i in range(0, len(matches)):
-        #     result += matches[i][-1] + '\n'
-        # return result
 
     def get_imports(self, package, class_name):
         with open(f'JavaProgramUnderTest/lib/src/main/java/{package}/{class_name}.java') as java_file:
@@ -201,7 +263,6 @@ class JavaImplementation(LanguageImplementation):
                  'and examples of asserting methods: assertEquals(), assertArrayEquals()')
         return Prompt.get_input(class_code, imports, extra)
 
-
     def get_test_instance(self, folder, class_name, test_name):
         return JavaTestImplementation(folder, class_name, self, test_name)
 
@@ -219,3 +280,5 @@ class JavaImplementation(LanguageImplementation):
         # Return file without .java extension
         return file
 
+    def __str__(self):
+        return 'Java'

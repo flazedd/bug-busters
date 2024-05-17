@@ -1,60 +1,71 @@
-sk = """
-```java
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import matplotlib.pyplot as plt
+import numpy as np
 
-public class TemplateParserTest {
-
-    @Test
-    public void testExtractParameterName() {
-        String text = "This is a #sample text with a parameter #123 and another #Sample2";
-        String parameterName = TemplateParser.extractParameterName(text);
-        assertNotNull("Parameter name should not be null", parameterName);
-        assertEquals("First parameter name should be 'sample'", "sample", parameterName);
-    }
-
-    private static class TemplateParser {
-        public static String extractParameterName(String text) {
-            Pattern pattern = Pattern.compile("#(\\p{Alpha}\\w*)");
-            Matcher matcher = pattern.matcher(text);
-            if (matcher.find()) {
-                return matcher.group(1);
-            }
-            return null;
+data = {
+    "Java": {
+        "Meta": {
+            "Directors": 29,
+            "OpMatcher": 31,
+            "Contract": 56,
+            "Util": 0
+        },
+        "Phi": {
+            "Directors": 0,
+            "OpMatcher": 24
+        },
+        "c4ai": {
+            "OpMatcher": 28
+        },
+        "gemma": {
+            "OpMatcher": 31
+        },
+        "Mistral": {
+            "OpMatcher": 41
+        },
+        "Mixtral": {
+            "OpMatcher": 24
+        },
+        "Nous": {
+            "OpMatcher": 0
+        },
+        "Yi": {
+            "OpMatcher": 0
+        },
+        "zephyr": {
+            "OpMatcher": 0
         }
     }
+}
+# Dummy data
+data_points = []
 
-```
-kankerrrr
-"""
+for main_key, sub_dict in data.items():
+    for llm_key, metrics in sub_dict.items():
+        average = np.mean(list(metrics.values()))
+        data_points.append((llm_key, average))
 
+# Sort the list of tuples by the second element in descending order
+sorted_data = sorted(data_points, key=lambda x: x[1], reverse=True)
 
-def get_codek(ai_output):
-    start = ai_output.find('```java')
-    if start == -1:
-        print('[+] begin java code not found')
-        return None
-    begin = ai_output.find("@Test")
-    if begin == -1:
-        return None  # @Test not found
+print(f'data points: {data_points}')
+print(f'sorted data points: {sorted_data}')
 
-    counter = 0
-    end = begin
+categories = [x[0] for x in sorted_data]
+values = [x[1] for x in sorted_data]
 
-    for char in ai_output[begin:]:
-        if char == "{":
-            counter += 1
-        elif char == "}":
-            counter -= 1
+# Create a bar chart
+plt.figure(figsize=(10, 6))  # Optional: specify the figure size
+plt.bar(categories, values, color='blue')  # You can change the color as needed
 
-        if counter < 0 or char == '`':
-            return '\t' + ai_output[begin:end]
+# Add titles and labels
+plt.title('Averge mutation score achieved per model')
+plt.xlabel('Categories')
+plt.ylabel('Mutation score percentage')
 
-        end += 1
+# Optionally rotate the x-axis labels if they are too long
+plt.xticks(rotation=45)
 
-    return '\t' + ai_output[begin:end]
+# Show the plot
+plt.tight_layout()  # Adjusts the plot to ensure everything fits without overlap
+plt.show()
 
-
-print(get_codek(sk))

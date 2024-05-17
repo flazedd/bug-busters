@@ -16,10 +16,10 @@ pitest {
     junit5PluginVersion = '1.2.1'
     pitestVersion = '1.15.2'
     // Define the target classes for mutation testing
-    targetClasses = ['a4j_2.Directors']
+    targetClasses = ['tullibee_1.Util']
 
     // Define the target tests for mutation testing
-    targetTests = ['a4j_2.DirectorsTest_LLM']
+    targetTests = ['tullibee_1.Test_Util_Meta']
 
     // Optionally configure any other Pitest options
     // For example:
