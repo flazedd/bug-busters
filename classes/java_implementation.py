@@ -57,16 +57,18 @@ class JavaImplementation(LanguageImplementation):
                 i -= 1
                 break
             i -= 1
-
+        dot_seen = False
         numbers = ''
         while True:
             if string[i].isdigit():
                 numbers = string[i] + numbers
-                i -= 1
+            elif string[i] == '.' and not dot_seen:
+                dot_seen = True
+                numbers = string[i] + numbers
             else:
                 break
-
-        return int(numbers) if numbers else None
+            i -= 1
+        return float(numbers) if numbers else None
 
     def get_statistics(self, terminal_output):
         start = terminal_output.find("- Statistics")
