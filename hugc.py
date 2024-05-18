@@ -19,12 +19,19 @@ print('\'q\' or \'quit\' to exit')
 print('\'c\' or \'change\' to change conversation')
 print('\'n\' or \'new\' to start a new conversation')
 print('\'m\' or \'model\' to change model')
+print('\'g\' or \'get\' get the current model')
 
 
 def new_conv():
 	id = chatbot.new_conversation()
 	chatbot.change_conversation(id)
 	print(f"This is a new chat, my name is {chatbot.active_model}")
+
+def get_tabs(input_string):
+	tab_count = input_string.count('\t')
+	newline_count = input_string.count('\n')
+	newlinespaces = input_string.count('\n    ')
+	return {'tabs': tab_count, 'newlines': newline_count, 'newline 4 spaces': newlinespaces}
 
 while True:
 	user_input = input('> ')
@@ -58,4 +65,7 @@ while True:
 	elif s in ['g', 'get']:
 		print(f"You're talking to {chatbot.active_model}")
 	else:
-		print(chatbot.chat(user_input))
+		result = chatbot.chat(user_input)
+		result.wait_until_done()
+		print(result.text)
+		print(get_tabs(result.text))

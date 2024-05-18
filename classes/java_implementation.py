@@ -78,11 +78,6 @@ class JavaImplementation(LanguageImplementation):
         part1 = result[s1:s2]
         part2 = result[s2:s3]
         part3 = result[s3:s4]
-        # statistics = {'Line coverage %': self.find_numbers_before_percent(part1),
-        #               'Mutations killed %': self.find_numbers_before_percent(part2),
-        #               # 'Mutations': find_numbers_before_percent(part3)
-        #               }
-        # return statistics
         return self.find_numbers_before_percent(part2)
 
     @staticmethod
