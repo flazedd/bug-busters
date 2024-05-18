@@ -25,13 +25,13 @@ class PythonImplementation(LanguageImplementation):
         return ai_output[start:end + 1]
 
     def get_args(self):
-        directory = 'PythonPUT'
+        directory = 'PythonPUT/'
         args = []
         for folder in os.listdir(directory):
             folder_path = os.path.join(directory, folder)
             if os.path.isdir(folder_path):
                 for file in os.listdir(folder_path):
-                    if file.startswith('__'):
+                    if file.startswith('__') or file.startswith('test_'):
                         continue
                     file_name = file.split('.py')[0]
                     arg = (folder, file_name, constant.MODEL)
@@ -88,7 +88,27 @@ class PythonImplementation(LanguageImplementation):
         return self.get_statistics(result)
 
     def get_dict(self, folder, file_name, test_name):
-        pass
+        directory = 'JavaProgramUnderTest/lib/src/test/java'
+        result = {}
+        args = self.get_args()
+        for arg in args:
+            folder = arg[0]
+            class_name = arg[1]
+            ai_number = arg[2]
+            cpath = f'{directory}/{folder}'
+            for file in os.listdir(cpath):
+                if file.startswith(f"Test__{class_name}"):
+                    # print(file)
+                    test_name = file.split('.')[0]
+                    ai_model = test_name.split("__")[2]
+                    print(f'[+] ai model abbrev is {ai_model}')
+                    print(f'[+] Getting mutation score for {test_name}')
+                    score = self.get_mutation_score(folder, class_name, test_name)
+                    print(f'[+] Mutation score for {test_name} is: {score}%')
+                    result.setdefault(ai_model, {})
+                    result[ai_model][class_name] = score
+                    # print(test_name)
+        return result
 
     def write_code(self, package, test_name, code):
         pass

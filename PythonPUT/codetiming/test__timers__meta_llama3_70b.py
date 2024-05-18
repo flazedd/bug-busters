@@ -1,6 +1,6 @@
 import pytest
 
-from _timers import Timers
+from timers import Timers
 import statistics
 import math
 
