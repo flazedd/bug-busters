@@ -57,5 +57,9 @@ class LanguageImplementation(ABC):
     def work_already_satisfied(self, folder, class_name, ai_model):
         pass
 
+    @abstractmethod
+    def generate_sbst_tool(self, folder, class_name):
+        pass
+
 
 

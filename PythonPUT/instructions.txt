@@ -14,3 +14,11 @@ pynguin --project-path PythonPUT --module-name calculator --output-path PythonPU
 
 pynguin --project-path PythonPUT/codetiming --module-name _timers --output-path PythonPUT/codetiming --assertion-generation SIMPLE --algorithm DYNAMOSA --maximum-search-time 30
 mut.py --target PythonPUT/codetiming/_timers.py --unit-test PythonPUT/codetiming/test__timers.py --runner pytest
+
+pynguin --project-path PythonPUT/dummy --module-name dummy --output-path PythonPUT/dummy --assertion-generation SIMPLE --algorithm DYNAMOSA --maximum-search-time 30
+
+pynguin --project-path PythonPUT/codetiming --module-name timers --output-path PythonPUT/codetiming --assertion-generation SIMPLE --algorithm DYNAMOSA --maximum-search-time 30
+pytest PythonPUT/dummy/test_dummy.py
+
+#POWERSHELL
+pytest PythonPUT/codetiming/test__timers__meta_llama3_70b.py::test_timers

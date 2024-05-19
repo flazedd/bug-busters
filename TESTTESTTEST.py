@@ -1,22 +1,23 @@
-import subprocess
 import os
+import subprocess
 
+os.environ['PYNGUIN_DANGER_AWARE'] = 'true'
+# Define the command and its arguments
+command = [
+    '.\\venv\\Scripts\\pynguin.exe',
+    '--project-path', 'PythonPUT/codetiming',
+    '--module-name', 'timers',
+    '--output-path', 'PythonPUT/codetiming',
+    '--assertion-generation', 'SIMPLE',
+    '--algorithm', 'DYNAMOSA',
+    '--maximum-search-time', '30'
+]
 
-def exec_mutpy(folder, file_name, test_name):
-    target = f'PythonPUT/{folder}/{file_name}.py'
-    unit_test = f'PythonPUT/{folder}/{test_name}.py'
-    mut_script_path = os.path.join('.', 'venv', 'Scripts', 'mut.py')
-    # print(mut_script_path)
-    # # Run the script using subprocess
-    result = subprocess.run(['python', mut_script_path,
-                             '--target', target,
-                             '--unit-test', unit_test,
-                             '--runner', 'pytest'],
-                            capture_output=True, text=True, shell=True)
-    # Print the output
-    # print("Standard Output:")
-    # print(result.stdout)
-    result = result.stdout
-    return result
+# Run the command
+result = subprocess.run(command, capture_output=True, text=True)
 
-print(exec_mutpy('codetiming', '_timers', 'test__timers'))
+# Print the output and error (if any)
+print("Output:")
+print(result.stdout)
+print("Error:")
+print(result.stderr)

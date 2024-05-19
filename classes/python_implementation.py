@@ -6,11 +6,12 @@ from classes.abstract_language import LanguageImplementation
 from classes.java_test import JavaTestImplementation
 from config import constant
 from classes.prompt import Prompt
+from classes.python_test import PythonTestImplementation
 
 
 class PythonImplementation(LanguageImplementation):
     def get_test_instance(self, folder, class_name, test_name):
-        pass
+        return PythonTestImplementation(folder, class_name, self, test_name)
 
     def get_code(self, ai_output):
         start = ai_output.rfind('def test')
@@ -19,15 +20,19 @@ class PythonImplementation(LanguageImplementation):
         semi_end = ai_output.rfind('\n    ')
         if semi_end == -1:
             print('[+] semi end not found')
-        end = ai_output.rfind('\n', semi_end)
+        end = ai_output.find('\n', semi_end)
         if end == -1:
             print('[+] end not found')
-        return ai_output[start:end + 1]
+        res = ai_output[start:end]
+        print(f'[+] returning:\n {res}')
+        return res
 
     def get_args(self):
         directory = 'PythonPUT/'
         args = []
         for folder in os.listdir(directory):
+            if folder.startswith('.') or folder.startswith('__'):
+                continue
             folder_path = os.path.join(directory, folder)
             if os.path.isdir(folder_path):
                 for file in os.listdir(folder_path):
@@ -88,51 +93,207 @@ class PythonImplementation(LanguageImplementation):
         return self.get_statistics(result)
 
     def get_dict(self, folder, file_name, test_name):
-        directory = 'JavaProgramUnderTest/lib/src/test/java'
-        result = {}
-        args = self.get_args()
-        for arg in args:
-            folder = arg[0]
-            class_name = arg[1]
-            ai_number = arg[2]
-            cpath = f'{directory}/{folder}'
-            for file in os.listdir(cpath):
-                if file.startswith(f"Test__{class_name}"):
-                    # print(file)
-                    test_name = file.split('.')[0]
-                    ai_model = test_name.split("__")[2]
-                    print(f'[+] ai model abbrev is {ai_model}')
-                    print(f'[+] Getting mutation score for {test_name}')
-                    score = self.get_mutation_score(folder, class_name, test_name)
-                    print(f'[+] Mutation score for {test_name} is: {score}%')
-                    result.setdefault(ai_model, {})
-                    result[ai_model][class_name] = score
-                    # print(test_name)
-        return result
+        pass
+        # directory = 'PythonPUT/'
+        # result = {}
+        # args = self.get_args()
+        # for arg in args:
+        #     folder = arg[0]
+        #     class_name = arg[1]
+        #     ai_number = arg[2]
+        #     cpath = f'{directory}/{folder}'
+        #     for file in os.listdir(cpath):
+        #         if file.startswith(f"Test__{class_name}"):
+        #             # print(file)
+        #             test_name = file.split('.')[0]
+        #             ai_model = test_name.split("__")[2]
+        #             print(f'[+] ai model abbrev is {ai_model}')
+        #             print(f'[+] Getting mutation score for {test_name}')
+        #             score = self.get_mutation_score(folder, class_name, test_name)
+        #             print(f'[+] Mutation score for {test_name} is: {score}%')
+        #             result.setdefault(ai_model, {})
+        #             result[ai_model][class_name] = score
+        #             # print(test_name)
+        # return result
 
     def write_code(self, package, test_name, code):
-        pass
+        path = 'PythonPUT/' + package + '/' + test_name + '.py'
+        with constant.PRINT_LOCK:
+            print(f'[+] {package}/{test_name} is writing code')
+        while True:
+            try:
+                with (open(path, 'w') as py_test_file):
+                    # Read the contents of the file
+                    py_test_file.write(code)
+                    break
+            except FileNotFoundError as f:
+                with constant.PRINT_LOCK:
+                    print(f'{package}/{test_name} has encountered FileNotFoundError. Retrying...')
+                    time.sleep(constant.SLEEP)
+
+    @staticmethod
+    def get_signature(test_string):
+        # Find the index of the first occurrence of "()"
+        index = test_string.find("()")
+
+        # Find the start index of the function name by searching backward from the index of "()"
+        start_index = index
+        while start_index > 0 and test_string[start_index - 1] != ' ':
+            start_index -= 1
+
+        # Extract the function name
+        function_name = test_string[start_index:index].strip()
+
+        return function_name
 
     def exec_test(self, package, test_name, test_string):
-        pass
+        newly_added_test = self.get_signature(test_string)
+        path = f'PythonPUT/{package}/{test_name}.py::{newly_added_test}'
+        result = subprocess.run(["pytest", path], shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True)
+        result = f'{result.stdout} {result.stderr}'
+        return result
 
     def did_test_fail(self, output):
-        pass
+        s1 = output.find('FAILURES')
+        s2 = output.find('AssertionError')
+        s3 = output.find('ERRORS')
+        s4 = output.find('invalid syntax')
+        return any(n >= 0 for n in [s1, s2, s3, s4])
 
     def get_test_errors(self, output, test_name_improved):
-        pass
+        #pytest output is pretty concise
+        return output
+
+    @staticmethod
+    def get_imports_from_string(contents):
+        result = set()
+        s2 = 0
+        while True:
+            s1 = contents.find('import ', s2)
+            s3 = contents.find('from ', s2)
+            if s1 == -1 and s3 == -1:
+                break
+            elif s1 != -1 and s3 != -1:
+                start = min(s1, s3)
+                end = contents.find('\n', start)
+                result.add(contents[start:end] + '\n')
+                s2 = end
+                continue
+            elif s1 != -1:
+                end = contents.find('\n', s1)
+                if end == -1:
+                    print('[+] Could not find newline after import was found')
+                else:
+                    result.add(contents[s1:end] + '\n')
+                s2 = end
+            elif s3 != -1:
+                end = contents.find('\n', s3)
+                if end == -1:
+                    print('[+] Could not find newline after import was found')
+                else:
+                    result.add(contents[s3:end] + '\n')
+                s2 = end
+        return result
 
     def get_imports(self, package, class_name):
-        pass
+        with open(f'PythonPUT/{package}/{class_name}.py') as py_file:
+            contents = py_file.read()
+            imports = self.get_imports_from_string(contents)
+            result = ''
+            for imp in imports:
+                result += imp
+            return result
+
+    @staticmethod
+    def get_program_under_test(package, class_name):
+        put = ''
+        file_path = f'PythonPUT/{package}/{class_name}.py'
+        while True:
+            try:
+                with open(file_path, 'r') as py_file:
+                    # Read the contents of the file
+                    put += py_file.read()
+                    break
+            except FileNotFoundError as f:
+                with constant.PRINT_LOCK:
+                    print(f'{package}/{class_name} has encountered FileNotFoundError. Retrying...')
+                    time.sleep(constant.SLEEP)
+        return put
 
     def get_prompt(self, package, class_name):
-        pass
+        class_code = self.get_program_under_test(package, class_name)
+        imports = self.get_imports(package, class_name)
+        extra = 'example response: \ndef test_example():\n    assert 1 == 1\n'
+        return Prompt.get_input(class_code, imports, extra)
 
     def create_file(self, folder, class_name, ai_model):
-        pass
+        path = f'./PythonPUT/{folder}'
+        # Check if the directory exists
+        if not os.path.exists(path):
+            # If it doesn't exist, create it
+            os.makedirs(path)
+        file = f'test__{class_name}__{ai_model}'
+        file_name = f'{file}.py'
+        file_path = os.path.join(path, file_name)
+        if not os.path.exists(file_path):
+            with open(file_path, 'w'):
+                pass
+            print(f"[+] File '{file_name}' created in '{path}'")
+        else:
+            print(f"[+] File '{file_name}' already exists in '{path}'")
+        # Return file without .java extension
+        # init = '__init__.py'
+        # init_path = os.path.join(path, init)
+        # if not os.path.exists(init_path):
+        #     with open(init_path, 'w'):
+        #         pass
+        #     print(f"[+] File '{init}' created in '{path}'")
+        # else:
+        #     print(f"[+] File '{init}' already exists in '{path}'")
+        return file
 
     def __str__(self):
-        pass
+        return 'Python'
 
     def work_already_satisfied(self, folder, class_name, ai_model):
-        pass
+        path = f'PythonPUT/{folder}/test__{class_name}__{ai_model}.py'
+        if not os.path.exists(path):
+            # If it doesn't exist, create it
+            return False
+        with open(path, 'r') as py_file:
+            count = 0
+            for line in py_file:
+                # Check if the line contains the @Test annotation
+                if "def " in line:
+                    count += 1
+            return count == constant.RETRIES
+
+    def generate_sbst_tool(self, folder, class_name):
+        # Set the environment variable in the current process
+        path = f'./PythonPUT/{folder}/test_{class_name}.py'
+        # Check if the directory exists
+        if os.path.exists(path) and os.path.getsize(path) > 0:
+            print(f'[+] Pynguin {path} is non-empty. Skipping.')
+            return
+        os.environ['PYNGUIN_DANGER_AWARE'] = 'true'
+        print(f"[+] PYNGUIN_DANGER_AWARE: {os.environ['PYNGUIN_DANGER_AWARE']}")
+        command = [
+            '.\\venv\\Scripts\\pynguin.exe',
+            '--project-path', f'PythonPUT/{folder}',
+            '--module-name', class_name,
+            '--output-path', f'PythonPUT/{folder}',
+            '--assertion-generation', 'SIMPLE',
+            '--algorithm', 'DYNAMOSA',
+            '--maximum-search-time', constant.PYNGUIN_MAX_SEARCH
+        ]
+
+        # Run the command
+        result = subprocess.run(command, capture_output=True, text=True)
+        print(f'[+] stdout: {result.stdout}')
+        print(f'[+] stderror: {result.stderr}')
+        print(f'[+] Generated Pynguin tests for {folder}/{class_name}.py')
+
+
+
+

@@ -22,10 +22,12 @@ threads = []
 start = time.time()
 for oracle in oracles:
     args = oracle.get_args()
-    # print(oracle.get_args())
-    # args = [('templateit_5', 'OpMatcher', 0)]
     for arg in args:
-        utils.worker(arg[0], arg[1], arg[2], oracle)
+        # print(arg)
+        oracle.generate_sbst_tool(arg[0], arg[1])
+    for arg in args:
+        pass
+        # utils.worker(arg[0], arg[1], arg[2], oracle)
 
 # for arg in args:
 #     utils.worker(arg[0], arg[1], arg[2])

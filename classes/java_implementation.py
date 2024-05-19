@@ -182,7 +182,8 @@ class JavaImplementation(LanguageImplementation):
                     print(f'{package}/{test_name} has encountered FileNotFoundError. Retrying...')
                     time.sleep(constant.SLEEP)
 
-    def get_signature(self, test_string):
+    @staticmethod
+    def get_signature(test_string):
         # Find the index of the first occurrence of "()"
         index = test_string.find("()")
 
