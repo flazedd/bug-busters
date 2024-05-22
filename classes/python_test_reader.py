@@ -3,9 +3,9 @@ from config import constant
 
 
 class PythonReaderTestImplementation(ReaderTestImplementation):
-    def __init__(self, folder, class_name, oracle, test_name):
-        filepath = f'./PythonPUT/{folder}/{test_name}.py'
-        with open(filepath, 'r') as file:
+    def __init__(self, folder, oracle, test_name):
+        self.filepath = f'./PythonPUT/{folder}/{test_name}.py'
+        with open(self.filepath, 'r') as file:
             content = file.read()
         end_import = content.find('def ')
         self.imports = content[:end_import]
@@ -23,7 +23,7 @@ class PythonReaderTestImplementation(ReaderTestImplementation):
             else:
                 self.tests.append(content[start:end])
             index_tracker = end
-
+        print(f'[+] Found {len(self.tests)} when reading file')
     def partial_write(self, amount: int) -> None:
         code = self.imports
         for i in range(0, amount):
@@ -31,4 +31,4 @@ class PythonReaderTestImplementation(ReaderTestImplementation):
         self.oracle.write_code(self.folder, self.test_name, code)
 
     def amount_of_tests(self) -> int:
-        pass
+        return len(self.tests)

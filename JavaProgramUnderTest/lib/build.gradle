@@ -19,7 +19,7 @@ pitest {
     targetClasses = ['tullibee_1.Util']
 
     // Define the target tests for mutation testing
-    targetTests = ['tullibee_1.Test__Util__Meta_Llama_3_70B_Instruct']
+    targetTests = ['tullibee_1.Util_ESTest']
 
     // Optionally configure any other Pitest options
     // For example:

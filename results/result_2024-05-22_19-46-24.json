@@ -1,0 +1,20 @@
+{
+    "Python": {
+        "Pynguin": {
+            "timers": 62.5,
+            "dummy": 100.0
+        },
+        "Meta_Llama_3_70B_Instruct": {
+            "timers": [
+                0,
+                10.5,
+                10.5,
+                15.8
+            ],
+            "dummy": [
+                0,
+                0.0
+            ]
+        }
+    }
+}

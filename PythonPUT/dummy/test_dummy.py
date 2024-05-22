@@ -4,15 +4,14 @@ import pytest
 import dummy as module_0
 
 
-@pytest.mark.xfail(strict=True)
 def test_case_0():
-    none_type_0 = None
-    module_0.Dummy(**none_type_0)
-
-
-def test_case_1():
-    bool_0 = True
     dummy_0 = module_0.Dummy()
     assert f"{type(dummy_0).__module__}.{type(dummy_0).__qualname__}" == "dummy.Dummy"
-    var_0 = dummy_0.add(bool_0, bool_0)
-    assert var_0 == 2
+
+
+@pytest.mark.xfail(strict=True)
+def test_case_1():
+    dummy_0 = module_0.Dummy()
+    assert f"{type(dummy_0).__module__}.{type(dummy_0).__qualname__}" == "dummy.Dummy"
+    str_0 = "]*\nj&SDX\n-6W\x0cS!E\x0c%$"
+    dummy_0.add(dummy_0, str_0)

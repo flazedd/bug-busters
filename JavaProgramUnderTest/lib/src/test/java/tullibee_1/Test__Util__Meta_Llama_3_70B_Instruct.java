@@ -6,9 +6,7 @@ public class Test__Util__Meta_Llama_3_70B_Instruct {
 @Test
 public void testStringCompare() {
     assertEquals(0, Util.StringCompare("hello", "hello"));
-}
-
-@Test
+}@Test
 public void testVectorEqualsUnordered() {
     Vector<String> v1 = new Vector<String>();
     v1.add("a");

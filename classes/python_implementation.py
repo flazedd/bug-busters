@@ -1,3 +1,4 @@
+import ast
 import os
 import subprocess
 import time
@@ -7,23 +8,45 @@ from classes.java_test import JavaTestImplementation
 from config import constant
 from classes.prompt import Prompt
 from classes.python_test import PythonTestImplementation
+from classes.python_test_reader import PythonReaderTestImplementation
 
 
 class PythonImplementation(LanguageImplementation):
     def get_test_instance(self, folder, class_name, test_name):
         return PythonTestImplementation(folder, class_name, self, test_name)
+    @staticmethod
+    def extract_first_function_code(code):
+        # Parse the code into an Abstract Syntax Tree (AST)
+        tree = ast.parse(code)
+
+        # Iterate through the nodes in the tree
+        for node in ast.walk(tree):
+            # Check if the node is a function definition
+            if isinstance(node, ast.FunctionDef):
+                # Get the source code of the function
+                function_code = ast.unparse(node)
+                return function_code.strip()
+
+        # If no function definition is found, return None
+        return None
 
     def get_code(self, ai_output):
-        start = ai_output.rfind('def test')
-        if start == -1:
-            print('[+] def test not found')
-        semi_end = ai_output.rfind('\n    ')
-        if semi_end == -1:
-            print('[+] semi end not found')
-        end = ai_output.find('\n', semi_end)
-        if end == -1:
-            print('[+] end not found')
-        res = ai_output[start:end]
+        print(f'[+] ai_output:\n\n {ai_output}')
+        start = ai_output.find('def')
+        end = ai_output.find('```', start)
+        code = ai_output[start:end]
+        res = self.extract_first_function_code(code)
+
+        # start = ai_output.rfind('def test')
+        # if start == -1:
+        #     print('[+] def test not found')
+        # semi_end = ai_output.rfind('\n    ')
+        # if semi_end == -1:
+        #     print('[+] semi end not found')
+        # end = ai_output.find('\n', semi_end)
+        # if end == -1:
+        #     print('[+] end not found')
+        # res = ai_output[start:end] + '\n'
         print(f'[+] returning:\n {res}')
         return res
 
@@ -92,26 +115,38 @@ class PythonImplementation(LanguageImplementation):
         result = self.exec_mutpy(folder, file_name, test_name)
         return self.get_statistics(result)
 
-    def get_dict(self, data: dict) -> dict:
+    def get_dict(self) -> dict:
         directory = 'PythonPUT/'
         args = self.get_args()
+        result = {}
         for arg in args:
             folder = arg[0]
             class_name = arg[1]
             ai_number = arg[2]
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
-                if file.startswith(f"Test__{class_name}"):
+                if file.startswith(f"test__{class_name}"):
                     # print(file)
                     test_name = file.split('.')[0]
                     ai_model = test_name.split("__")[2]
                     print(f'[+] ai model abbrev is {ai_model}')
                     print(f'[+] Getting mutation score for {test_name}')
-                    score = self.get_mutation_score(folder, class_name, test_name)
-                    print(f'[+] Mutation score for {test_name} is: {score}%')
                     result.setdefault(ai_model, {})
-                    result[ai_model][class_name] = score
-                    # print(test_name)
+                    result[ai_model][class_name] = [0]
+                    py_reader = PythonReaderTestImplementation(folder, self, test_name)
+                    amount_tests = py_reader.amount_of_tests()
+                    for i in range(1, amount_tests + 1):
+                        py_reader.partial_write(i)
+                        score = self.get_mutation_score(folder, class_name, test_name)
+                        print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
+                        result[ai_model][class_name].append(score)
+                elif file.startswith(f"test_{class_name}"):
+                    test_name = file.split('.')[0]
+                    print(f'[+] Getting mutation score for {test_name}')
+                    result.setdefault('Pynguin', {})
+                    score = self.get_mutation_score(folder, class_name, test_name)
+                    result['Pynguin'][class_name] = score
+                    print(f'[+] Mutation score for {test_name} is: {score}% for Pynguin')
         return result
 
     def write_code(self, package, test_name, code):
@@ -220,9 +255,11 @@ class PythonImplementation(LanguageImplementation):
         return put
 
     def get_prompt(self, package, class_name):
+        # start = f'{class_name} imported as {constant.DEFAULT_IMPORT}'
         class_code = self.get_program_under_test(package, class_name)
         imports = self.get_imports(package, class_name)
-        extra = 'example response: \ndef test_example():\n    assert 1 == 1\n'
+        extra = (f'example response: import {class_name} as {constant.DEFAULT_IMPORT} ```\ndef test_example():\n   '
+                 f' assert 1 == 1\n``` only use {constant.DEFAULT_IMPORT} in your test case')
         return Prompt.get_input(class_code, imports, extra)
 
     def create_file(self, folder, class_name, ai_model):
@@ -280,7 +317,8 @@ class PythonImplementation(LanguageImplementation):
             print(f'[+] Pynguin {path} is non-empty. Skipping.')
             return
         os.environ['PYNGUIN_DANGER_AWARE'] = 'true'
-        print(f"[+] PYNGUIN_DANGER_AWARE: {os.environ['PYNGUIN_DANGER_AWARE']}")
+        # print(f"[+] PYNGUIN_DANGER_AWARE: {os.environ['PYNGUIN_DANGER_AWARE']}")
+        print(f'[+] Running Pynguin on {folder}/{class_name}')
         command = [
             '.\\venv\\Scripts\\pynguin.exe',
             '--project-path', f'PythonPUT/{folder}',

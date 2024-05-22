@@ -1,3 +1,4 @@
+import ast
 import json
 import os
 from datetime import datetime
@@ -43,9 +44,11 @@ def load_or_create_json(filepath):
 
     return data
 
+
 def save_dict_to_json(dictionary, filepath):
     with open(filepath, 'w') as file:
         json.dump(dictionary, file, indent=4)
+
 
 def save_results(results, filename):
     # Generate a filename based on the current date and time
@@ -56,11 +59,25 @@ def save_results(results, filename):
     with open(filename_with_timestamp, 'w') as file:
         json.dump(results, file, indent=4)
 
+
 def get_identifier(ai_model_name):
     start_index = ai_model_name.find('/')
-    s = ai_model_name[start_index+1:]
+    s = ai_model_name[start_index + 1:]
     s = s.replace('-', '_').replace('.', '_')
     return s
+
+
+def get_class_names_from_file(file_path):
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+
+    # Parse the file content to an AST
+    parsed_ast = ast.parse(file_content)
+
+    # Extract class names
+    class_names = [node.name for node in ast.walk(parsed_ast) if isinstance(node, ast.ClassDef)]
+
+    return class_names
 
 
 # expects tuple with (folder, file_name, model_number)
@@ -95,7 +112,7 @@ def worker(folder, class_name, selection, oracle):
         response = chatbot.chat(prompt)
         time.sleep(constant.SLEEP)
         response.wait_until_done()
-        new_test_case = oracle.get_code(response.text) #get_java_code(response.text)
+        new_test_case = oracle.get_code(response.text)  #get_java_code(response.text)
         if new_test_case is None:
             with constant.PRINT_LOCK:
                 print('[+] No test case found in reply')
@@ -104,7 +121,7 @@ def worker(folder, class_name, selection, oracle):
             continue
         test_handle.add_test(new_test_case)
         test_handle.write()
-        result = oracle.exec_test(folder, test_name, new_test_case) #exec_test(folder, improved_test, new_test_case)
+        result = oracle.exec_test(folder, test_name, new_test_case)  #exec_test(folder, improved_test, new_test_case)
         if oracle.did_test_fail(result):
             with constant.PRINT_LOCK:
                 print('[+] Did find a test but it failed')
@@ -112,7 +129,7 @@ def worker(folder, class_name, selection, oracle):
             failing_tests += 1
             test_handle.remove_last_test()
             error = oracle.get_test_errors(result, test_name)
-            prompt = error + "Fix the error so that the test case passes"
+            prompt = error + "Change the test case you sent"
             continue
         else:
             with constant.PRINT_LOCK:

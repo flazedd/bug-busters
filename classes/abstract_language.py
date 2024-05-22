@@ -14,7 +14,7 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
-    def get_dict(self, data: dict) -> dict:
+    def get_dict(self) -> dict:
         pass
 
     @abstractmethod

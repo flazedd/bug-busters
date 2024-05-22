@@ -4,36 +4,22 @@ from config import constant
 from datetime import datetime
 from config.constant import ORACLES
 
-# def get_stats(folder, file_name, test_name):
-#     utils.set_pitest_in_gradle(folder, file_name, test_name)
-#     result = utils.exec_pitest()
-#     return utils.get_statistics(result)
-
-
-# def percentage_improvement(a, b):
-#     improvement = ((b - a) / a) * 100
-#     return improvement
-
-
 # args = utils.get_args()
 # print(args)
-obj: dict = utils.load_or_create_json('./results/result.json')
+obj: dict = {}
 
 for oracle in ORACLES:
     print(f'[+] Current oracle: {oracle}')
     key = oracle.__str__()
-    if key not in obj:
-        obj[key] = oracle.get_dict({})
-    else:
-        obj[key] = oracle.get_dict(obj[key])
+    obj[key] = oracle.get_dict()
     # for arg in oracle.get_args():
     #     print(arg)
     #     folder = arg[0]
     #     file_name = arg[1]
     #     oracle.get_dict()
 
-utils.save_dict_to_json(obj, './results/result.json')
-# utils.save_results(obj, constant.JSON_NAME)
+# utils.save_dict_to_json(obj, './results/result.json')
+utils.save_results(obj, constant.JSON_NAME)
 
 # {'Line coverage %': find_numbers_before_percent(part1),
 #                   'Mutations killed %': find_numbers_before_percent(part2),

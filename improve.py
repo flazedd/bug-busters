@@ -3,13 +3,6 @@ import time
 from config import constant
 from utility import utils
 
-# templateit_5.OpMatcherTest_Improved
-# jnfe_6.AbstractNFeAdaptadorBeanTest_Improved
-
-# #expects (folder, filename, model_number)
-# t1 = ('templateit_5', 'OpMatcher', 1)
-# t2 = ('jnfe_6', 'AbstractNFeAdaptadorBean', 1)
-
 # args = utils.get_args()
 # print(args)
 oracles = constant.ORACLES

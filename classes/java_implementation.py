@@ -6,9 +6,11 @@ from classes.abstract_language import LanguageImplementation
 from classes.java_test import JavaTestImplementation
 from config import constant
 from classes.prompt import Prompt
+from classes.java_test_reader import JavaReaderTestImplementation
 
 
 class JavaImplementation(LanguageImplementation):
+
     def get_code(self, ai_output):
         # start = ai_output.find('```java')
         # if start == -1:
@@ -139,8 +141,8 @@ class JavaImplementation(LanguageImplementation):
     # ('tullibee_1', 'Util', 1)
     def get_dict(self):
         directory = 'JavaProgramUnderTest/lib/src/test/java'
-        result = {}
         args = self.get_args()
+        result = {}
         for arg in args:
             folder = arg[0]
             class_name = arg[1]
@@ -153,24 +155,28 @@ class JavaImplementation(LanguageImplementation):
                     ai_model = test_name.split("__")[2]
                     print(f'[+] ai model abbrev is {ai_model}')
                     print(f'[+] Getting mutation score for {test_name}')
-                    score = self.get_mutation_score(folder, class_name, test_name)
-                    print(f'[+] Mutation score for {test_name} is: {score}%')
                     result.setdefault(ai_model, {})
-                    result[ai_model][class_name] = score
-                    # print(test_name)
-
-
-        # for folder in os.listdir(directory):
-        #     folder_path = os.path.join(directory, folder)
-        #     if os.path.isdir(folder_path):
-        #         for file in os.listdir(folder_path):
-
+                    result[ai_model][class_name] = [0]
+                    java_reader = JavaReaderTestImplementation(folder, self, test_name)
+                    amount_tests = java_reader.amount_of_tests()
+                    for i in range(1, amount_tests + 1):
+                        java_reader.partial_write(i)
+                        score = self.get_mutation_score(folder, class_name, test_name)
+                        print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
+                        result[ai_model][class_name].append(score)
+                elif file.endswith(f'{class_name}_ESTest.java'):
+                    test_name = file.split('.')[0]
+                    print(f'[+] Getting mutation score for {test_name}')
+                    tool_name = 'EvoSuite'
+                    result.setdefault(tool_name, {})
+                    score = self.get_mutation_score(folder, class_name, test_name)
+                    result[tool_name][class_name] = score
+                    print(f'[+] Mutation score for {test_name} is: {score}% for {tool_name}')
         return result
 
     def write_code(self, package, test_name, code):
         path = 'JavaProgramUnderTest/lib/src/test/java/' + package + '/' + test_name + '.java'
-        with constant.PRINT_LOCK:
-            print(f'[+] {package}/{test_name} is writing code')
+        # print(f'[+] {package}/{test_name} is writing code')
         while True:
             try:
                 with (open(path, 'w') as java_test_file):
@@ -307,4 +313,18 @@ class JavaImplementation(LanguageImplementation):
                     count += 1
             return count == constant.RETRIES
 
-
+    def generate_sbst_tool(self, folder, class_name):
+        print('[+] EvoSuite not implemented yet...')
+        file_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest.java'
+        if not os.path.exists(file_path):
+            # If it doesn't exist, create it
+            with open(file_path, 'w') as file:
+                file.write(f'package {folder};\n'
+                           f'public class {class_name}_ESTest {{\n\n}}')
+        with open(file_path, 'r') as java_file:
+            count = 0
+            for line in java_file:
+                # Check if the line contains the @Test annotation
+                if "@Test" in line:
+                    count += 1
+            return count == constant.RETRIES

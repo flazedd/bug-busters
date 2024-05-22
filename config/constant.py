@@ -7,9 +7,10 @@ PRINT_LOCK = threading.Lock()
 MODEL = 1
 JSON_NAME = 'result'
 SLEEP = 2
-# ORACLES = [JavaImplementation()]
-ORACLES = [PythonImplementation()]
+ORACLES = [JavaImplementation()]
+# ORACLES = [PythonImplementation()]
 PYNGUIN_MAX_SEARCH = '30'
+DEFAULT_IMPORT = 'module_0'
 
 # Choose 0 for: CohereForAI/c4ai-command-r-plus
 # Choose 1 for: meta-llama/Meta-Llama-3-70B-Instruct works

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class ReaderTestImplementation(ABC):
 
     @abstractmethod
-    def __init__(self, folder, class_name, oracle, test_name):
+    def __init__(self, folder, oracle, test_name):
         pass
 
     @abstractmethod

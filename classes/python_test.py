@@ -1,5 +1,6 @@
 from classes.abstract_test import HandleTestImplementation
 from config import constant
+from utility import utils
 
 
 class PythonTestImplementation(HandleTestImplementation):
@@ -13,9 +14,16 @@ class PythonTestImplementation(HandleTestImplementation):
         self.classname = class_name
         # self.benchmark_tests = self.get_benchmark_tests()
         self.tests = []
+        # classes = utils.get_class_names_from_file(f'./PythonPUT/{folder}/{class_name}.py')
+        # classes_str = ''
+        # for index, item in enumerate(classes):
+        #     if index == len(classes)-1:
+        #         classes_str += classes[index]
+        #     else:
+        #         classes_str += f'{classes[index]}, '
         self.imports = {
             "import pytest\n",
-            f"from {class_name} import *\n",
+            f"import {class_name} as {constant.DEFAULT_IMPORT}\n",
         }
         self.add_imports(oracle.get_imports(folder, class_name))
 
