@@ -13,10 +13,16 @@ public void testMatchTemplateBegin() {
     assertEquals("name", names[0]);
     assertEquals("param1", names[1]);
     assertEquals("param2", names[2]);
-}@Test
+}
+
+@Test
 public void testMatchTemplateName() {
     String text = "TemplateName";
     assertTrue(OpMatcher.matchTemplateName(text));
 }
+
+
+
+
 
 }

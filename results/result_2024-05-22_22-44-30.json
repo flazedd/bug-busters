@@ -1,0 +1,74 @@
+{
+    "Java": {
+        "EvoSuite": {
+            "Directors": 0.0,
+            "AbstractNFeAdaptadorBean": 0.0,
+            "OpMatcher": 0.0,
+            "Contract": 0.0,
+            "Util": 0.0
+        },
+        "Meta_Llama_3_70B_Instruct": {
+            "Directors": [
+                0,
+                12.0,
+                12.0
+            ],
+            "AbstractNFeAdaptadorBean": [
+                0,
+                88.0,
+                94.0
+            ],
+            "OpMatcher": [
+                0,
+                24.0,
+                31.0
+            ],
+            "Contract": [
+                0,
+                50.0,
+                56.0
+            ],
+            "Util": [
+                0,
+                0.0,
+                25.0
+            ]
+        }
+    },
+    "Python": {
+        "Pynguin": {
+            "timers": 47.4,
+            "stringcase": 100.0,
+            "common": 44.0,
+            "parser": 50.0,
+            "dummy": 0.0
+        },
+        "Meta_Llama_3_70B_Instruct": {
+            "timers": [
+                0,
+                10.5,
+                10.5
+            ],
+            "stringcase": [
+                0,
+                35.7,
+                38.5
+            ],
+            "common": [
+                0,
+                0.0,
+                0.0
+            ],
+            "parser": [
+                0,
+                0.0,
+                0.0
+            ],
+            "dummy": [
+                0,
+                100.0,
+                100.0
+            ]
+        }
+    }
+}

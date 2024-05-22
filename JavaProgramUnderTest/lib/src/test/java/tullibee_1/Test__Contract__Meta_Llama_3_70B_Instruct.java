@@ -9,12 +9,18 @@ public void testContractEquality() {
     Contract contract1 = new Contract(1, "symbol", "secType", "expiry", 1.0, "right", "multiplier", "exchange", "currency", "localSymbol", comboLegs, "primaryExch", false, "secIdType", "secId");
     Contract contract2 = new Contract(1, "symbol", "secType", "expiry", 1.0, "right", "multiplier", "exchange", "currency", "localSymbol", comboLegs, "primaryExch", false, "secIdType", "secId");
     assertTrue(contract1.equals(contract2));
-}@Test
+}
+
+@Test
 public void testContractInequality() {
     Vector comboLegs = new Vector();
     Contract contract1 = new Contract(1, "symbol", "secType", "expiry", 1.0, "right", "multiplier", "exchange", "currency", "localSymbol", comboLegs, "primaryExch", false, "secIdType", "secId");
     Contract contract2 = new Contract(2, "symbol", "secType", "expiry", 1.0, "right", "multiplier", "exchange", "currency", "localSymbol", comboLegs, "primaryExch", false, "secIdType", "secId");
     assertFalse(contract1.equals(contract2));
 }
+
+
+
+
 
 }

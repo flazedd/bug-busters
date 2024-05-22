@@ -8,50 +8,67 @@ print(recent_file)
 data = utils.load_json_file(f'./results/{recent_file}')
 print(data)
 
-# Dummy data
-data_points = []
+for main_key, sub_dict in data.items():
+    one_time = True
+    data_points = []
+    for llm_key, metrics in sub_dict.items():
+        if one_time:
+            one_time = False
+        else:
+            lists = []
+            for test_class, list_values in metrics.items():
+                lists.append(list_values)
+            transposed = list(zip(*lists))
+            averaged_list = [np.mean(position) for position in transposed]
+            data_points.append(averaged_list)
+    # Plotting the data
+    plt.figure(figsize=(10, 6))
+
+    for i, averaged_list in enumerate(data_points):
+        x = list(range(len(averaged_list)))
+        y = averaged_list
+        plt.plot(x, y, label=f'{llm_key}')
+    plt.xticks(ticks=range(len(data_points[0])))
+    plt.xlabel('Amount of tests enabled')
+    plt.ylabel('Average Mutation Score')
+    plt.title(f'{main_key} corpus Increase in Mutation Score over tests added')
+    plt.legend()
+    plt.ylim(0, 100)
+    plt.grid(True)
+    plt.show()
+
+
 
 for main_key, sub_dict in data.items():
+    one_time = True
+    data_points = []
     for llm_key, metrics in sub_dict.items():
-        average = np.mean(list(metrics.values()))
-        data_points.append((llm_key, average))
-
-# Sort the list of tuples by the second element in descending order
-sorted_data = sorted(data_points, key=lambda x: x[1], reverse=True)
-
-# Assuming sorted_data is already defined
-categories = [x[0] for x in sorted_data]
-values = [x[1] for x in sorted_data]
-
-# Create a colormap from matplotlib
-cmap = plt.get_cmap('coolwarm')  # You can choose other colormaps like 'plasma', 'inferno', 'magma', etc.
-colors = cmap(np.linspace(0, 1, len(categories)))
-
-# Set a maximum width for bars
-max_bar_width = 0.1  # Adjust this value as needed
-
-# Create a bar chart
-plt.figure(figsize=(10, 6))
-bars = plt.bar(categories, values, color=colors)
-
-# # Adjust bar width if necessary
-# for bar in bars:
-#     bar.set_width(min(bar.get_width(), max_bar_width))
-
-# Add titles and labels
-plt.title('Average Mutation Score for Java corpus')
-plt.xlabel('Approaches')
-plt.ylabel('Mutation Score %')
-
-# Optionally rotate the x-axis labels if they are too long
-plt.xticks(rotation=45)
-
-# Set the y-axis range from 0 to 100
-plt.ylim(0, 100)
-
-# Show the plot
-plt.tight_layout()
-plt.show()
+        if one_time:
+            average = np.mean(list(metrics.values()))
+            data_points.append((llm_key, average))
+            one_time = False
+        else:
+            average = 0
+            for test_class, list_values in metrics.items():
+                average += list_values[-1]
+            average /= len(metrics)
+            data_points.append((llm_key, average))
+    # sorted_data = sorted(data_points, key=lambda x: x[1], reverse=True)
+    sorted_data = data_points
+    categories = [x[0] for x in sorted_data]
+    values = [x[1] for x in sorted_data]
+    cmap = plt.get_cmap('coolwarm')  # You can choose other colormaps like 'plasma', 'inferno', 'magma', etc.
+    colors = cmap(np.linspace(0, 1, len(categories)))
+    max_bar_width = 0.1  # Adjust this value as needed
+    plt.figure(figsize=(10, 6))
+    bars = plt.bar(categories, values, color=colors)
+    plt.title(f'Average Mutation Score for {main_key} corpus')
+    plt.xlabel('Approaches')
+    plt.ylabel('Mutation Score %')
+    plt.xticks(rotation=45)
+    plt.ylim(0, 100)
+    plt.tight_layout()
+    plt.show()
 
 # import json
 # import numpy as np
