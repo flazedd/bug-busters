@@ -17,19 +17,23 @@ from config.constant import ORACLES
 
 # args = utils.get_args()
 # print(args)
-obj = {}
+obj: dict = utils.load_or_create_json('./results/result.json')
 
 for oracle in ORACLES:
     print(f'[+] Current oracle: {oracle}')
     key = oracle.__str__()
-    obj[key] = oracle.get_dict()
+    if key not in obj:
+        obj[key] = oracle.get_dict({})
+    else:
+        obj[key] = oracle.get_dict(obj[key])
     # for arg in oracle.get_args():
     #     print(arg)
     #     folder = arg[0]
     #     file_name = arg[1]
     #     oracle.get_dict()
 
-utils.save_results(obj, constant.JSON_NAME)
+utils.save_dict_to_json(obj, './results/result.json')
+# utils.save_results(obj, constant.JSON_NAME)
 
 # {'Line coverage %': find_numbers_before_percent(part1),
 #                   'Mutations killed %': find_numbers_before_percent(part2),

@@ -92,29 +92,27 @@ class PythonImplementation(LanguageImplementation):
         result = self.exec_mutpy(folder, file_name, test_name)
         return self.get_statistics(result)
 
-    def get_dict(self, folder, file_name, test_name):
-        pass
-        # directory = 'PythonPUT/'
-        # result = {}
-        # args = self.get_args()
-        # for arg in args:
-        #     folder = arg[0]
-        #     class_name = arg[1]
-        #     ai_number = arg[2]
-        #     cpath = f'{directory}/{folder}'
-        #     for file in os.listdir(cpath):
-        #         if file.startswith(f"Test__{class_name}"):
-        #             # print(file)
-        #             test_name = file.split('.')[0]
-        #             ai_model = test_name.split("__")[2]
-        #             print(f'[+] ai model abbrev is {ai_model}')
-        #             print(f'[+] Getting mutation score for {test_name}')
-        #             score = self.get_mutation_score(folder, class_name, test_name)
-        #             print(f'[+] Mutation score for {test_name} is: {score}%')
-        #             result.setdefault(ai_model, {})
-        #             result[ai_model][class_name] = score
-        #             # print(test_name)
-        # return result
+    def get_dict(self, data: dict) -> dict:
+        directory = 'PythonPUT/'
+        args = self.get_args()
+        for arg in args:
+            folder = arg[0]
+            class_name = arg[1]
+            ai_number = arg[2]
+            cpath = f'{directory}/{folder}'
+            for file in os.listdir(cpath):
+                if file.startswith(f"Test__{class_name}"):
+                    # print(file)
+                    test_name = file.split('.')[0]
+                    ai_model = test_name.split("__")[2]
+                    print(f'[+] ai model abbrev is {ai_model}')
+                    print(f'[+] Getting mutation score for {test_name}')
+                    score = self.get_mutation_score(folder, class_name, test_name)
+                    print(f'[+] Mutation score for {test_name} is: {score}%')
+                    result.setdefault(ai_model, {})
+                    result[ai_model][class_name] = score
+                    # print(test_name)
+        return result
 
     def write_code(self, package, test_name, code):
         path = 'PythonPUT/' + package + '/' + test_name + '.py'
@@ -261,13 +259,18 @@ class PythonImplementation(LanguageImplementation):
         if not os.path.exists(path):
             # If it doesn't exist, create it
             return False
+        count = self.count_tests(path)
+        return count == constant.RETRIES
+
+    @staticmethod
+    def count_tests(path):
         with open(path, 'r') as py_file:
             count = 0
             for line in py_file:
                 # Check if the line contains the @Test annotation
                 if "def " in line:
                     count += 1
-            return count == constant.RETRIES
+            return count
 
     def generate_sbst_tool(self, folder, class_name):
         # Set the environment variable in the current process

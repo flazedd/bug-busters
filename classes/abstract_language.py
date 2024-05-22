@@ -14,7 +14,7 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
-    def get_dict(self, folder, file_name, test_name):
+    def get_dict(self, data: dict) -> dict:
         pass
 
     @abstractmethod

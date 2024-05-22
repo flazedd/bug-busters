@@ -1,16 +1,18 @@
+from typing import TYPE_CHECKING, Any, Callable, Dict, List
 import collections
+from timers import *
 import math
 import pytest
 import statistics
-from typing import TYPE_CHECKING, Any, Callable, Dict, List
-from timers import *
-def test_timers_mean():
+def test_timers():
     timers = Timers()
-    timers.add('timer1', 1.0)
-    timers.add('timer1', 2.0)
-    timers.add('timer1', 3.0)
-def test_timers_stdev():
+    timers.add("timer1", 10.0)
+    timers.add("timer1", 20.0)
+    timers.add("timer2", 30.0)
+
+def test_timers_count():
     timers = Timers()
-    timers.add('timer1', 1.0)
-    timers.add('timer1', 1.0)
-    timers.add('timer1', 1.0)
+    timers.add("timer1", 10.0)
+    timers.add("timer1", 20.0)
+    timers.add("timer1", 30.0)
+

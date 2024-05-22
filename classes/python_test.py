@@ -19,6 +19,7 @@ class PythonTestImplementation(HandleTestImplementation):
         }
         self.add_imports(oracle.get_imports(folder, class_name))
 
+
     def get_contents(self):
         result = ''
         imp = ''
@@ -30,7 +31,7 @@ class PythonTestImplementation(HandleTestImplementation):
         # print(self.tests)
         for test in self.tests:
             result += test
-            result += "\n\n"
+            result += "\n\n\n"
         # result += self.end_class
         return result
 

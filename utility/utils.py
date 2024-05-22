@@ -30,6 +30,23 @@ def load_json_file(filepath):
         return json.load(file)
 
 
+def load_or_create_json(filepath):
+    # Check if the file exists
+    if not os.path.exists(filepath):
+        # Create the file with an empty dictionary
+        with open(filepath, 'w') as file:
+            json.dump({}, file)
+
+    # Read the file and return its contents as a dictionary
+    with open(filepath, 'r') as file:
+        data = json.load(file)
+
+    return data
+
+def save_dict_to_json(dictionary, filepath):
+    with open(filepath, 'w') as file:
+        json.dump(dictionary, file, indent=4)
+
 def save_results(results, filename):
     # Generate a filename based on the current date and time
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

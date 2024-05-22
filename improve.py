@@ -26,8 +26,8 @@ for oracle in oracles:
         # print(arg)
         oracle.generate_sbst_tool(arg[0], arg[1])
     for arg in args:
-        pass
-        # utils.worker(arg[0], arg[1], arg[2], oracle)
+        # pass
+        utils.worker(arg[0], arg[1], arg[2], oracle)
 
 # for arg in args:
 #     utils.worker(arg[0], arg[1], arg[2])
@@ -42,5 +42,5 @@ for oracle in oracles:
 #     thread.join()
 
 end = time.time()
-print(f'[+] Completed in {end - start:.2f} seconds')
+print(f'[+] Completed in {(end - start)/60:.2f} minutes')
 
