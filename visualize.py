@@ -33,7 +33,7 @@ for main_key, sub_dict in data.items():
     plt.ylabel('Average Mutation Score')
     plt.title(f'{main_key} corpus Increase in Mutation Score over tests added')
     plt.legend()
-    plt.ylim(0, 100)
+    # plt.ylim(0, 100)
     plt.grid(True)
     plt.show()
 
@@ -66,7 +66,7 @@ for main_key, sub_dict in data.items():
     plt.xlabel('Approaches')
     plt.ylabel('Mutation Score %')
     plt.xticks(rotation=45)
-    plt.ylim(0, 100)
+    # plt.ylim(0, 100)
     plt.tight_layout()
     plt.show()
 
