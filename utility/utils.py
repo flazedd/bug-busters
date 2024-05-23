@@ -138,7 +138,7 @@ def worker(folder, class_name, selection, oracle):
             tests_required -= 1
     end = time.time()
     with constant.PRINT_LOCK:
-        print(f'[+] {folder} finished in {end - start:.2f} seconds. '
+        print(f'[+] {folder} finished in {(end - start)/60:.2f} minutes. '
               f'Iterations: {iterations}. ',
               f'Stricly needed iterations: {constant.RETRIES}. '
               f'Tests that failed:  {failing_tests}. '

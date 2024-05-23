@@ -15,7 +15,7 @@ from typing import (
 if hexversion >= 0x03080000:
     from functools import cached_property
 else:
-    from .decorators import cached_property  # type: ignore[misc]
+    from .__decorators import cached_property  # type: ignore[misc]
 
 __all__ = ['len_without_ansi', 'AnsiTextWrapper']
 

@@ -1,39 +1,71 @@
-import ast
+import os
+import replicate
 
-def extract_first_function_code(code):
-    # Parse the code into an Abstract Syntax Tree (AST)
-    tree = ast.parse(code)
+class NamedObject:
+    def __init__(self, name):
+        self.name = name
 
-    # Iterate through the nodes in the tree
-    for node in ast.walk(tree):
-        # Check if the node is a function definition
-        if isinstance(node, ast.FunctionDef):
-            # Get the source code of the function
-            function_code = ast.unparse(node)
-            return function_code.strip()
+class ChatBot():
+    def __init__(self):
+        os.environ['REPLICATE_API_TOKEN'] = 'r8_Tf397zdT0UvvywyakHa9YM7VWPMnBfL1pqScs'
+        self.conversation = """\
+        """
 
-    # If no function definition is found, return None
-    return None
+    def chat(self, message: str):
+        # Add user input to conversation
+        self.conversation += f"[INST] {message} [/INST]\n"
 
-# Example usage
-if __name__ == "__main__":
-    # Example Python code
-    code = """
-def function1():
-    pass
+        obj = {
+            "prompt": self.conversation
+        }
 
-def function2():
-    pass
+        # Generate response
+        output = replicate.run(
+            "meta/meta-llama-3-70b-instruct",
+            input=obj
+        )
 
-def function3():
-    pass
-"""
+        reply = "".join(output)
+        self.conversation += f"{reply}\n"
+        return reply
 
-    # Extract the code of the first function definition
-    first_function_code = extract_first_function_code(code)
+    def new_conversation(self, id):
+        self.conversation = ''
 
-    if first_function_code:
-        print("First function code:")
-        print(first_function_code)
-    else:
-        print("No function definition found in the code.")
+    def get_remote_llms(self):
+        return [NamedObject('meta-llama/Meta-Llama-3-70B-Instruct'),
+                NamedObject('meta-llama/Meta-Llama-3-70B-Instruct')]
+
+    def switch_llm(self):
+        pass
+
+
+# os.environ['REPLICATE_API_TOKEN'] = 'r8_Tf397zdT0UvvywyakHa9YM7VWPMnBfL1pqScs'
+#
+# def main():
+#     conversation = ''
+#     while True:
+#         # Get user input
+#         user_input = input(">")
+#
+#         # Add user input to conversation
+#         conversation += f"[INST] {user_input} [/INST]\n"
+#
+#         obj = {
+#             "prompt": conversation
+#         }
+#
+#         # Generate response
+#         output = replicate.run(
+#             "meta/meta-llama-3-70b-instruct",
+#             input=obj
+#         )
+#
+#         reply  = "".join(output)
+#         print(f'Reply is: \n\n {reply}')
+#         # Add AI's response to conversation
+#         conversation += f"{reply}\n"
+#
+# if __name__ == "__main__":
+#     main()
+

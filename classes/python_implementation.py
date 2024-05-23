@@ -1,5 +1,7 @@
 import ast
 import os
+import random
+import string
 import subprocess
 import time
 
@@ -14,8 +16,16 @@ from classes.python_test_reader import PythonReaderTestImplementation
 class PythonImplementation(LanguageImplementation):
     def get_test_instance(self, folder, class_name, test_name):
         return PythonTestImplementation(folder, class_name, self, test_name)
+
     @staticmethod
-    def extract_first_function_code(code):
+    def generate_random_string(length=8):
+        # Define the character set to include lowercase letters and digits
+        characters = string.ascii_lowercase + string.digits
+        # Generate a random string of the specified length
+        random_string = ''.join(random.choice(characters) for _ in range(length))
+        return random_string
+
+    def extract_first_function_code(self, code):
         # Parse the code into an Abstract Syntax Tree (AST)
         tree = ast.parse(code)
 
@@ -24,6 +34,8 @@ class PythonImplementation(LanguageImplementation):
             # Check if the node is a function definition
             if isinstance(node, ast.FunctionDef):
                 # Get the source code of the function
+                random_suffix = self.generate_random_string()
+                node.name = f"{node.name}_{random_suffix}"
                 function_code = ast.unparse(node)
                 return function_code.strip()
 
@@ -59,7 +71,8 @@ class PythonImplementation(LanguageImplementation):
             folder_path = os.path.join(directory, folder)
             if os.path.isdir(folder_path):
                 for file in os.listdir(folder_path):
-                    if file.startswith('__') or file.startswith('test_'):
+                    file_path = os.path.join(folder_path, file)
+                    if file.startswith('__') or file.startswith('test_') or os.path.isdir(file_path):
                         continue
                     file_name = file.split('.py')[0]
                     arg = (folder, file_name, constant.MODEL)
@@ -69,6 +82,8 @@ class PythonImplementation(LanguageImplementation):
     @staticmethod
     def find_numbers_before_percent(string):
         i = -1
+        if len(string) < 2:
+            return None
         while True:
             if string[i] == '%':
                 i -= 1
@@ -94,8 +109,8 @@ class PythonImplementation(LanguageImplementation):
         return self.find_numbers_before_percent(target)
 
     @staticmethod
-    def exec_mutpy(folder, file_name, test_name):
-        target = f'PythonPUT/{folder}/{file_name}.py'
+    def exec_mutpy(folder, class_name, test_name):
+        target = f'PythonPUT/{folder}/{class_name}.py'
         unit_test = f'PythonPUT/{folder}/{test_name}.py'
         mut_script_path = os.path.join('.', 'venv', 'Scripts', 'mut.py')
         # print(mut_script_path)
@@ -108,12 +123,17 @@ class PythonImplementation(LanguageImplementation):
         # Print the output
         # print("Standard Output:")
         # print(result.stdout)
-        result = result.stdout
+        result = result.stdout + result.stderr
         return result
 
     def get_mutation_score(self, folder, file_name, test_name):
         result = self.exec_mutpy(folder, file_name, test_name)
-        return self.get_statistics(result)
+        stats = self.get_statistics(result)
+        if stats is not None:
+            return stats
+        print('[+] Could not find stats in mutpy, rerunning mutpy...')
+        time.sleep(2)
+        return self.get_mutation_score(folder, file_name, test_name)
 
     def get_dict(self) -> dict:
         directory = 'PythonPUT/'
@@ -151,8 +171,8 @@ class PythonImplementation(LanguageImplementation):
 
     def write_code(self, package, test_name, code):
         path = 'PythonPUT/' + package + '/' + test_name + '.py'
-        with constant.PRINT_LOCK:
-            print(f'[+] {package}/{test_name} is writing code')
+        # with constant.PRINT_LOCK:
+        #     print(f'[+] {package}/{test_name} is writing code')
         while True:
             try:
                 with (open(path, 'w') as py_test_file):
@@ -199,35 +219,26 @@ class PythonImplementation(LanguageImplementation):
         return output
 
     @staticmethod
-    def get_imports_from_string(contents):
-        result = set()
-        s2 = 0
-        while True:
-            s1 = contents.find('import ', s2)
-            s3 = contents.find('from ', s2)
-            if s1 == -1 and s3 == -1:
-                break
-            elif s1 != -1 and s3 != -1:
-                start = min(s1, s3)
-                end = contents.find('\n', start)
-                result.add(contents[start:end] + '\n')
-                s2 = end
-                continue
-            elif s1 != -1:
-                end = contents.find('\n', s1)
-                if end == -1:
-                    print('[+] Could not find newline after import was found')
-                else:
-                    result.add(contents[s1:end] + '\n')
-                s2 = end
-            elif s3 != -1:
-                end = contents.find('\n', s3)
-                if end == -1:
-                    print('[+] Could not find newline after import was found')
-                else:
-                    result.add(contents[s3:end] + '\n')
-                s2 = end
-        return result
+    def get_imports_from_string(code):
+        # Parse the code into an AST
+        tree = ast.parse(code)
+
+        # Initialize a list to collect import statements
+        imports = []
+
+        # Traverse the AST
+        for node in ast.walk(tree):
+            # Check for import statements
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    imports.append(f"import {alias.name}")
+            elif isinstance(node, ast.ImportFrom):
+                module = node.module if node.module else ''
+                for alias in node.names:
+                    imports.append(f"from {module} import {alias.name}")
+
+        # Return imports as a single string
+        return "\n".join(imports)
 
     def get_imports(self, package, class_name):
         with open(f'PythonPUT/{package}/{class_name}.py') as py_file:
@@ -241,7 +252,7 @@ class PythonImplementation(LanguageImplementation):
     @staticmethod
     def get_program_under_test(package, class_name):
         put = ''
-        file_path = f'PythonPUT/{package}/{class_name}.py'
+        file_path = f'./PythonPUT/{package}/{class_name}.py'
         while True:
             try:
                 with open(file_path, 'r') as py_file:
@@ -250,7 +261,7 @@ class PythonImplementation(LanguageImplementation):
                     break
             except FileNotFoundError as f:
                 with constant.PRINT_LOCK:
-                    print(f'{package}/{class_name} has encountered FileNotFoundError. Retrying...')
+                    print(f'{file_path} has encountered FileNotFoundError. Retrying...')
                     time.sleep(constant.SLEEP)
         return put
 
@@ -297,7 +308,7 @@ class PythonImplementation(LanguageImplementation):
             # If it doesn't exist, create it
             return False
         count = self.count_tests(path)
-        return count == constant.RETRIES
+        return count > 0
 
     @staticmethod
     def count_tests(path):
@@ -318,23 +329,28 @@ class PythonImplementation(LanguageImplementation):
             return
         os.environ['PYNGUIN_DANGER_AWARE'] = 'true'
         # print(f"[+] PYNGUIN_DANGER_AWARE: {os.environ['PYNGUIN_DANGER_AWARE']}")
-        print(f'[+] Running Pynguin on {folder}/{class_name}')
-        command = [
-            '.\\venv\\Scripts\\pynguin.exe',
-            '--project-path', f'PythonPUT/{folder}',
-            '--module-name', class_name,
-            '--output-path', f'PythonPUT/{folder}',
-            '--assertion-generation', 'SIMPLE',
-            '--algorithm', 'DYNAMOSA',
-            '--maximum-search-time', constant.PYNGUIN_MAX_SEARCH
-        ]
+        iteration = 1
+        while True:
+            print(f'[+] Running Pynguin on {folder}/{class_name} on iteration {iteration}')
+            iteration += 1
+            command = [
+                '.\\venv\\Scripts\\pynguin.exe',
+                '--project-path', f'PythonPUT/{folder}',
+                '--module-name', class_name,
+                '--output-path', f'PythonPUT/{folder}',
+                '--assertion-generation', 'SIMPLE',
+                '--algorithm', 'DYNAMOSA',
+                '--maximum-search-time', constant.PYNGUIN_MAX_SEARCH
+            ]
 
-        # Run the command
-        result = subprocess.run(command, capture_output=True, text=True)
-        print(f'[+] stdout: {result.stdout}')
-        print(f'[+] stderror: {result.stderr}')
-        print(f'[+] Generated Pynguin tests for {folder}/{class_name}.py')
-
+            # Run the command
+            result = subprocess.run(command, capture_output=True, text=True)
+            print(f'[+] stdout: {result.stdout}')
+            print(f'[+] stderror: {result.stderr}')
+            print(f'[+] Generated Pynguin tests for {folder}/{class_name}.py')
+            result = self.exec_mutpy(folder, class_name, f'test_{class_name}')
+            if result.find('AssertionError') == -1:
+                break
 
 
 

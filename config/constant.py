@@ -2,13 +2,13 @@ import threading
 from classes.java_implementation import JavaImplementation
 from classes.python_implementation import PythonImplementation
 
-RETRIES = 2  # amount of retries for getting a test suite that passes
+RETRIES = 8  # amount of retries for getting a test suite that passes
 PRINT_LOCK = threading.Lock()
 MODEL = 1
 JSON_NAME = 'result'
 SLEEP = 2
-ORACLES = [JavaImplementation(), PythonImplementation()]
-# ORACLES = [PythonImplementation()]
+# ORACLES = [JavaImplementation()]
+ORACLES = [PythonImplementation()]
 PYNGUIN_MAX_SEARCH = '30'
 DEFAULT_IMPORT = 'module_0'
 

@@ -7,7 +7,7 @@ class PythonTestImplementation(HandleTestImplementation):
     def __init__(self, folder, class_name, oracle, test_name):
         self.oracle = oracle
         self.folder = folder
-        self.test_name = test_name #class_name + 'Test_LLM'
+        self.test_name = test_name  #class_name + 'Test_LLM'
         # self.package = "package " + folder + ";\n"
         # self.begin_class = "public class " + self.test_name + " {\n"
         # self.end_class = "}"
@@ -26,7 +26,6 @@ class PythonTestImplementation(HandleTestImplementation):
             f"import {class_name} as {constant.DEFAULT_IMPORT}\n",
         }
         self.add_imports(oracle.get_imports(folder, class_name))
-
 
     def get_contents(self):
         result = ''
@@ -59,4 +58,7 @@ class PythonTestImplementation(HandleTestImplementation):
 
     def add_imports(self, response):
         imps = self.oracle.get_imports_from_string(response)
-        self.imports.update(imps)
+        res = set()
+        for line in imps.split('\n'):
+            res.add(line + '\n')
+        self.imports.update(res)
