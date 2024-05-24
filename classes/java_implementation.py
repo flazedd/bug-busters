@@ -7,7 +7,8 @@ from classes.java_test import JavaTestImplementation
 from config import constant
 from classes.prompt import Prompt
 from classes.java_test_reader import JavaReaderTestImplementation
-
+import config.constant
+import shutil
 
 class JavaImplementation(LanguageImplementation):
 
@@ -149,7 +150,8 @@ class JavaImplementation(LanguageImplementation):
             ai_number = arg[2]
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
-                if file.startswith(f"Test__{class_name}"):
+                dpath = f'{cpath}/{file}'
+                if file.startswith(f"Test__{class_name}") and file.endswith(f'__{constant.ITERATION}.java'):
                     # print(file)
                     test_name = file.split('.')[0]
                     ai_model = test_name.split("__")[2]
@@ -164,7 +166,7 @@ class JavaImplementation(LanguageImplementation):
                         score = self.get_mutation_score(folder, class_name, test_name)
                         print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
                         result[ai_model][class_name].append(score)
-                elif file.endswith(f'{class_name}_ESTest.java'):
+                elif file.endswith(f'{class_name}_ESTest_{constant.ITERATION}.java'):
                     test_name = file.split('.')[0]
                     print(f'[+] Getting mutation score for {test_name}')
                     tool_name = 'EvoSuite'
@@ -285,7 +287,7 @@ class JavaImplementation(LanguageImplementation):
         if not os.path.exists(path):
             # If it doesn't exist, create it
             os.makedirs(path)
-        file = f'Test__{class_name}__{ai_model}'
+        file = f'Test__{class_name}__{ai_model}__{constant.ITERATION}'
         file_name = f'{file}.java'
         file_path = os.path.join(path, file_name)
         if not os.path.exists(file_path):
@@ -301,7 +303,7 @@ class JavaImplementation(LanguageImplementation):
         return 'Java'
 
     def work_already_satisfied(self, folder, class_name, ai_model):
-        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/Test__{class_name}__{ai_model}.java'
+        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/Test__{class_name}__{ai_model}__{constant.ITERATION}.java'
         if not os.path.exists(path):
             # If it doesn't exist, create it
             return False
@@ -314,17 +316,28 @@ class JavaImplementation(LanguageImplementation):
             return count == constant.RETRIES
 
     def generate_sbst_tool(self, folder, class_name):
-        print('[+] EvoSuite not implemented yet...')
-        file_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest.java'
-        if not os.path.exists(file_path):
+        destination_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest_{constant.ITERATION}.java'
+        if not os.path.exists(destination_path):
             # If it doesn't exist, create it
-            with open(file_path, 'w') as file:
-                file.write(f'package {folder};\n'
-                           f'public class {class_name}_ESTest {{\n\n}}')
-        with open(file_path, 'r') as java_file:
-            count = 0
-            for line in java_file:
-                # Check if the line contains the @Test annotation
-                if "@Test" in line:
-                    count += 1
-            return count == constant.RETRIES
+            with open(destination_path, 'w') as file:
+                pass
+        #     source_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest_{constant.ITERATION}.java'
+        #     shutil.copy(source_path, destination_path)
+        # except FileNotFoundError as f:
+        #     print(f'[+] FileNotFoundError, EvoSuite probably not implemented: {f}')
+        # except IOError as e:
+        #     print(f"[+] IOError: {e}")
+        # if not os.path.exists(source_path):
+        #     print(f'[+] Source EvoSuite file not found, iteration: {constant.EXPERIMENT_ITERATION}')
+        # if not os.path.exists(file_path):
+        #     # If it doesn't exist, create it
+        #     with open(file_path, 'w') as file:
+        #         file.write(f'package {folder};\n'
+        #                    f'public class {class_name}_ESTest {{\n\n}}')
+        # with open(file_path, 'r') as java_file:
+        #     count = 0
+        #     for line in java_file:
+        #         # Check if the line contains the @Test annotation
+        #         if "@Test" in line:
+        #             count += 1
+        #     return count == constant.RETRIES

@@ -145,7 +145,7 @@ class PythonImplementation(LanguageImplementation):
             ai_number = arg[2]
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
-                if file.startswith(f"test__{class_name}"):
+                if file.startswith(f"test__{class_name}") and file.endswith(f'__{constant.ITERATION}'):
                     # print(file)
                     test_name = file.split('.')[0]
                     ai_model = test_name.split("__")[2]
@@ -279,7 +279,7 @@ class PythonImplementation(LanguageImplementation):
         if not os.path.exists(path):
             # If it doesn't exist, create it
             os.makedirs(path)
-        file = f'test__{class_name}__{ai_model}'
+        file = f'test__{class_name}__{ai_model}__{constant.ITERATION}'
         file_name = f'{file}.py'
         file_path = os.path.join(path, file_name)
         if not os.path.exists(file_path):
@@ -303,7 +303,7 @@ class PythonImplementation(LanguageImplementation):
         return 'Python'
 
     def work_already_satisfied(self, folder, class_name, ai_model):
-        path = f'PythonPUT/{folder}/test__{class_name}__{ai_model}.py'
+        path = f'PythonPUT/{folder}/test__{class_name}__{ai_model}__{constant.ITERATION}.py'
         if not os.path.exists(path):
             # If it doesn't exist, create it
             return False
@@ -322,16 +322,16 @@ class PythonImplementation(LanguageImplementation):
 
     def generate_sbst_tool(self, folder, class_name):
         # Set the environment variable in the current process
-        path = f'./PythonPUT/{folder}/test_{class_name}.py'
+        new_path = f'./PythonPUT/{folder}/test_{class_name}_{constant.ITERATION}.py'
         # Check if the directory exists
-        if os.path.exists(path) and os.path.getsize(path) > 0:
-            print(f'[+] Pynguin {path} is non-empty. Skipping.')
+        if os.path.exists(new_path) and os.path.getsize(new_path) > 0:
+            print(f'[+] Pynguin {new_path} is non-empty. Skipping.')
             return
         os.environ['PYNGUIN_DANGER_AWARE'] = 'true'
         # print(f"[+] PYNGUIN_DANGER_AWARE: {os.environ['PYNGUIN_DANGER_AWARE']}")
         iteration = 1
         while True:
-            print(f'[+] Running Pynguin on {folder}/{class_name} on iteration {iteration}')
+            print(f'[+] Running Pynguin on {folder}/{class_name} on try {iteration}')
             iteration += 1
             command = [
                 '.\\venv\\Scripts\\pynguin.exe',
@@ -350,6 +350,8 @@ class PythonImplementation(LanguageImplementation):
             print(f'[+] Generated Pynguin tests for {folder}/{class_name}.py')
             result = self.exec_mutpy(folder, class_name, f'test_{class_name}')
             if result.find('AssertionError') == -1:
+                old_path = f'./PythonPUT/{folder}/test_{class_name}.py'
+                os.rename(old_path, new_path)
                 break
 
 

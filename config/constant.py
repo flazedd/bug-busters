@@ -11,6 +11,7 @@ SLEEP = 2
 ORACLES = [PythonImplementation()]
 PYNGUIN_MAX_SEARCH = '30'
 DEFAULT_IMPORT = 'module_0'
+ITERATION = 1
 
 # Choose 0 for: CohereForAI/c4ai-command-r-plus
 # Choose 1 for: meta-llama/Meta-Llama-3-70B-Instruct works

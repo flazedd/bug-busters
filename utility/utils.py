@@ -3,9 +3,8 @@ import json
 import os
 from datetime import datetime
 import time
-
+from utility import credentails
 from config import constant
-from utility import utils_java, credentails, utils_python
 
 
 def get_most_recent_file(directory):
@@ -87,7 +86,7 @@ def worker(folder, class_name, selection, oracle):
     l = chatbot.get_remote_llms()
     ident = get_identifier(l[selection].name)
     if oracle.work_already_satisfied(folder, class_name, ident):
-        print(f'[+] Work satisfied for {folder}/{class_name}/{ident}')
+        print(f'[+] Work satisfied for {folder}/{class_name}')
         return
     else:
         print(f'[+] Worker active on {folder}/{class_name}/{ident}')
