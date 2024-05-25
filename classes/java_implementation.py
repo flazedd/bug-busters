@@ -317,6 +317,7 @@ class JavaImplementation(LanguageImplementation):
 
     def generate_sbst_tool(self, folder, class_name):
         destination_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest_{constant.ITERATION}.java'
+        os.makedirs(os.path.dirname(destination_path), exist_ok=True)
         if not os.path.exists(destination_path):
             # If it doesn't exist, create it
             with open(destination_path, 'w') as file:
