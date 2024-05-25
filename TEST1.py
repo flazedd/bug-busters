@@ -22,12 +22,36 @@
 # print("U statistic:", u_statistic)
 # print("p-value:", p_value)
 
-# Example lists of lists
-list1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-list2 = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i']]
+# # Example lists of lists
+# list1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+# list2 = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i']]
+#
+# # Zip the two lists together
+# zipped_lists = list(zip(list1, list2))
+#
+# # Print the result
+# print(zipped_lists)
+import pandas as pd
+import numpy as np
+import matplotlib as mpl
 
-# Zip the two lists together
-zipped_lists = list(zip(list1, list2))
+# Create the DataFrame
+df = pd.DataFrame({
+    "strings": ["Adam", "Mike"],
+    "ints": [1, 3],
+    "floats": [1.123, 1000.23]
+})
 
-# Print the result
-print(zipped_lists)
+# Style the DataFrame
+styled_df = df.style \
+  .format({"floats": "{:,.3f}"}) \
+  .format_index(str.upper, axis=1) \
+  .set_caption("Styled DataFrame Example")
+
+# Rename the index
+df.index = ["row 1", "row 2"]
+
+# To display the styled DataFrame in a Jupyter Notebook
+print(styled_df)
+
+

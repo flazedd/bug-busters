@@ -1,42 +1,15 @@
-import json
+import pandas as pd
+import matplotlib.pyplot as plt
 
-import utility.utils
-from config import constant
-from utility import utils
+# Sample data in a DataFrame
+data = {'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35],
+        'City': ['New York', 'Los Angeles', 'Chicago']}
 
-combined_dict = {}
+df = pd.DataFrame(data)
 
-all_dicts = utility.utils.load_results(6)
-for d in all_dicts:
-    for oracle in constant.ORACLES:
-        key = oracle.__str__()
-        combined_dict.setdefault(key, {})
-        for tool, tool_data in d[key].items():
-            combined_dict[key].setdefault(tool, {})
-            for metric, value in tool_data.items():
-                combined_dict[key][tool].setdefault(metric, [])
-                combined_dict[key][tool][metric].append(value)
-                pass
-
-objects = {}
-for oracle in constant.ORACLES:
-    key = oracle.__str__()
-    lists = []
-    objects.setdefault(key, {})
-    for tool, tool_data in combined_dict[key].items():
-        for metric, value in tool_data.items():
-            objects[key].setdefault(metric, {})
-            if isinstance(value[0], list):
-                last_values = []
-                for v in last_values:
-                    last_values.append(v[-1])
-                objects[key][metric][tool] = last_values
-            else:
-                objects[key][metric][tool] = value
-
-
-# Save dictionary to JSON file
-with open('yyydata.json', 'w') as json_file:
-    json.dump(objects, json_file, indent=4)
-
-print("Data saved to data.json")
+# Plotting the table
+plt.figure(figsize=(8, 3))
+plt.table(cellText=df.values, colLabels=df.columns, loc='center', cellLoc='center', colWidths=[0.2, 0.1, 0.2])
+plt.axis('off')  # Turn off axis
+plt.show()
