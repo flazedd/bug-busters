@@ -1,4 +1,5 @@
 import ast
+import glob
 import json
 import os
 from datetime import datetime
@@ -49,15 +50,39 @@ def save_dict_to_json(dictionary, filepath):
         json.dump(dictionary, file, indent=4)
 
 
-def save_results(results, filename):
-    # Generate a filename based on the current date and time
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename_with_timestamp = f"results/{filename}_{timestamp}.json"
+# def save_results(results, filename):
+#     # Generate a filename based on the current date and time
+#     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+#     filename_with_timestamp = f"results/{filename}_{timestamp}.json"
+#
+#     # Save the results to the JSON file with indentation for readability
+#     with open(filename_with_timestamp, 'w') as file:
+#         json.dump(results, file, indent=4)
+
+
+def save_results(results):
+    # Ensure the directory exists
+    os.makedirs('results', exist_ok=True)
+
+    # Generate the filename with the given number
+    filename = f"results/result_{constant.ITERATION}.json"
 
     # Save the results to the JSON file with indentation for readability
-    with open(filename_with_timestamp, 'w') as file:
+    with open(filename, 'w') as file:
         json.dump(results, file, indent=4)
 
+
+def load_results(highest_number):
+    results = []
+    for i in range(1, highest_number + 1):  # Assuming result files are from result_1.json to result_6.json
+        filename = f'results/result_{i}.json'
+        try:
+            with open(filename, 'r') as f:
+                data = json.load(f)
+                results.append(data)
+        except FileNotFoundError:
+            pass  # Skip if file doesn't exist
+    return results
 
 def get_identifier(ai_model_name):
     start_index = ai_model_name.find('/')

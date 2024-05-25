@@ -1,71 +1,42 @@
-import os
-import replicate
+import json
 
-class NamedObject:
-    def __init__(self, name):
-        self.name = name
+import utility.utils
+from config import constant
+from utility import utils
 
-class ChatBot():
-    def __init__(self):
-        os.environ['REPLICATE_API_TOKEN'] = 'r8_Tf397zdT0UvvywyakHa9YM7VWPMnBfL1pqScs'
-        self.conversation = """\
-        """
+combined_dict = {}
 
-    def chat(self, message: str):
-        # Add user input to conversation
-        self.conversation += f"[INST] {message} [/INST]\n"
+all_dicts = utility.utils.load_results(6)
+for d in all_dicts:
+    for oracle in constant.ORACLES:
+        key = oracle.__str__()
+        combined_dict.setdefault(key, {})
+        for tool, tool_data in d[key].items():
+            combined_dict[key].setdefault(tool, {})
+            for metric, value in tool_data.items():
+                combined_dict[key][tool].setdefault(metric, [])
+                combined_dict[key][tool][metric].append(value)
+                pass
 
-        obj = {
-            "prompt": self.conversation
-        }
-
-        # Generate response
-        output = replicate.run(
-            "meta/meta-llama-3-70b-instruct",
-            input=obj
-        )
-
-        reply = "".join(output)
-        self.conversation += f"{reply}\n"
-        return reply
-
-    def new_conversation(self, id):
-        self.conversation = ''
-
-    def get_remote_llms(self):
-        return [NamedObject('meta-llama/Meta-Llama-3-70B-Instruct'),
-                NamedObject('meta-llama/Meta-Llama-3-70B-Instruct')]
-
-    def switch_llm(self):
-        pass
+objects = {}
+for oracle in constant.ORACLES:
+    key = oracle.__str__()
+    lists = []
+    objects.setdefault(key, {})
+    for tool, tool_data in combined_dict[key].items():
+        for metric, value in tool_data.items():
+            objects[key].setdefault(metric, {})
+            if isinstance(value[0], list):
+                last_values = []
+                for v in last_values:
+                    last_values.append(v[-1])
+                objects[key][metric][tool] = last_values
+            else:
+                objects[key][metric][tool] = value
 
 
-# os.environ['REPLICATE_API_TOKEN'] = 'r8_Tf397zdT0UvvywyakHa9YM7VWPMnBfL1pqScs'
-#
-# def main():
-#     conversation = ''
-#     while True:
-#         # Get user input
-#         user_input = input(">")
-#
-#         # Add user input to conversation
-#         conversation += f"[INST] {user_input} [/INST]\n"
-#
-#         obj = {
-#             "prompt": conversation
-#         }
-#
-#         # Generate response
-#         output = replicate.run(
-#             "meta/meta-llama-3-70b-instruct",
-#             input=obj
-#         )
-#
-#         reply  = "".join(output)
-#         print(f'Reply is: \n\n {reply}')
-#         # Add AI's response to conversation
-#         conversation += f"{reply}\n"
-#
-# if __name__ == "__main__":
-#     main()
+# Save dictionary to JSON file
+with open('yyydata.json', 'w') as json_file:
+    json.dump(objects, json_file, indent=4)
 
+print("Data saved to data.json")

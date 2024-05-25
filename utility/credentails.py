@@ -68,6 +68,7 @@ class ChatBot():
         return 1
 
     def change_conversation(self, id):
+        self.conversation = ''
         pass
 
     def get_remote_llms(self):

@@ -1,0 +1,136 @@
+{
+    "Python": {
+        "timers": {
+            "Pynguin": [
+                47.4,
+                47.4,
+                47.4,
+                47.4,
+                47.4,
+                47.4
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "stringcase": {
+            "Pynguin": [
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "common": {
+            "Pynguin": [
+                44.0,
+                44.0,
+                44.0,
+                44.0,
+                44.0,
+                44.0
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "epydoc": {
+            "Pynguin": [
+                17.2,
+                17.2,
+                17.2,
+                17.2,
+                17.2,
+                17.2
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "google": {
+            "Pynguin": [
+                7.8,
+                7.8,
+                7.8,
+                7.8,
+                7.8,
+                7.8
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "numpydoc": {
+            "Pynguin": [
+                5.5,
+                5.5,
+                5.5,
+                5.5,
+                5.5,
+                5.5
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "parser": {
+            "Pynguin": [
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "rest": {
+            "Pynguin": [
+                15.7,
+                15.7,
+                15.7,
+                15.7,
+                15.7,
+                15.7
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "txtutils": {
+            "Pynguin": [
+                43.9,
+                43.9,
+                43.9,
+                43.9,
+                43.9,
+                43.9
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "validators": {
+            "Pynguin": [
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "status": {
+            "Pynguin": [
+                70.6,
+                70.6,
+                70.6,
+                70.6,
+                70.6,
+                70.6
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        },
+        "comments": {
+            "Pynguin": [
+                20.0,
+                20.0,
+                20.0,
+                20.0,
+                20.0,
+                20.0
+            ],
+            "Meta_Llama_3_70B_Instruct": []
+        }
+    }
+}
