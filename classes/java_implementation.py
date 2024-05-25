@@ -181,7 +181,7 @@ class JavaImplementation(LanguageImplementation):
         # print(f'[+] {package}/{test_name} is writing code')
         while True:
             try:
-                with (open(path, 'w') as java_test_file):
+                with (open(path, 'w', encoding='utf-8') as java_test_file):
                     # Read the contents of the file
                     java_test_file.write(code)
                     break
@@ -232,6 +232,9 @@ class JavaImplementation(LanguageImplementation):
         id = ':lib:test FAILED'
         semi = output.find(id) + len(id)
         output = output[semi:]
+        compileTestIndex = output.find('Task :lib:compileTestJava FAILED')
+        if compileTestIndex != -1:
+            output = output[compileTestIndex:]
         print(f"[+] Semi-filtered test error:\n\n {output}")
         suitable = output.find('error: no suitable method found')
         suitable2 = output.find('^', suitable)
