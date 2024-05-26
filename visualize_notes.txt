@@ -1,0 +1,4 @@
+ttest
+assumptions:
+    metric is normally distributed -> qq plot
+    variances of the 2 groups must be approx equal -> levene's test
