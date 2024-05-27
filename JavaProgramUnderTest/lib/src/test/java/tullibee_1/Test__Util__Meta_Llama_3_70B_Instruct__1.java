@@ -1,8 +1,18 @@
 package tullibee_1;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 import java.util.Vector;
+import org.junit.jupiter.api.Test;
 public class Test__Util__Meta_Llama_3_70B_Instruct__1 {
+@Test
+public void testStringIsEmpty() {
+    assertTrue(Util.StringIsEmpty(""));
+}
+
+@Test
+public void testStringCompareIgnCase() {
+    assertEquals(0, Util.StringCompareIgnCase("Hello", "hello"));
+}
+
 @Test
 public void testVectorEqualsUnordered() {
     Vector<String> v1 = new Vector<String>();
@@ -15,10 +25,28 @@ public void testVectorEqualsUnordered() {
 }
 
 @Test
-public void testStringCompareIgnCase() {
-    assertTrue(Util.StringCompareIgnCase("Hello", "hello") == 0);
+public void testIntMaxString() {
+    assertEquals("", Util.IntMaxString(Integer.MAX_VALUE));
 }
 
+@Test
+public void testNormalizeString() {
+    assertEquals("", Util.NormalizeString(null));
+}
 
+@Test
+public void testDoubleMaxString() {
+    assertEquals("", Util.DoubleMaxString(Double.MAX_VALUE));
+}
+
+@Test
+public void testStringCompare() {
+    assertEquals(0, Util.StringCompare("abc", "abc"));
+}
+
+@Test
+public void testNormalizeStringNotNull() {
+    assertEquals("hello", Util.NormalizeString("hello"));
+}
 
 }

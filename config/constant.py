@@ -2,7 +2,7 @@ import threading
 from classes.java_implementation import JavaImplementation
 from classes.python_implementation import PythonImplementation
 
-RETRIES = 2  # amount of retries for getting a test suite that passes
+RETRIES = 8  # amount of retries for getting a test suite that passes
 PRINT_LOCK = threading.Lock()
 MODEL = 1
 JSON_NAME = 'result'

@@ -151,6 +151,7 @@ class JavaImplementation(LanguageImplementation):
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
                 dpath = f'{cpath}/{file}'
+                mixed_name = f'{folder}.{class_name}'
                 if file.startswith(f"Test__{class_name}") and file.endswith(f'__{constant.ITERATION}.java'):
                     # print(file)
                     test_name = file.split('.')[0]
@@ -158,21 +159,21 @@ class JavaImplementation(LanguageImplementation):
                     print(f'[+] ai model abbrev is {ai_model}')
                     print(f'[+] Getting mutation score for {test_name}')
                     result.setdefault(ai_model, {})
-                    result[ai_model][class_name] = [0]
+                    result[ai_model][mixed_name] = [0]
                     java_reader = JavaReaderTestImplementation(folder, self, test_name)
                     amount_tests = java_reader.amount_of_tests()
                     for i in range(1, amount_tests + 1):
                         java_reader.partial_write(i)
                         score = self.get_mutation_score(folder, class_name, test_name)
                         print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
-                        result[ai_model][class_name].append(score)
+                        result[ai_model][mixed_name].append(score)
                 elif file.endswith(f'{class_name}_ESTest_{constant.ITERATION}.java'):
                     test_name = file.split('.')[0]
                     print(f'[+] Getting mutation score for {test_name}')
                     tool_name = 'EvoSuite'
                     result.setdefault(tool_name, {})
                     score = self.get_mutation_score(folder, class_name, test_name)
-                    result[tool_name][class_name] = score
+                    result[tool_name][mixed_name] = score
                     print(f'[+] Mutation score for {test_name} is: {score}% for {tool_name}')
         return result
 

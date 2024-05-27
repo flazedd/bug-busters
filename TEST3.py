@@ -3,7 +3,7 @@ import scipy.stats as stats
 
 # Sample data
 data1 = np.random.normal(loc=0, scale=1, size=1000)  # Replace with your first dataset
-data2 = np.random.normal(loc=0, scale=5, size=1000)  # Replace with your second dataset
+data2 = np.random.normal(loc=0, scale=0.9, size=1000)  # Replace with your second dataset
 
 # Levene's Test
 levene_stat, levene_p = stats.levene(data1, data2)

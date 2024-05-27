@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 # Sample data
 data = np.random.normal(loc=0, scale=1, size=6)  # Replace this with your data
-
+print(data)
+print(type(data))
 # Visual Inspection
 # Histogram
 plt.figure(figsize=(12, 6))
