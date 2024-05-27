@@ -81,4 +81,6 @@ public void testContractEqualsDifferentCurrency() {
     assertEquals(false, contract1.equals(contract2));
 }
 
+
+
 }

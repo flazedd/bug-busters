@@ -53,4 +53,12 @@ public void testEscapeForXMLSpecialChars() {
     assertEquals("&lt;&amp;&gt;&apos;&quot;", StringUtils.escapeForXML("<&>'\""));
 }
 
+
+
+
+
+
+
+
+
 }

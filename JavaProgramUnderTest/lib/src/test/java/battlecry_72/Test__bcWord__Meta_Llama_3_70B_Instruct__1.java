@@ -52,4 +52,12 @@ public void testEqualTo2() {
     assertTrue(word.equalTo("battlecry"));
 }
 
+
+
+
+
+
+
+
+
 }

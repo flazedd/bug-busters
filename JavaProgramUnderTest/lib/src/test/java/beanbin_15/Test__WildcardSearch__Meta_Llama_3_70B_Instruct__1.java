@@ -50,4 +50,12 @@ public void testWildcardSearch10() {
     assertTrue(search.doesMatch("abcdefghijklmnopqrstuvwxyz"));
 }
 
+
+
+
+
+
+
+
+
 }

@@ -1,46 +1,49 @@
 package javaviewcontrol_33;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 public class Test__HtmlEncoder__Meta_Llama_3_70B_Instruct__1 {
 @Test
-public void testEncode() {
-    assertEquals("&lt;&quot;&amp;&gt;", HtmlEncoder.encode("<\"&>"));
+public void testHtmlEncoder0() {
+assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeSpecialChars() {
-    assertEquals("&#169;", HtmlEncoder.encode("©"));
+public void testHtmlEncoder1() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeNonAscii() {
-    assertEquals("H&#233;llo", HtmlEncoder.encode("Héllo"));
+public void testHtmlEncoder2() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeNoChange() {
-    assertEquals("Hello World", HtmlEncoder.encode("Hello World"));
+public void testHtmlEncoder3() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeEmptyString() {
-    assertEquals("", HtmlEncoder.encode(""));
+public void testHtmlEncoder4() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeLongString() {
-    String longString = "This is a very long string that needs to be encoded correctly";
-    assertEquals(longString, HtmlEncoder.encode(longString));
+public void testHtmlEncoder5() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeMixedCase() {
-    assertEquals("&lt;a&gt;&quot;B&quot;&amp;c&lt;/a&gt;", HtmlEncoder.encode("<a>\"B\"&c</a>"));
+public void testHtmlEncoder6() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testEncodeConsecutiveSpecialChars() {
-    assertEquals("&lt;&amp;&gt;&quot;", HtmlEncoder.encode("<&>\""));
+public void testHtmlEncoder7() {
+    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
+
+
+
+
 
 }

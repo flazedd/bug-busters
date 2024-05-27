@@ -11,9 +11,12 @@ from config.constant import ORACLES
 obj: dict = {}
 start = time.time()
 for oracle in ORACLES:
+    start_oracle = time.time()
     print(f'[+] Current oracle: {oracle}')
     key = oracle.__str__()
     obj[key] = oracle.get_dict()
+    end_oracle = time.time()
+    print(f'[+] Completed {key} in {(end_oracle - start_oracle) / 60:.2f} minutes')
     # for arg in oracle.get_args():
     #     print(arg)
     #     folder = arg[0]
@@ -21,6 +24,6 @@ for oracle in ORACLES:
     #     oracle.get_dict()
 
 # utils.save_dict_to_json(obj, './results/result.json')
-utils.save_results(obj, constant.JSON_NAME)
+utils.save_results(obj)
 end = time.time()
 print(f'[+] Completed in {(end - start)/60:.2f} minutes')

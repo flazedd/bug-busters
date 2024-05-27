@@ -42,4 +42,12 @@ public void testHTMLFilterMixedCase() {
     assertEquals("A &lt;B&gt; C&amp;D &quot;E&quot; F&gt;G", HTMLFilter.filter("A <B> C&D \"E\" F>G"));
 }
 
+
+
+
+
+
+
+
+
 }
