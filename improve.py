@@ -13,6 +13,7 @@ threads = []
 # print(args)
 
 start = time.time()
+print('[+] Starting...')
 for oracle in oracles:
     args = oracle.get_args()
     for arg in args:

@@ -137,6 +137,7 @@ def worker(folder, class_name, selection, oracle):
         response = chatbot.chat(prompt)
         time.sleep(constant.SLEEP)
         response.wait_until_done()
+        print(f'[+] AI response:\n\n{response.text}')
         new_test_case = oracle.get_code(response.text)  #get_java_code(response.text)
         if new_test_case is None:
             with constant.PRINT_LOCK:
@@ -145,7 +146,14 @@ def worker(folder, class_name, selection, oracle):
             prompt = 'This did not work. Remember what i said: 1 test case, 1 assertion'
             continue
         test_handle.add_test(new_test_case)
-        test_handle.write()
+        # test_handle.add_imports(response.text)
+        try:
+            test_handle.write()
+        except UnicodeEncodeError:
+            test_handle.remove_last_test()
+            print(f'[+] Encountered Unicode char in response, trying again')
+            prompt = 'no unicode character please in the test case'
+            continue
         result = oracle.exec_test(folder, test_name, new_test_case)  #exec_test(folder, improved_test, new_test_case)
         if oracle.did_test_fail(result):
             with constant.PRINT_LOCK:

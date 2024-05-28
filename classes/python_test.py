@@ -58,7 +58,11 @@ class PythonTestImplementation(HandleTestImplementation):
         result = ''
         imp = ''
         for line in self.imports:
-            imp += line
+            if line.startswith('from __'):
+                imp += line
+        for line in self.imports:
+            if not line.startswith('from __'):
+                imp += line
         result += imp
         # result += self.begin_class
         # result += self.benchmark_tests

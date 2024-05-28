@@ -15,6 +15,7 @@ class JavaTestImplementation(HandleTestImplementation):
         self.imports = {
             "import org.junit.jupiter.api.Test;\n",
             "import static org.junit.jupiter.api.Assertions.*;\n",
+            "import java.util.Arrays;\n"
         }
         self.add_imports(oracle.get_imports(folder, class_name))
         self.fill_tests()
@@ -100,4 +101,6 @@ class JavaTestImplementation(HandleTestImplementation):
                 break
             res.append(response[start:end + 2])
         for element in res:
+            if 'junit' in element:
+                continue
             self.imports.add(element)

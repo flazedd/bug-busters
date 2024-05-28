@@ -184,8 +184,9 @@ class JavaImplementation(LanguageImplementation):
         # print(f'[+] {package}/{test_name} is writing code')
         while True:
             try:
-                with (open(path, 'w', encoding='utf-8') as java_test_file):
+                with (open(path, 'w') as java_test_file):
                     # Read the contents of the file
+                    # print(f'[+] Code to write:\n\n{code}')
                     java_test_file.write(code)
                     break
             except FileNotFoundError as f:
@@ -291,7 +292,7 @@ class JavaImplementation(LanguageImplementation):
     def get_prompt(self, package, class_name):
         class_code = self.get_program_under_test(package, class_name)
         imports = self.get_imports(package, class_name)
-        extra = 'example response: \n@Test\npublic void exampleTestName() {\nassertEquals(0, 0);\n}\n'
+        extra = 'no unicode chars!! example response: \n@Test\npublic void exampleTestName() {\nassertEquals(0, 0);\n}\n'
         return Prompt.get_input(class_code, imports, extra)
 
     def get_test_instance(self, folder, class_name, test_name):
