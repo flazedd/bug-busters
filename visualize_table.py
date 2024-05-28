@@ -51,9 +51,14 @@ for oracle in constant.ORACLES:
     key = oracle.__str__()
     for class_name, value in objects[key].items():
         groups = []
+        project_name = class_name.split('.')[0]
+        c_name = class_name.split('.')[1]
+        project_column = 'Project'
+        data.setdefault(project_column, [])
+        data[project_column].append(project_name)
         class_column = 'Class'
         data.setdefault(class_column, [])
-        data[class_column].append(class_name)
+        data[class_column].append(c_name)
         for tool, tool_data in value.items():
             ndv = np.array(tool_data)
             name = f'{tool}\n Median Mutation Score'
@@ -82,13 +87,13 @@ for oracle in constant.ORACLES:
         data.setdefault(p_column, [])
         data[p_column].append(round(p_value, 4))
     # Save dictionary to JSON file
-    with open('hhhdata.json', 'w') as json_file:
+    with open(f'{tool} data.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)
 
-    print("Data saved to data.json")
+    # print("Data saved to data.json")
     df = pd.DataFrame(data)
     # Set the figure size
-    plt.figure(figsize=(25, 5))  # Adjust the width and height as needed
+    plt.figure(figsize=(25, 10))  # Adjust the width and height as needed
 
     # Create a subplot without frame and axes
     ax = plt.subplot(111, frame_on=False)

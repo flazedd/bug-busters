@@ -6,6 +6,14 @@ class HandleTestImplementation(ABC):
         pass
 
     @abstractmethod
+    def fill_tests(self):
+        pass
+
+    @abstractmethod
+    def get_required_tests(self):
+        pass
+
+    @abstractmethod
     def get_contents(self):
         pass
 

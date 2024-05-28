@@ -26,6 +26,28 @@ class PythonTestImplementation(HandleTestImplementation):
             f"import {class_name} as {constant.DEFAULT_IMPORT}\n",
         }
         self.add_imports(oracle.get_imports(folder, class_name))
+        self.fill_tests()
+
+    def fill_tests(self):
+        filepath = f'./PythonPUT/{self.folder}/{self.test_name}.py'
+        with open(filepath, 'r') as file:
+            content = file.read()
+        end_import = content.find('def ')
+        index_tracker = end_import
+        while True:
+            start = content.find('def ', index_tracker)
+            end = content.find('def ', start + 4)
+            if end == -1:
+                self.tests.append(content[start:])
+                break
+            else:
+                self.tests.append(content[start:end])
+            index_tracker = end
+        self.remove_last_test()
+        print(f'[+] Already found {len(self.tests)} working tests from previous iteration!')
+
+    def get_required_tests(self):
+        return constant.RETRIES - len(self.tests)
 
     def get_contents(self):
         result = ''
@@ -54,7 +76,10 @@ class PythonTestImplementation(HandleTestImplementation):
         self.tests.append(test)
 
     def remove_last_test(self):
-        self.tests.pop()
+        try:
+            self.tests.pop()
+        except IndexError:
+            pass
 
     def add_imports(self, response):
         imps = self.oracle.get_imports_from_string(response)

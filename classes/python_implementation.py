@@ -146,7 +146,7 @@ class PythonImplementation(LanguageImplementation):
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
                 mixed_name = f'{folder}.{class_name}'
-                if file.startswith(f"test__{class_name}") and file.endswith(f'__{constant.ITERATION}'):
+                if file.startswith(f"test__{class_name}") and file.endswith(f'__{constant.ITERATION}.py'):
                     # print(file)
                     test_name = file.split('.')[0]
                     ai_model = test_name.split("__")[2]

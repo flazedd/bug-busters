@@ -32,7 +32,7 @@ public void testEncodeDecodeSingleCharacter() {
 
 @Test
 public void testEncodeDecodeNonASCIICharacters() {
-    String originalString = "Hello, ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“bermensch!";
+    String originalString = "Hello, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“bermensch!";
     String encodedString = StringEncoder64.encodeStringUTF8(originalString);
     String decodedString = StringEncoder64.decodeStringUTF8(encodedString);
     assertEquals(originalString, decodedString);
@@ -72,6 +72,10 @@ public void testDecodeNullInput() {
         // expected
     }
 }
+
+
+
+
 
 
 

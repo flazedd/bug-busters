@@ -1,45 +1,45 @@
 package javaviewcontrol_33;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 public class Test__HtmlEncoder__Meta_Llama_3_70B_Instruct__1 {
 @Test
-public void testHtmlEncoder0() {
-assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
-}
-
-@Test
-public void testHtmlEncoder1() {
+public void testHtmlEncoder() {
     assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
 }
 
 @Test
-public void testHtmlEncoder2() {
-    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
+public void testHtmlEncoderDoubleQuote() {
+    assertEquals("&quot;hello&quot;", HtmlEncoder.encode("\"hello\""));
 }
 
 @Test
-public void testHtmlEncoder3() {
-    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
+public void testHtmlEncoderAmpersand() {
+    assertEquals("hello&amp;world", HtmlEncoder.encode("hello&world"));
 }
 
 @Test
-public void testHtmlEncoder4() {
-    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
+public void testHtmlEncoderUnicode() {
+    assertEquals("&#161;", HtmlEncoder.encode("\u00A1"));
 }
 
 @Test
-public void testHtmlEncoder5() {
-    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
+public void testHtmlEncoderNoEscapingNeeded() {
+    assertEquals("hello world", HtmlEncoder.encode("hello world"));
 }
 
 @Test
-public void testHtmlEncoder6() {
-    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
+public void testHtmlEncoderEmptyString() {
+    assertEquals("", HtmlEncoder.encode(""));
 }
 
 @Test
-public void testHtmlEncoder7() {
-    assertEquals("&lt;hello&gt;", HtmlEncoder.encode("<hello>"));
+public void testEncode() {
+    assertEquals("&lt;&quot;&amp;&gt;", HtmlEncoder.encode("<\"&>"));
+}
+
+@Test
+public void testEncodeNonAscii() {
+    assertEquals("&#169;", HtmlEncoder.encode("\u00A9"));
 }
 
 

@@ -121,7 +121,7 @@ def worker(folder, class_name, selection, oracle):
     id = chatbot.new_conversation()
     chatbot.change_conversation(id)
     prompt = oracle.get_prompt(folder, class_name)
-    tests_required = constant.RETRIES
+
     iterations = 0
     failing_tests = 0
     replies_without_tests = 0
@@ -129,6 +129,7 @@ def worker(folder, class_name, selection, oracle):
 
     test_name = oracle.create_file(folder, class_name, ident)
     test_handle = oracle.get_test_instance(folder, class_name, test_name)
+    tests_required = test_handle.get_required_tests()
     while tests_required > 0:
         iterations += 1
         with constant.PRINT_LOCK:
