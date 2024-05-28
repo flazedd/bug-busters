@@ -26,6 +26,10 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
+    def exec_suite(self, package, test_name):
+        pass
+
+    @abstractmethod
     def did_test_fail(self, output):
         pass
 

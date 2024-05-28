@@ -208,6 +208,13 @@ class PythonImplementation(LanguageImplementation):
         result = f'{result.stdout} {result.stderr}'
         return result
 
+    def exec_suite(self, package, test_name):
+        path = f'PythonPUT/{package}/{test_name}.py'
+        result = subprocess.run(["pytest", path], shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True)
+        result = f'{result.stdout} {result.stderr}'
+        return result
+
     def did_test_fail(self, output):
         s1 = output.find('FAILURES')
         s2 = output.find('AssertionError')
@@ -305,12 +312,18 @@ class PythonImplementation(LanguageImplementation):
         return 'Python'
 
     def work_already_satisfied(self, folder, class_name, ai_model):
-        path = f'PythonPUT/{folder}/test__{class_name}__{ai_model}__{constant.ITERATION}.py'
+        test_name = f'test__{class_name}__{ai_model}__{constant.ITERATION}'
+        path = f'PythonPUT/{folder}/.py'
         if not os.path.exists(path):
             # If it doesn't exist, create it
             return False
         count = self.count_tests(path)
-        return count > 0
+        if count == constant.RETRIES:
+            result = self.exec_suite(folder, test_name)
+            passing = self.did_test_fail(result)
+            return not passing
+        else:
+            return False
 
     @staticmethod
     def count_tests(path):

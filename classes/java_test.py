@@ -47,7 +47,10 @@ class JavaTestImplementation(HandleTestImplementation):
                     break
 
                 end += 1
-        self.remove_last_test()
+        if len(self.tests) > 0:
+            result = self.oracle.exec_test(self.folder, self.test_name, self.tests[-1])
+            if self.oracle.did_test_fail(result):
+                self.remove_last_test()
         print(f'[+] Already found {len(self.tests)} working tests from previous iteration!')
 
     def get_required_tests(self):

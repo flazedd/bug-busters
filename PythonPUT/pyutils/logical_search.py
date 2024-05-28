@@ -1,14 +1,3 @@
-#!/usr/bin/env python3
-# pylint: disable=too-many-nested-blocks
-
-# © Copyright 2021-2023, Scott Gasch
-
-"""This is a module concerned with the creation of and searching of a
-corpus of documents.  The corpus and index are held in memory.
-The query language contains AND, OR, NOT, and parenthesis to support
-flexible search semantics.
-"""
-
 from __future__ import annotations
 
 import enum
@@ -24,30 +13,10 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Document:
-    """A class representing a searchable document."""
-
     docid: str = ""
-    """A unique identifier for each document -- must be provided
-    by the caller.  See :meth:`python_modules.id_generator.get` or
-    :meth:`python_modules.string_utils.generate_uuid` for potential
-    sources."""
-
     tags: Set[str] = field(default_factory=set)
-    """A set of tag strings for this document.  May be empty.  Tags
-    are simply text labels that are associated with a document and
-    may be used to search for it later.
-    """
-
     properties: List[Tuple[str, str]] = field(default_factory=list)
-    """A list of key->value strings for this document.  May be empty.
-    Properties are more flexible tags that have both a label and a
-    value.  e.g. "category:mystery" or "author:smith"."""
-
     reference: Optional[Any] = None
-    """An optional reference to something else for convenience;
-    interpreted only by caller code, ignored here.
-    """
-
 
 class Operation(enum.Enum):
     """A logical search query operation."""
@@ -76,53 +45,6 @@ class Operation(enum.Enum):
 
 
 class Corpus(object):
-    """A collection of searchable documents.  The caller can
-    add documents to it (or edit existing docs) via :meth:`add_doc`,
-    retrieve a document given its docid via :meth:`get_doc`, and
-    perform various lookups of documents.  The most interesting
-    lookup is implemented in :meth:`query`.
-
-    >>> c = Corpus()
-    >>> c.add_doc(Document(
-    ...                    docid=1,
-    ...                    tags=set(['urgent', 'important']),
-    ...                    properties=[
-    ...                                ('author', 'Scott'),
-    ...                                ('subject', 'your anniversary')
-    ...                    ],
-    ...                    reference=None,
-    ...                   )
-    ...          )
-    >>> c.add_doc(Document(
-    ...                    docid=2,
-    ...                    tags=set(['important']),
-    ...                    properties=[
-    ...                                ('author', 'Joe'),
-    ...                                ('subject', 'your performance at work')
-    ...                    ],
-    ...                    reference=None,
-    ...                   )
-    ...          )
-    >>> c.add_doc(Document(
-    ...                    docid=3,
-    ...                    tags=set(['urgent']),
-    ...                    properties=[
-    ...                                ('author', 'Scott'),
-    ...                                ('subject', 'car turning in front of you')
-    ...                    ],
-    ...                    reference=None,
-    ...                   )
-    ...          )
-    >>> c.query('author:Scott and important')
-    {1}
-    >>> c.query('*')
-    {1, 2, 3}
-    >>> c.query('*:*')
-    {1, 2, 3}
-    >>> c.query('*:Scott')
-    {1, 3}
-    """
-
     def __init__(self) -> None:
         self.docids_by_tag: Dict[str, Set[str]] = defaultdict(set)
         self.docids_by_property: Dict[Tuple[str, str], Set[str]] = defaultdict(set)
@@ -130,31 +52,6 @@ class Corpus(object):
         self.documents_by_docid: Dict[str, Document] = {}
 
     def add_doc(self, doc: Document) -> None:
-        """Add a new Document to the Corpus.  Each Document must have a
-        distinct docid that will serve as its primary identifier.  If
-        the same Document is added multiple times, only the most
-        recent addition is indexed.  If two distinct documents with
-        the same docid are added, the latter klobbers the former in
-        the indexes.  See :meth:`python_modules.id_generator.get` or
-        :meth:`python_modules.string_utils.generate_uuid` for potential
-        sources of docids.
-
-        Each Document may have an optional set of tags which can be
-        used later in expressions to the query method.  These are simple
-        text labels.
-
-        Each Document may have an optional list of key->value tuples
-        which can be used later in expressions to the query method.
-
-        Document includes a user-defined "reference" field which is
-        never interpreted by this module.  This is meant to allow easy
-        mapping between Documents in this corpus and external objects
-        they may represent.
-
-        Args:
-            doc: the document to add or edit
-        """
-
         if doc.docid in self.documents_by_docid:
             # Handle collisions; assume that we are re-indexing the
             # same document so remove it from the indexes before
@@ -178,27 +75,9 @@ class Corpus(object):
             self.docids_with_property[key].add(doc.docid)
 
     def get_docids_by_exact_tag(self, tag: str) -> Set[str]:
-        """Return the set of docids that have a particular tag.
-
-        Args:
-            tag: the tag for which to search
-
-        Returns:
-            A set containing docids with the provided tag which
-            may be empty."""
         return self.docids_by_tag[tag]
 
     def get_docids_by_searching_tags(self, tag: str) -> Set[str]:
-        """Return the set of docids with a tag that contains a str.
-
-        Args:
-            tag: the tag pattern for which to search
-
-        Returns:
-            A set containing docids with tags that match the pattern
-            provided.  e.g., if the arg was "foo" tags "football", "foobar",
-            and "food" all match.
-        """
         ret = set()
         for search_tag in self.docids_by_tag:
             if tag in search_tag:
@@ -207,29 +86,9 @@ class Corpus(object):
         return ret
 
     def get_docids_with_property(self, key: str) -> Set[str]:
-        """Return the set of docids that have a particular property no matter
-        what that property's value.
-
-        Args:
-            key: the key value to search for.
-
-        Returns:
-            A set of docids that contain the key (no matter what value)
-            which may be empty.
-        """
         return self.docids_with_property[key]
 
     def get_docids_by_property(self, key: str, value: str) -> Set[str]:
-        """Return the set of docids that have a particular property with a
-        particular value.
-
-        Args:
-            key: the key to search for
-            value: the value that key must have in order to match a doc.
-
-        Returns:
-            A set of docids that contain key with value which may be empty.
-        """
         return self.docids_by_property[(key, value)]
 
     def invert_docid_set(self, original: Set[str]) -> Set[str]:
@@ -237,40 +96,9 @@ class Corpus(object):
         return {docid for docid in self.documents_by_docid if docid not in original}
 
     def get_doc(self, docid: str) -> Optional[Document]:
-        """Given a docid, retrieve the previously added Document.
-
-        Args:
-            docid: the docid to retrieve
-
-        Returns:
-            The Document with docid or None to indicate no match.
-        """
         return self.documents_by_docid.get(docid, None)
 
     def query(self, query: str) -> Optional[Set[str]]:
-        """Query the corpus for documents that match a logical expression.
-
-        Args:
-            query: the logical query expressed using a simple language
-                that understands conjunction (and operator), disjunction
-                (or operator) and inversion (not operator) as well as
-                parenthesis.  Here are some legal sample queries::
-
-                    tag1 and tag2 and not tag3
-
-                    (tag1 or tag2) and (tag3 or tag4)
-
-                    (tag1 and key2:value2) or (tag2 and key1:value1)
-
-                    key:*
-
-                    tag1 and key:*
-
-        Returns:
-            A (potentially empty) set of docids for the matching
-            (previously added) documents or None on error.
-        """
-
         try:
             root = self._parse_query(query)
         except PyUtilsParseError:
@@ -319,11 +147,6 @@ class Corpus(object):
                 yield token
 
         def evaluate(corpus: Corpus, stack: List[str]):
-            """
-            Raises:
-                PyUtilsParseError: bad number of operations, unbalanced parenthesis,
-                    unknown operators, internal errors.
-            """
             node_stack: List[Node] = []
             for token in stack:
                 node = None
@@ -409,13 +232,6 @@ class Node(object):
         self.operands = operands
 
     def eval(self) -> Set[str]:
-        """Evaluate this node.
-
-        Raises:
-            PyUtilsParseError: unexpected operands, invalid key:value syntax, wrong
-                number of operands for operation, other invalid queries.
-        """
-
         evaled_operands: List[Union[Set[str], str]] = []
         for operand in self.operands:
             if isinstance(operand, Node):

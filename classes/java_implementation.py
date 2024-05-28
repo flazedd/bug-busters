@@ -226,6 +226,16 @@ class JavaImplementation(LanguageImplementation):
         os.chdir(current_dir)
         return result
 
+    def exec_suite(self, package, test_name):
+        current_dir = os.getcwd()
+        os.chdir(os.path.join(current_dir, 'JavaProgramUnderTest'))
+        test = package + "." + test_name
+        result = subprocess.run(["gradlew", "test", "--tests", test, "--info"], shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True)
+        result = f'{result.stdout} {result.stderr}'
+        os.chdir(current_dir)
+        return result
+
     def did_test_fail(self, output):
         target = "FAILED"
         start_index = output.find(target)
@@ -309,7 +319,8 @@ class JavaImplementation(LanguageImplementation):
         return 'Java'
 
     def work_already_satisfied(self, folder, class_name, ai_model):
-        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/Test__{class_name}__{ai_model}__{constant.ITERATION}.java'
+        test_name = f'Test__{class_name}__{ai_model}__{constant.ITERATION}'
+        path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{test_name}.java'
         if not os.path.exists(path):
             # If it doesn't exist, create it
             return False
@@ -319,7 +330,12 @@ class JavaImplementation(LanguageImplementation):
                 # Check if the line contains the @Test annotation
                 if "@Test" in line:
                     count += 1
-            return count == constant.RETRIES
+            if count == constant.RETRIES:
+                result = self.exec_suite(folder, test_name)
+                passing = self.did_test_fail(result)
+                return not passing
+            else:
+                return False
 
     def generate_sbst_tool(self, folder, class_name):
         destination_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest_{constant.ITERATION}.java'

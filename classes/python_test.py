@@ -36,6 +36,8 @@ class PythonTestImplementation(HandleTestImplementation):
         index_tracker = end_import
         while True:
             start = content.find('def ', index_tracker)
+            if start == -1:
+                break
             end = content.find('def ', start + 4)
             if end == -1:
                 self.tests.append(content[start:])
@@ -43,7 +45,10 @@ class PythonTestImplementation(HandleTestImplementation):
             else:
                 self.tests.append(content[start:end])
             index_tracker = end
-        self.remove_last_test()
+        if len(self.tests) > 0:
+            result = self.oracle.exec_test(self.folder, self.test_name, self.tests[-1])
+            if self.oracle.did_test_fail(result):
+                self.remove_last_test()
         print(f'[+] Already found {len(self.tests)} working tests from previous iteration!')
 
     def get_required_tests(self):
