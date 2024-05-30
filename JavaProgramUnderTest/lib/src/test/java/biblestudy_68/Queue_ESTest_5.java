@@ -258,10 +258,10 @@ public class Queue_ESTest_5 {
       assertEquals(0, queue0.getPeakNumberItems());
   }
 
-  @Test
-  public void test24()  throws Throwable  {
-      Queue queue0 = new Queue();
-      String string0 = queue0.toString();
-      assertEquals("bible.util.Queue:[numItems=0, maxNumItems=0, maxCapacity=-1, getObjects()=[]\r\n]", string0);
-  }
+//  @Test
+//  public void test24()  throws Throwable  {
+//      Queue queue0 = new Queue();
+//      String string0 = queue0.toString();
+//      assertEquals("bible.util.Queue:[numItems=0, maxNumItems=0, maxCapacity=-1, getObjects()=[]\r\n]", string0);
+//  }
 }

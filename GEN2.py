@@ -1,30 +1,18 @@
-import os
-import glob
+from config import constant
+
+oracles = constant.ORACLES
 
 
-def construct_dynamic_path(base_directory):
-    # Define the initial parts of the path
-    part1 = os.path.join(base_directory, "73")
-
-    # Search for the single directory at this level
-    search_pattern = os.path.join(part1, "*")
-    directories = [d for d in glob.glob(search_pattern) if os.path.isdir(d)]
-
-    # Check if there is exactly one directory
-    if len(directories) != 1:
-        raise Exception(f"Expected exactly one directory at {part1}, found {len(directories)}")
-
-    # Construct the final path
-    target_directory = directories[0]
-    final_path = os.path.join(target_directory, "tests")
-# C:\Users\reini\Downloads\results\results\default120\73\osa_ora_server_utils_StringEncoder64\tests\1\osa\ora\server\utils\StringEncoder64_ESTest.java
-    return final_path
-
-
-# Example usage
-base_directory = r'C:\Users\reini\Downloads\results\results\default120'
-try:
-    constructed_path = construct_dynamic_path(base_directory)
-    print(f"Constructed path: {constructed_path}")
-except Exception as e:
-    print(e)
+print('[+] Starting...')
+for oracle in oracles:
+    args = oracle.get_args()
+    # arg = ('templateit_5', 'OpMatcher', 1)
+    # gen_es_tests(arg[0], arg[1])
+    for arg in args:
+        for i in range(1, 9):
+            test_name = f'{arg[1]}_ESTest_{i}'
+            result = oracle.exec_suite(arg[0], test_name)
+            if oracle.did_test_fail(result):
+                print(f'[+] FAILED: {test_name}')
+            else:
+                print(f'[+] PASSED: {test_name}')
