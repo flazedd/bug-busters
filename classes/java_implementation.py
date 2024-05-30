@@ -24,15 +24,16 @@ class JavaImplementation(LanguageImplementation):
 
         counter = 0
         end = begin
-
+        brace_seen = False
         for char in ai_output[begin:]:
             if char == "{":
+                brace_seen = True
                 counter += 1
             elif char == "}":
                 counter -= 1
 
-            if counter < 0 or char == '`':
-                return ai_output[begin:end]
+            if (counter <= 0 and brace_seen) or char == '`':
+                return ai_output[begin:end+1]
 
             end += 1
 
