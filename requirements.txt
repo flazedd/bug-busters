@@ -69,7 +69,7 @@ pyee==11.1.0
 Pygments==2.18.0
 pynguin==0.36.0
 pyparsing==3.1.2
-pyppeteer==2.0.0
+pyppeteer
 pyquery==2.0.0
 pytest==8.2.0
 python-dateutil==2.9.0.post0
