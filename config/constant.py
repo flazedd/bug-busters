@@ -10,9 +10,9 @@ SLEEP = 2
 # ORACLES = [JavaImplementation()]
 ORACLES = [PythonImplementation()]
 # ORACLES = [JavaImplementation(), PythonImplementation()]
-PYNGUIN_MAX_SEARCH = '30'
+PYNGUIN_MAX_SEARCH = '120'
 DEFAULT_IMPORT = 'module_0'
-ITERATION = 5 # The run number for your experiment!
+ITERATION = 10 # The run number for your experiment!
 
 # Choose 0 for: CohereForAI/c4ai-command-r-plus
 # Choose 1 for: meta-llama/Meta-Llama-3-70B-Instruct works
