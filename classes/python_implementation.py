@@ -331,7 +331,7 @@ class PythonImplementation(LanguageImplementation):
             count = 0
             for line in py_file:
                 # Check if the line contains the @Test annotation
-                if "def " in line:
+                if "def test" in line:
                     count += 1
             return count
 

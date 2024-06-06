@@ -58,10 +58,10 @@ class PythonTestImplementation(HandleTestImplementation):
         result = ''
         imp = ''
         for line in self.imports:
-            if line.startswith('from __'):
+            if line.startswith('from __') and '__ import' in line:
                 imp += line
         for line in self.imports:
-            if not line.startswith('from __'):
+            if not (line.startswith('from __') and '__ import' in line):
                 imp += line
         result += imp
         # result += self.begin_class

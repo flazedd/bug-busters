@@ -6,6 +6,8 @@ from utility import utils
 # args = utils.get_args()
 # print(args)
 oracles = constant.ORACLES
+
+
 threads = []
 # [('a4j_2', 'Directors', 1), ('templateit_5', 'OpMatcher', 1), ('tullibee_1', 'Contract', 1), ('tullibee_1', 'Util', 1)]
 # [('a4j_2', 'Directors', 1)]
