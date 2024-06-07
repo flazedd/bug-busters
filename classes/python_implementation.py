@@ -1,4 +1,6 @@
 import ast
+import concurrent
+import math
 import os
 import random
 import string
@@ -131,11 +133,12 @@ class PythonImplementation(LanguageImplementation):
         stats = self.get_statistics(result)
         if stats is not None:
             return stats
-        print('[+] Could not find stats in mutpy, rerunning mutpy...')
+        print('[+] Could not find stats in mutpy, returning NaN...')
         time.sleep(2)
-        return self.get_mutation_score(folder, file_name, test_name)
+        return math.nan
+        # return self.get_mutation_score(folder, file_name, test_name)
 
-    def get_dict(self) -> dict:
+    def get_dict(self, run) -> dict:
         directory = 'PythonPUT/'
         args = self.get_args()
         result = {}
@@ -146,22 +149,23 @@ class PythonImplementation(LanguageImplementation):
             cpath = f'{directory}/{folder}'
             for file in os.listdir(cpath):
                 mixed_name = f'{folder}.{class_name}'
-                if file.startswith(f"test__{class_name}") and file.endswith(f'__{constant.ITERATION}.py'):
+                if file.startswith(f"test__{class_name}") and file.endswith(f'__{run}.py'):
                     # print(file)
-                    test_name = file.split('.')[0]
-                    ai_model = test_name.split("__")[2]
-                    # print(f'[+] AI: {ai_model}')
-                    print(f'[+] Getting mutation score for {test_name}')
-                    result.setdefault(ai_model, {})
-                    result[ai_model][mixed_name] = [0]
-                    py_reader = PythonReaderTestImplementation(folder, self, test_name)
-                    amount_tests = py_reader.amount_of_tests()
-                    for i in range(1, amount_tests + 1):
-                        py_reader.partial_write(i)
-                        score = self.get_mutation_score(folder, class_name, test_name)
-                        print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
-                        result[ai_model][mixed_name].append(score)
-                elif file.startswith(f"test_{class_name}"):
+                    pass
+                    # test_name = file.split('.')[0]
+                    # ai_model = test_name.split("__")[2]
+                    # # print(f'[+] AI: {ai_model}')
+                    # print(f'[+] Getting mutation score for {test_name}')
+                    # result.setdefault(ai_model, {})
+                    # result[ai_model][mixed_name] = [0]
+                    # py_reader = PythonReaderTestImplementation(folder, self, test_name)
+                    # amount_tests = py_reader.amount_of_tests()
+                    # for i in range(1, amount_tests + 1):
+                    #     py_reader.partial_write(i)
+                    #     score = self.get_mutation_score(folder, class_name, test_name)
+                    #     print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
+                    #     result[ai_model][mixed_name].append(score)
+                elif file.startswith(f"test_{class_name}") and file.endswith(f'_{run}.py'):
                     test_name = file.split('.')[0]
                     print(f'[+] Getting mutation score for {test_name}')
                     result.setdefault('Pynguin', {})
@@ -282,13 +286,13 @@ class PythonImplementation(LanguageImplementation):
                  f' assert 1 == 1\n``` only use {constant.DEFAULT_IMPORT} in your test case')
         return Prompt.get_input(class_code, imports, extra)
 
-    def create_file(self, folder, class_name, ai_model):
+    def create_file(self, folder, class_name, ai_model, run):
         path = f'./PythonPUT/{folder}'
         # Check if the directory exists
         if not os.path.exists(path):
             # If it doesn't exist, create it
             os.makedirs(path)
-        file = f'test__{class_name}__{ai_model}__{constant.ITERATION}'
+        file = f'test__{class_name}__{ai_model}__{run}'
         file_name = f'{file}.py'
         file_path = os.path.join(path, file_name)
         if not os.path.exists(file_path):
@@ -311,8 +315,8 @@ class PythonImplementation(LanguageImplementation):
     def __str__(self):
         return 'Python'
 
-    def work_already_satisfied(self, folder, class_name, ai_model):
-        test_name = f'test__{class_name}__{ai_model}__{constant.ITERATION}'
+    def work_already_satisfied(self, folder, class_name, ai_model, run):
+        test_name = f'test__{class_name}__{ai_model}__{run}'
         path = f'PythonPUT/{folder}/.py'
         if not os.path.exists(path):
             # If it doesn't exist, create it
@@ -335,12 +339,41 @@ class PythonImplementation(LanguageImplementation):
                     count += 1
             return count
 
-    def generate_sbst_tool(self, folder, class_name):
+    def pynguin(self, folder, class_name):
+        command = [
+            '.\\venv\\Scripts\\pynguin.exe',
+            '--project-path', f'PythonPUT/{folder}',
+            '--module-name', class_name,
+            '--output-path', f'PythonPUT/{folder}',
+            '--assertion-generation', 'SIMPLE',
+            '--algorithm', 'DYNAMOSA',
+            '--maximum-search-time', constant.PYNGUIN_MAX_SEARCH
+        ]
+
+        # Run the command
+        result = subprocess.run(command, capture_output=True, text=True)
+        return result
+
+    def run_with_timeout(self, func, timeout, *args):
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(func, *args)
+            try:
+                result = future.result(timeout=timeout)
+                return result
+            except concurrent.futures.TimeoutError:
+                print(f"Function call timed out after {timeout} seconds. Retrying...")
+                return self.run_with_timeout(func, timeout, *args)
+
+    def generate_sbst_tool(self, folder, class_name, run):
         # Set the environment variable in the current process
-        new_path = f'./PythonPUT/{folder}/test_{class_name}_{constant.ITERATION}.py'
+        epath = f'./PythonPUT/{folder}/test_{class_name}_{run}.py'
+        new_path = f'./PythonPUT/{folder}/test_{class_name}_{constant.PYNGUIN_MAX_SEARCH}_{run}.py'
         # Check if the directory exists
         if os.path.exists(new_path) and os.path.getsize(new_path) > 0:
             print(f'[+] Pynguin {new_path} is non-empty. Skipping.')
+            return
+        if os.path.exists(epath) and os.path.getsize(epath) > 0:
+            print(f'[+] Pynguin {epath} is non-empty. Skipping.')
             return
         os.environ['PYNGUIN_DANGER_AWARE'] = 'true'
         # print(f"[+] PYNGUIN_DANGER_AWARE: {os.environ['PYNGUIN_DANGER_AWARE']}")
@@ -348,23 +381,18 @@ class PythonImplementation(LanguageImplementation):
         while True:
             print(f'[+] Running Pynguin on {folder}/{class_name} on try {iteration}')
             iteration += 1
-            command = [
-                '.\\venv\\Scripts\\pynguin.exe',
-                '--project-path', f'PythonPUT/{folder}',
-                '--module-name', class_name,
-                '--output-path', f'PythonPUT/{folder}',
-                '--assertion-generation', 'SIMPLE',
-                '--algorithm', 'DYNAMOSA',
-                '--maximum-search-time', constant.PYNGUIN_MAX_SEARCH
-            ]
-
-            # Run the command
-            result = subprocess.run(command, capture_output=True, text=True)
+            timeout = int(constant.PYNGUIN_MAX_SEARCH) + 30
+            result = self.run_with_timeout(self.pynguin, timeout, folder, class_name)
+            # result = self.pynguin(folder, class_name)
             print(f'[+] stdout: {result.stdout}')
             print(f'[+] stderror: {result.stderr}')
             print(f'[+] Generated Pynguin tests for {folder}/{class_name}.py')
-            result = self.exec_mutpy(folder, class_name, f'test_{class_name}')
-            if result.find('AssertionError') == -1:
+            test_name = f'test_{class_name}'
+            result = self.exec_suite(folder, test_name)
+            if not self.did_test_fail(result):
+            # result = self.exec_mutpy(folder, class_name, test_name)
+            # stats = self.get_statistics(result)
+            # if stats is not None:
                 old_path = f'./PythonPUT/{folder}/test_{class_name}.py'
                 os.rename(old_path, new_path)
                 break

@@ -60,12 +60,12 @@ def save_dict_to_json(dictionary, filepath):
 #         json.dump(results, file, indent=4)
 
 
-def save_results(results):
+def save_results(results, run):
     # Ensure the directory exists
     os.makedirs('results', exist_ok=True)
 
     # Generate the filename with the given number
-    filename = f"results/result_{constant.ITERATION}.json"
+    filename = f"results/result_{run}.json"
 
     # Save the results to the JSON file with indentation for readability
     with open(filename, 'w') as file:
@@ -105,12 +105,12 @@ def get_class_names_from_file(file_path):
 
 
 # expects tuple with (folder, file_name, model_number)
-def worker(folder, class_name, selection, oracle):
+def worker(folder, class_name, selection, oracle, run):
     start = time.time()
     chatbot = credentails.get_chatbot()
     l = chatbot.get_remote_llms()
     ident = get_identifier(l[selection].name)
-    if oracle.work_already_satisfied(folder, class_name, ident):
+    if oracle.work_already_satisfied(folder, class_name, ident, run):
         print(f'[+] Work satisfied for {folder}/{class_name}')
         return
     else:
@@ -127,7 +127,7 @@ def worker(folder, class_name, selection, oracle):
     replies_without_tests = 0
     # Name without extension .java, .py
 
-    test_name = oracle.create_file(folder, class_name, ident)
+    test_name = oracle.create_file(folder, class_name, ident, run)
     test_handle = oracle.get_test_instance(folder, class_name, test_name)
     tests_required = test_handle.get_required_tests()
     while tests_required > 0:

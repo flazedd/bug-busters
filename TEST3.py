@@ -1,18 +1,20 @@
-import numpy as np
-import scipy.stats as stats
+def change_constant(n):
+    file_path = './config/constant.py'  # Renamed to avoid conflict
+    modified_lines = []
 
-# Sample data
-data1 = np.random.normal(loc=0, scale=1, size=1000)  # Replace with your first dataset
-data2 = np.random.normal(loc=0, scale=0.9, size=1000)  # Replace with your second dataset
+    # Read the file and modify the necessary line
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.startswith('ITERATION = '):
+                print('[+] Changing line!')
+                modified_lines.append(f'ITERATION = {n}\n')  # Added newline character
+            else:
+                modified_lines.append(line)
 
-# Levene's Test
-levene_stat, levene_p = stats.levene(data1, data2)
+    # Write the modified lines back to the file
+    with open(file_path, 'w') as wfile:
+        wfile.writelines(modified_lines)
 
-# Interpretation
-alpha = 0.05
-print(f"Levene's Test: Statistics={levene_stat}, p-value={levene_p}")
 
-if levene_p > alpha:
-    print("Fail to reject the null hypothesis. The variances are equal.")
-else:
-    print("Reject the null hypothesis. The variances are not equal.")
+# Example usage
+change_constant(3)

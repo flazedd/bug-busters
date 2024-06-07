@@ -1,0 +1,26 @@
+{
+    "Python": {
+        "Pynguin": {
+            "codetiming.timers": 21.1,
+            "dataclasses_json.stringcase": 100.0,
+            "docstring_parser.common": 44.0,
+            "docstring_parser.epydoc": 17.2,
+            "docstring_parser.google": 7.8,
+            "docstring_parser.numpydoc": 5.5,
+            "docstring_parser.parser": 50.0,
+            "docstring_parser.rest": 15.7,
+            "flutils.txtutils": 43.9,
+            "flutils.validators": 70.0,
+            "httpie.status": 70.6,
+            "isort.comments": 20.0,
+            "pymonet.immutable_list": 25.8,
+            "pyutils.bst": 93.0,
+            "pyutils.centcount": 70.0,
+            "pyutils.logical_search": 0.0,
+            "pyutils.money": 62.0,
+            "pyutils.rate": 33.3,
+            "pyutils.trie": 49.0,
+            "typesystem.unique": 60.0
+        }
+    }
+}

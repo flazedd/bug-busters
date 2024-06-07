@@ -14,7 +14,7 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
-    def get_dict(self) -> dict:
+    def get_dict(self, run) -> dict:
         pass
 
     @abstractmethod
@@ -50,7 +50,7 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
-    def create_file(self, folder, class_name, ai_model):
+    def create_file(self, folder, class_name, ai_model, run):
         pass
 
     @abstractmethod
@@ -58,11 +58,11 @@ class LanguageImplementation(ABC):
         pass
 
     @abstractmethod
-    def work_already_satisfied(self, folder, class_name, ai_model):
+    def work_already_satisfied(self, folder, class_name, ai_model, run):
         pass
 
     @abstractmethod
-    def generate_sbst_tool(self, folder, class_name):
+    def generate_sbst_tool(self, folder, class_name, run):
         pass
 
 

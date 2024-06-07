@@ -1,20 +1,25 @@
-from scipy import stats
+import concurrent.futures
+import time
 
-# Assuming you have two samples or arrays: sample1 and sample2
-# Example data
-sample1 = [1, 2, 3, 4, 5]
-sample2 = [6, 7, 8, 9, 10]
+def function_to_run(arg1, arg2):
+    # Simulating a long-running process and printing the arguments
+    print(f"Function called with arguments: {arg1}, {arg2}")
+    time.sleep(5)  # Simulate a long-running process
+    return "Completed"
 
-# Perform t-test
-t_statistic, p_value = stats.ttest_ind(sample1, sample2)
+def run_with_timeout(func, timeout, *args):
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(func, *args)
+        try:
+            result = future.result(timeout=timeout)
+            return result
+        except concurrent.futures.TimeoutError:
+            print(f"Function call timed out after {timeout} seconds. Retrying...")
+            return run_with_timeout(func, timeout, *args)
 
-# Print the results
-print("T-statistic:", t_statistic)
-print("P-value:", p_value)
-
-# Interpret the results
-alpha = 0.05
-if p_value < alpha:
-    print("Reject the null hypothesis. There is a significant difference between the means of the two samples.")
-else:
-    print("Fail to reject the null hypothesis. There is no significant difference between the means of the two samples.")
+if __name__ == "__main__":
+    timeout = 7  # 1 minute
+    arg1 = "Hello"
+    arg2 = "World"
+    result = run_with_timeout(function_to_run, timeout, arg1, arg2)
+    print(result)

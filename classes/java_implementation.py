@@ -141,7 +141,7 @@ class JavaImplementation(LanguageImplementation):
     # ('templateit_5', 'OpMatcher', 1)
     # ('tullibee_1', 'Contract', 1)
     # ('tullibee_1', 'Util', 1)
-    def get_dict(self):
+    def get_dict(self, run):
         directory = 'JavaProgramUnderTest/lib/src/test/java'
         args = self.get_args()
         result = {}
@@ -155,7 +155,7 @@ class JavaImplementation(LanguageImplementation):
                 mixed_name = f'{folder}.{class_name}'
                 # if not file.startswith('Test__HtmlEncoder__Meta_Llama_3_70B_Instruct__1'):
                 #     continue
-                if file.startswith(f"Test__{class_name}") and file.endswith(f'__{constant.ITERATION}.java'):
+                if file.startswith(f"Test__{class_name}") and file.endswith(f'__{run}.java'):
                     # print(file)
                     test_name = file.split('.')[0]
                     ai_model = test_name.split("__")[2]
@@ -170,7 +170,7 @@ class JavaImplementation(LanguageImplementation):
                         score = self.get_mutation_score(folder, class_name, test_name)
                         print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
                         result[ai_model][mixed_name].append(score)
-                elif file.endswith(f'{class_name}_ESTest_{constant.ITERATION}.java'):
+                elif file.endswith(f'{class_name}_ESTest_{run}.java'):
                     test_name = file.split('.')[0]
                     print(f'[+] Getting mutation score for {test_name}')
                     tool_name = 'EvoSuite'
@@ -299,13 +299,13 @@ class JavaImplementation(LanguageImplementation):
     def get_test_instance(self, folder, class_name, test_name):
         return JavaTestImplementation(folder, class_name, self, test_name)
 
-    def create_file(self, folder, class_name, ai_model):
+    def create_file(self, folder, class_name, ai_model, run):
         path = f'./JavaProgramUnderTest/lib/src/test/java/{folder}'
         # Check if the directory exists
         if not os.path.exists(path):
             # If it doesn't exist, create it
             os.makedirs(path)
-        file = f'Test__{class_name}__{ai_model}__{constant.ITERATION}'
+        file = f'Test__{class_name}__{ai_model}__{run}'
         file_name = f'{file}.java'
         file_path = os.path.join(path, file_name)
         if not os.path.exists(file_path):
@@ -320,8 +320,8 @@ class JavaImplementation(LanguageImplementation):
     def __str__(self):
         return 'Java'
 
-    def work_already_satisfied(self, folder, class_name, ai_model):
-        test_name = f'Test__{class_name}__{ai_model}__{constant.ITERATION}'
+    def work_already_satisfied(self, folder, class_name, ai_model, run):
+        test_name = f'Test__{class_name}__{ai_model}__{run}'
         path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{test_name}.java'
         if not os.path.exists(path):
             # If it doesn't exist, create it
@@ -339,8 +339,8 @@ class JavaImplementation(LanguageImplementation):
             else:
                 return False
 
-    def generate_sbst_tool(self, folder, class_name):
-        destination_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest_{constant.ITERATION}.java'
+    def generate_sbst_tool(self, folder, class_name, run):
+        destination_path = f'JavaProgramUnderTest/lib/src/test/java/{folder}/{class_name}_ESTest_{run}.java'
         os.makedirs(os.path.dirname(destination_path), exist_ok=True)
         if not os.path.exists(destination_path):
             # If it doesn't exist, create it
