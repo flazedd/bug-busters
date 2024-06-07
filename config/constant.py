@@ -7,9 +7,9 @@ PRINT_LOCK = threading.Lock()
 MODEL = 1
 JSON_NAME = 'result'
 SLEEP = 2
-ORACLES = [JavaImplementation()]
+# ORACLES = [JavaImplementation()]
 # ORACLES = [PythonImplementation()]
-# ORACLES = [JavaImplementation(), PythonImplementation()]
+ORACLES = [JavaImplementation(), PythonImplementation()]
 PYNGUIN_MAX_SEARCH = '30'
 DEFAULT_IMPORT = 'module_0'
 
