@@ -110,7 +110,7 @@ public class NaturalSort_ESTest_6 {
   @Test
   public void test14()  throws Throwable  {
       NaturalSort.CINaturalComparator naturalSort_CINaturalComparator0 = new NaturalSort.CINaturalComparator();
-      Integer integer0 = new Integer(1);
+      Integer integer0 = 1;
       // Undeclared exception!
       try { 
         naturalSort_CINaturalComparator0.compare(integer0, "");

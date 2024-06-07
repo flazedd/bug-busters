@@ -50,4 +50,6 @@ public void wildcardSearchTest8() {
     assertTrue(search.doesMatch("xyzabc"));
 }
 
+
+
 }

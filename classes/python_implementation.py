@@ -83,26 +83,29 @@ class PythonImplementation(LanguageImplementation):
 
     @staticmethod
     def find_numbers_before_percent(string):
-        i = -1
-        if len(string) < 2:
-            return None
-        while True:
-            if string[i] == '%':
+        try:
+            i = -1
+            if len(string) < 2:
+                return None
+            while True:
+                if string[i] == '%':
+                    i -= 1
+                    break
                 i -= 1
-                break
-            i -= 1
-        dot_seen = False
-        numbers = ''
-        while True:
-            if string[i].isdigit():
-                numbers = string[i] + numbers
-            elif string[i] == '.' and not dot_seen:
-                dot_seen = True
-                numbers = string[i] + numbers
-            else:
-                break
-            i -= 1
-        return float(numbers) if numbers else None
+            dot_seen = False
+            numbers = ''
+            while True:
+                if string[i].isdigit():
+                    numbers = string[i] + numbers
+                elif string[i] == '.' and not dot_seen:
+                    dot_seen = True
+                    numbers = string[i] + numbers
+                else:
+                    break
+                i -= 1
+            return float(numbers) if numbers else None
+        except IndexError:
+            return None
 
     def get_statistics(self, terminal_output):
         start = terminal_output.find("[*] Mutation score [")

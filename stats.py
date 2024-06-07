@@ -10,8 +10,8 @@ from config.constant import ORACLES
 # print(args)
 obj: dict = {}
 start = time.time()
-run = constant.ITERATION
-runs = range(1, 9)
+# run = constant.ITERATION
+runs = range(1, 4)
 print(runs)
 for run in runs:
     for oracle in ORACLES:

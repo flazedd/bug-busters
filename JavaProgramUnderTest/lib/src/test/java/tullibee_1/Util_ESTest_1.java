@@ -127,7 +127,7 @@ public class Util_ESTest_1 {
   @Test
   public void test14()  throws Throwable  {
       Vector<Object> vector0 = new Vector<Object>();
-      Integer integer0 = new Integer(8);
+      Integer integer0 = 8;
       vector0.add((Object) integer0);
       Vector<Object> vector1 = new Vector<Object>();
       vector1.add((Object) null);
@@ -138,7 +138,7 @@ public class Util_ESTest_1 {
   @Test
   public void test15()  throws Throwable  {
       Vector<Object> vector0 = new Vector<Object>();
-      Integer integer0 = new Integer(877);
+      Integer integer0 = 877;
       vector0.add((Object) integer0);
       boolean boolean0 = Util.VectorEqualsUnordered(vector0, (Vector) null);
       assertFalse(boolean0);

@@ -1,0 +1,272 @@
+{
+    "Java": {
+        "EvoSuite": {
+            "battlecry_72.bcWord": 77.0,
+            "beanbin_15.WildcardSearch": 96.0,
+            "biblestudy_68.Queue": 76.0,
+            "corina_35.NaturalSort": 68.0,
+            "corina_35.Sort": 29.0,
+            "corina_35.StringComparator": 100.0,
+            "corina_35.StringUtils": 89.0,
+            "fim1_73.StringEncoder64": 71.0,
+            "imsmart_11.HTMLFilter": 100.0,
+            "javaviewcontrol_33.Base64Coder": 94.0,
+            "javaviewcontrol_33.HtmlEncoder": 67.0,
+            "jiprof_51.ByteVector": 33.0,
+            "lagoon_52.Utils": 96.0,
+            "openjms_66.CommandLine": 84.0,
+            "saxpath_24.Axis": 100.0,
+            "schemaspy_36.Version": 84.0,
+            "sfmis_7.Base64": 77.0,
+            "templateit_5.OpMatcher": 72.0,
+            "tullibee_1.Contract": 97.0,
+            "tullibee_1.Util": 100.0
+        },
+        "Meta_Llama_3_70B_Instruct": {
+            "battlecry_72.bcWord": [
+                0,
+                44.0,
+                49.0,
+                69.0,
+                74.0,
+                74.0,
+                77.0,
+                79.0,
+                82.0
+            ],
+            "beanbin_15.WildcardSearch": [
+                0,
+                54.0,
+                54.0,
+                54.0,
+                62.0,
+                62.0,
+                62.0,
+                62.0,
+                62.0
+            ],
+            "biblestudy_68.Queue": [
+                0,
+                15.0,
+                29.0,
+                35.0,
+                38.0,
+                53.0,
+                62.0,
+                65.0,
+                68.0
+            ],
+            "corina_35.NaturalSort": [
+                0,
+                30.0,
+                33.0,
+                35.0,
+                44.0,
+                47.0,
+                48.0,
+                56.0,
+                58.0
+            ],
+            "corina_35.Sort": [
+                0,
+                57.0,
+                57.0,
+                57.0,
+                57.0,
+                57.0,
+                57.0,
+                57.0,
+                57.0
+            ],
+            "corina_35.StringComparator": [
+                0,
+                38.0,
+                44.0,
+                63.0,
+                69.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0
+            ],
+            "corina_35.StringUtils": [
+                0,
+                5.0,
+                14.0,
+                38.0,
+                46.0,
+                54.0,
+                70.0,
+                70.0,
+                70.0
+            ],
+            "fim1_73.StringEncoder64": [
+                0,
+                47.0,
+                49.0,
+                49.0,
+                53.0,
+                53.0,
+                63.0,
+                63.0,
+                63.0
+            ],
+            "imsmart_11.HTMLFilter": [
+                0,
+                86.0,
+                86.0,
+                86.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0
+            ],
+            "javaviewcontrol_33.Base64Coder": [
+                0,
+                89.0,
+                89.0,
+                89.0,
+                89.0,
+                89.0,
+                90.0,
+                94.0,
+                94.0
+            ],
+            "javaviewcontrol_33.HtmlEncoder": [
+                0,
+                61.0,
+                61.0,
+                61.0,
+                67.0,
+                78.0,
+                78.0,
+                83.0,
+                83.0
+            ],
+            "jiprof_51.ByteVector": [
+                0,
+                1.0,
+                4.0,
+                6.0,
+                7.0,
+                9.0,
+                15.0,
+                17.0,
+                19.0
+            ],
+            "lagoon_52.Utils": [
+                0,
+                13.0,
+                21.0,
+                33.0,
+                42.0,
+                42.0,
+                62.0,
+                62.0,
+                67.0
+            ],
+            "openjms_66.CommandLine": [
+                0,
+                22.0,
+                31.0,
+                44.0,
+                44.0,
+                50.0,
+                53.0,
+                59.0,
+                59.0
+            ],
+            "saxpath_24.Axis": [
+                0,
+                3.0,
+                35.0,
+                38.0,
+                40.0,
+                43.0,
+                45.0,
+                48.0,
+                50.0
+            ],
+            "schemaspy_36.Version": [
+                0,
+                11.0,
+                37.0,
+                37.0,
+                47.0,
+                53.0,
+                53.0,
+                58.0,
+                58.0
+            ],
+            "sfmis_7.Base64": [
+                0,
+                75.0,
+                91.0,
+                91.0,
+                91.0,
+                92.0,
+                92.0,
+                92.0,
+                92.0
+            ],
+            "templateit_5.OpMatcher": [
+                0,
+                24.0,
+                31.0,
+                38.0,
+                52.0,
+                69.0,
+                72.0,
+                79.0,
+                83.0
+            ],
+            "tullibee_1.Contract": [
+                0,
+                50.0,
+                53.0,
+                58.0,
+                61.0,
+                64.0,
+                67.0,
+                69.0,
+                72.0
+            ],
+            "tullibee_1.Util": [
+                0,
+                4.0,
+                4.0,
+                29.0,
+                32.0,
+                36.0,
+                39.0,
+                39.0,
+                39.0
+            ]
+        }
+    },
+    "Python": {
+        "Pynguin": {
+            "codetiming.timers": 31.6,
+            "dataclasses_json.stringcase": 100.0,
+            "docstring_parser.common": 50.0,
+            "docstring_parser.epydoc": 16.3,
+            "docstring_parser.google": 5.7,
+            "docstring_parser.numpydoc": 15.0,
+            "docstring_parser.parser": 50.0,
+            "docstring_parser.rest": 38.8,
+            "flutils.txtutils": 47.0,
+            "flutils.validators": 55.6,
+            "httpie.status": 64.7,
+            "isort.comments": 75.0,
+            "pymonet.immutable_list": 24.1,
+            "pyutils.bst": 22.4,
+            "pyutils.centcount": 61.2,
+            "pyutils.logical_search": 0.0,
+            "pyutils.money": 59.2,
+            "pyutils.rate": 56.8,
+            "pyutils.trie": 100.0,
+            "typesystem.unique": 40.0
+        }
+    }
+}
