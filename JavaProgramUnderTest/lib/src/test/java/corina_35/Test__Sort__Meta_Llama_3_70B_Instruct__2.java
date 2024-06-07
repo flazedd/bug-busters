@@ -99,6 +99,19 @@ public void testSortNullValue() {
 }
 @Test
 public void testSorting() {
+    class MyObject {
+        private String name;
+        private int age;
+
+        public MyObject(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public int getAge() {
+            return age;
+        }
+    }
     List<MyObject> list = new java.util.ArrayList<>();
     list.add(new MyObject("Alice", 20));
     list.add(new MyObject("Bob", 18));
@@ -109,22 +122,23 @@ public void testSorting() {
     assertEquals(22, list.get(0).getAge());
 }
 
-class MyObject {
-    private String name;
-    private int age;
-
-    public MyObject(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public int getAge() {
-        return age;
-    }
-}
 
 @Test
 public void testSortingByName() {
+    class MyOtherObject {
+        private String name;
+        private int age;
+
+        public MyOtherObject(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     List<MyOtherObject> list = new java.util.ArrayList<>();
     list.add(new MyOtherObject("Bob", 20));
     list.add(new MyOtherObject("Alice", 18));
@@ -135,22 +149,21 @@ public void testSortingByName() {
     assertEquals("Alice", list.get(0).getName());
 }
 
-class MyOtherObject {
-    private String name;
-    private int age;
-
-    public MyOtherObject(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-}
-
 @Test
 public void testSortingWithNullValue() {
+    class MyNewObject {
+        private String name;
+        private Integer age;
+
+        public MyNewObject(String name, Integer age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+    }
     List<MyNewObject> list = new java.util.ArrayList<>();
     list.add(new MyNewObject("Bob", 20));
     list.add(new MyNewObject("Alice", 18));
@@ -161,22 +174,23 @@ public void testSortingWithNullValue() {
     assertNull(list.get(0).getAge());
 }
 
-class MyNewObject {
-    private String name;
-    private Integer age;
 
-    public MyNewObject(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-}
 
 @Test
 public void testSortingEmptyList() {
+    class MyAnotherObject {
+        private String name;
+        private Integer age;
+
+        public MyAnotherObject(String name, Integer age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+    }
     List<MyAnotherObject> list = new java.util.ArrayList<>();
 
     Sort.sort(list, "age"); // sort in ascending order by age
@@ -184,18 +198,6 @@ public void testSortingEmptyList() {
     assertEquals(0, list.size());
 }
 
-class MyAnotherObject {
-    private String name;
-    private Integer age;
 
-    public MyAnotherObject(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-}
 
 }

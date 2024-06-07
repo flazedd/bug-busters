@@ -236,6 +236,17 @@ public void testSortPrivateField() {
     }
 @Test
 public void testSortMethod() {
+    class MyClass {
+        private int value;
+
+        public MyClass(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
     List<MyClass> list = new java.util.ArrayList<>();
     list.add(new MyClass(5));
     list.add(new MyClass(2));
@@ -248,16 +259,6 @@ public void testSortMethod() {
     assertEquals(8, list.get(2).getValue());
 }
 
-class MyClass {
-    private int value;
 
-    public MyClass(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-}
 
 }
