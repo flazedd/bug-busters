@@ -1,57 +1,29 @@
-# from scipy import stats
-#
-# # Define two lists of numbers
-# group1 = [10, 12, 14, 15, 16, 18]
-# group2 = [13, 15, 16, 17, 19, 20]
-#
-# # Perform independent samples t-test
-# t_statistic, p_value = stats.ttest_ind(group1, group2)
-#
-# # Print the results
-# print("t-statistic:", t_statistic)
-# print("p-value:", p_value)
-#
-# # Define two lists of numbers
-# group1 = [10, 12, 14, 15, 16, 18]
-# group2 = [13, 15, 16, 17, 19, 20]
-#
-# # Perform Mann-Whitney U test
-# u_statistic, p_value = stats.mannwhitneyu(group1, group2)
-#
-# # Print the results
-# print("U statistic:", u_statistic)
-# print("p-value:", p_value)
-
-# # Example lists of lists
-# list1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-# list2 = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i']]
-#
-# # Zip the two lists together
-# zipped_lists = list(zip(list1, list2))
-#
-# # Print the result
-# print(zipped_lists)
-import pandas as pd
 import numpy as np
-import matplotlib as mpl
+from scipy.stats import wilcoxon
+import warnings
 
-# Create the DataFrame
-df = pd.DataFrame({
-    "strings": ["Adam", "Mike"],
-    "ints": [1, 3],
-    "floats": [1.123, 1000.23]
-})
+# Function to compute Vargha-Delaney A measure
+def vargha_delaney_A(x, y):
+    n1 = len(x)
+    n2 = len(y)
+    combined = np.concatenate([x, y])
+    ranks = np.argsort(np.argsort(combined))
+    r1 = np.sum(ranks[:n1])
+    A = (r1 - n1 * (n1 + 1) / 2) / (n1 * n2)
+    return A
 
-# Style the DataFrame
-styled_df = df.style \
-  .format({"floats": "{:,.3f}"}) \
-  .format_index(str.upper, axis=1) \
-  .set_caption("Styled DataFrame Example")
-
-# Rename the index
-df.index = ["row 1", "row 2"]
-
-# To display the styled DataFrame in a Jupyter Notebook
-print(styled_df)
+# Generate 1000 random samples for two groups
+np.random.seed(42)  # For reproducibility
+sn = 1
+x = np.random.normal(loc=0, scale=1, size=sn)
+y = np.random.normal(loc=1, scale=1, size=sn)
 
 
+w_stat, p_value = wilcoxon(x, y)
+
+# Calculate Vargha-Delaney A measure
+A = vargha_delaney_A(x, y)
+
+print(f"Wilcoxon signed-rank test statistic: {w_stat}")
+print(f"P-value: {p_value}")
+print(f"Vargha-Delaney A measure: {A}")
