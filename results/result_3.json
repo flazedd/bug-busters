@@ -255,7 +255,7 @@
             "docstring_parser.numpydoc": 12.1,
             "docstring_parser.parser": 0.0,
             "docstring_parser.rest": 15.7,
-            "flutils.txtutils": NaN,
+            "flutils.txtutils": 38.2,
             "flutils.validators": 64.7,
             "httpie.status": 64.7,
             "isort.comments": 30.0,

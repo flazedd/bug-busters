@@ -32,13 +32,13 @@ class PythonTestImplementation(HandleTestImplementation):
         filepath = f'./PythonPUT/{self.folder}/{self.test_name}.py'
         with open(filepath, 'r') as file:
             content = file.read()
-        end_import = content.find('def ')
+        end_import = content.find('def test')
         index_tracker = end_import
         while True:
-            start = content.find('def ', index_tracker)
+            start = content.find('def test', index_tracker)
             if start == -1:
                 break
-            end = content.find('def ', start + 4)
+            end = content.find('def test', start + 4)
             if end == -1:
                 self.tests.append(content[start:])
                 break

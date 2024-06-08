@@ -2,27 +2,24 @@
 # Please check them before you use them.
 import pytest
 import txtutils as module_0
-import re as module_1
+import builtins as module_1
+import re as module_2
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_0():
-    none_type_0 = None
-    module_0.len_without_ansi(none_type_0)
+    bool_0 = False
+    module_0.len_without_ansi(bool_0)
 
 
 def test_case_1():
-    str_0 = "n"
-    int_0 = module_0.len_without_ansi(str_0)
-    assert int_0 == 1
-    assert module_0.hexversion == 50987248
-
-
-def test_case_2():
-    bytes_0 = b"[d\xae8"
+    base_exception_0 = module_1.BaseException()
     bool_0 = False
     ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        fix_sentence_endings=bytes_0, max_lines=bool_0
+        break_long_words=base_exception_0,
+        drop_whitespace=bool_0,
+        tabsize=bool_0,
+        max_lines=bool_0,
     )
     assert (
         f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
@@ -31,12 +28,80 @@ def test_case_2():
     assert ansi_text_wrapper_0.width == 70
     assert ansi_text_wrapper_0.expand_tabs is True
     assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings == b"[d\xae8"
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert (
+        f"{type(ansi_text_wrapper_0.break_long_words).__module__}.{type(ansi_text_wrapper_0.break_long_words).__qualname__}"
+        == "builtins.BaseException"
+    )
+    assert ansi_text_wrapper_0.drop_whitespace is False
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize is False
+    assert ansi_text_wrapper_0.max_lines is False
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = ""
+    list_0 = ansi_text_wrapper_0.wrap(str_0)
+
+
+def test_case_2():
+    bool_0 = True
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
+        fix_sentence_endings=bool_0, break_long_words=bool_0, max_lines=bool_0
+    )
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is True
     assert ansi_text_wrapper_0.break_long_words is True
     assert ansi_text_wrapper_0.drop_whitespace is True
     assert ansi_text_wrapper_0.break_on_hyphens is True
     assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is False
+    assert ansi_text_wrapper_0.max_lines is True
     assert module_0.hexversion == 50987248
     assert (
         f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
@@ -83,84 +148,13 @@ def test_case_2():
 
 
 def test_case_3():
-    none_type_0 = None
+    base_exception_0 = module_1.BaseException()
     bool_0 = True
     ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        expand_tabs=none_type_0, replace_whitespace=none_type_0, break_long_words=bool_0
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == 70
-    assert ansi_text_wrapper_0.expand_tabs is None
-    assert ansi_text_wrapper_0.replace_whitespace is None
-    assert ansi_text_wrapper_0.fix_sentence_endings is False
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is None
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    str_0 = '*K2mnnY16"$I,jaCCL'
-    str_1 = ansi_text_wrapper_0.fill(str_0)
-    assert str_1 == '*K2mnnY16"$I,jaCCL'
-
-
-def test_case_4():
-    str_0 = ""
-    int_0 = module_0.len_without_ansi(str_0)
-    assert int_0 == 0
-    assert module_0.hexversion == 50987248
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_5():
-    bool_0 = False
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        drop_whitespace=bool_0, tabsize=bool_0
+        break_long_words=base_exception_0,
+        drop_whitespace=bool_0,
+        tabsize=bool_0,
+        max_lines=bool_0,
     )
     assert (
         f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
@@ -170,10 +164,156 @@ def test_case_5():
     assert ansi_text_wrapper_0.expand_tabs is True
     assert ansi_text_wrapper_0.replace_whitespace is True
     assert ansi_text_wrapper_0.fix_sentence_endings is False
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is False
+    assert (
+        f"{type(ansi_text_wrapper_0.break_long_words).__module__}.{type(ansi_text_wrapper_0.break_long_words).__qualname__}"
+        == "builtins.BaseException"
+    )
+    assert ansi_text_wrapper_0.drop_whitespace is True
     assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize is False
+    assert ansi_text_wrapper_0.tabsize is True
+    assert ansi_text_wrapper_0.max_lines is True
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "Convert a bytes type of escaped utf8 hexadecimal to a string.\n\n    Args:\n        data (bytes or bytearray or memoryview): The escaped utf8\n            hexadecimal bytes.\n        errors (str or :obj:`~UserString`): The error checking level.\n\n    Returns:\n        str: The given ``data`` (of escaped utf8 hexadecimal bytes)\n            converted into a :obj:`str`.\n        int: The number of the given ``data`` bytes consumed.\n\n    Raises:\n         UnicodeDecodeError: if the given ``data`` contains escaped\n            utf8 hexadecimal that references invalid utf8 bytes.\n\n\n    "
+    str_1 = ansi_text_wrapper_0.fill(str_0)
+    assert (
+        str_1 == "Convert a bytes type of escaped utf8 hexadecimal to a string. [...]"
+    )
+    assert ansi_text_wrapper_0.placeholder_len == 6
+    list_0 = ansi_text_wrapper_0.wrap(str_1)
+
+
+def test_case_4():
+    base_exception_0 = module_1.BaseException()
+    bool_0 = True
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
+        break_long_words=base_exception_0,
+        drop_whitespace=bool_0,
+        tabsize=bool_0,
+        max_lines=bool_0,
+    )
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert (
+        f"{type(ansi_text_wrapper_0.break_long_words).__module__}.{type(ansi_text_wrapper_0.break_long_words).__qualname__}"
+        == "builtins.BaseException"
+    )
+    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize is True
+    assert ansi_text_wrapper_0.max_lines is True
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "s@I}"
+    list_0 = ansi_text_wrapper_0.wrap(str_0)
+
+
+@pytest.mark.xfail(strict=True)
+def test_case_5():
+    base_exception_0 = module_1.BaseException()
+    int_0 = 50855951
+    str_0 = "utf-8"
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(int_0, fix_sentence_endings=str_0)
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 50855951
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings == "utf-8"
+    assert ansi_text_wrapper_0.break_long_words is True
+    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize == 8
     assert ansi_text_wrapper_0.max_lines is None
     assert module_0.hexversion == 50987248
     assert (
@@ -218,47 +358,164 @@ def test_case_5():
         f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
         == "_thread.RLock"
     )
-    bool_1 = True
-    str_0 = '*K2mnnY16"$I,jaCCL'
     none_type_0 = None
-    str_1 = ansi_text_wrapper_0.fill(str_0)
-    assert str_1 == '*K2mnnY16"$I,jaCCL'
-    bool_2 = False
-    int_0 = -1213
-    ansi_text_wrapper_1 = module_0.AnsiTextWrapper(
-        expand_tabs=bool_2,
-        break_long_words=none_type_0,
-        max_lines=int_0,
-        placeholder=bool_0,
-    )
+    var_0 = ansi_text_wrapper_0.wrap(str_0)
+    var_0.scan(none_type_0)
+
+
+def test_case_6():
+    str_0 = "utf-8"
+    int_0 = 1
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(int_0, fix_sentence_endings=str_0)
     assert (
-        f"{type(ansi_text_wrapper_1).__module__}.{type(ansi_text_wrapper_1).__qualname__}"
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
         == "txtutils.AnsiTextWrapper"
     )
-    assert ansi_text_wrapper_1.width == 70
-    assert ansi_text_wrapper_1.expand_tabs is False
-    assert ansi_text_wrapper_1.replace_whitespace is True
-    assert ansi_text_wrapper_1.fix_sentence_endings is False
-    assert ansi_text_wrapper_1.break_long_words is None
-    assert ansi_text_wrapper_1.drop_whitespace is True
-    assert ansi_text_wrapper_1.break_on_hyphens is True
-    assert ansi_text_wrapper_1.tabsize == 8
-    assert ansi_text_wrapper_1.max_lines == -1213
-    module_1.finditer(none_type_0, bool_1)
+    assert ansi_text_wrapper_0.width == 1
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings == "utf-8"
+    assert ansi_text_wrapper_0.break_long_words is True
+    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize == 8
+    assert ansi_text_wrapper_0.max_lines is None
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_1 = ansi_text_wrapper_0.fill(str_0)
+    assert str_1 == "u\nt\nf\n-\n8"
+
+
+def test_case_7():
+    base_exception_0 = module_1.BaseException()
+    bool_0 = False
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
+        break_long_words=base_exception_0,
+        drop_whitespace=bool_0,
+        tabsize=bool_0,
+        max_lines=bool_0,
+    )
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert (
+        f"{type(ansi_text_wrapper_0.break_long_words).__module__}.{type(ansi_text_wrapper_0.break_long_words).__qualname__}"
+        == "builtins.BaseException"
+    )
+    assert ansi_text_wrapper_0.drop_whitespace is False
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize is False
+    assert ansi_text_wrapper_0.max_lines is False
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "Convert a bytes type of escaped utf8 hexadecimal to a string.\n\n    Args:\n        data (bytes or bytearray or memoryview): The escaped utf8\n            hexadecimal bytes.\n        errors (str or :obj:`~UserString`): The error checking level.\n\n    Returns:\n        str: The given ``data`` (of escaped utf8 hexadecimal bytes)\n            converted into a :obj:`str`.\n        int: The number of the given ``data`` bytes consumed.\n\n    Raises:\n         UnicodeDecodeError: if the given ``data`` contains escaped\n            utf8 hexadecimal that references invalid utf8 bytes.\n\n\n    "
+    str_1 = ansi_text_wrapper_0.fill(str_0)
+    assert (
+        str_1 == "Convert a bytes type of escaped utf8 hexadecimal to a string. [...]"
+    )
+    assert ansi_text_wrapper_0.placeholder_len == 6
+    list_0 = ansi_text_wrapper_0.wrap(str_1)
 
 
 @pytest.mark.xfail(strict=True)
-def test_case_6():
-    str_0 = "v?BCa\n7D+p>CG58F"
-    bool_0 = True
-    bool_1 = False
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(bool_1, expand_tabs=bool_1)
+def test_case_8():
+    base_exception_0 = module_1.BaseException()
+    str_0 = "utf-8"
+    bool_0 = False
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(bool_0, fix_sentence_endings=bool_0)
     assert (
         f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
         == "txtutils.AnsiTextWrapper"
     )
     assert ansi_text_wrapper_0.width is False
-    assert ansi_text_wrapper_0.expand_tabs is False
+    assert ansi_text_wrapper_0.expand_tabs is True
     assert ansi_text_wrapper_0.replace_whitespace is True
     assert ansi_text_wrapper_0.fix_sentence_endings is False
     assert ansi_text_wrapper_0.break_long_words is True
@@ -309,9 +566,225 @@ def test_case_6():
         f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
         == "_thread.RLock"
     )
-    bool_2 = False
+    ansi_text_wrapper_0.wrap(str_0)
+
+
+def test_case_9():
+    base_exception_0 = module_1.BaseException()
+    bool_0 = True
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
+        break_long_words=base_exception_0,
+        drop_whitespace=bool_0,
+        tabsize=bool_0,
+        max_lines=bool_0,
+    )
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert (
+        f"{type(ansi_text_wrapper_0.break_long_words).__module__}.{type(ansi_text_wrapper_0.break_long_words).__qualname__}"
+        == "builtins.BaseException"
+    )
+    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize is True
+    assert ansi_text_wrapper_0.max_lines is True
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "\x0c"
+    list_0 = ansi_text_wrapper_0.wrap(str_0)
+
+
+def test_case_10():
+    base_exception_0 = module_1.BaseException()
+    int_0 = 1
+    bool_0 = False
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(int_0, fix_sentence_endings=bool_0)
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 1
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert ansi_text_wrapper_0.break_long_words is True
+    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize == 8
+    assert ansi_text_wrapper_0.max_lines is None
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "qQ.C\\)\x0c%}d*CT6c!\nm"
+    str_1 = ansi_text_wrapper_0.fill(str_0)
+    assert str_1 == "q\nQ\n.\nC\n\\\n)\n%\n}\nd\n*\nC\nT\n6\nc\n!\nm"
+
+
+@pytest.mark.xfail(strict=True)
+def test_case_11():
+    int_0 = -4201
+    base_exception_0 = module_1.BaseException()
+    bool_0 = False
+    bool_1 = True
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
+        break_long_words=base_exception_0,
+        drop_whitespace=bool_0,
+        tabsize=int_0,
+        max_lines=bool_0,
+    )
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert (
+        f"{type(ansi_text_wrapper_0.break_long_words).__module__}.{type(ansi_text_wrapper_0.break_long_words).__qualname__}"
+        == "builtins.BaseException"
+    )
+    assert ansi_text_wrapper_0.drop_whitespace is False
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize == -4201
+    assert ansi_text_wrapper_0.max_lines is False
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "EwMXZ*[N)3(3P[i\n\nQ"
     ansi_text_wrapper_1 = module_0.AnsiTextWrapper(
-        bool_0, expand_tabs=bool_0, fix_sentence_endings=bool_2, placeholder=bool_2
+        bool_1,
+        subsequent_indent=str_0,
+        replace_whitespace=bool_0,
+        tabsize=bool_1,
+        max_lines=bool_1,
     )
     assert (
         f"{type(ansi_text_wrapper_1).__module__}.{type(ansi_text_wrapper_1).__qualname__}"
@@ -319,195 +792,26 @@ def test_case_6():
     )
     assert ansi_text_wrapper_1.width is True
     assert ansi_text_wrapper_1.expand_tabs is True
-    assert ansi_text_wrapper_1.replace_whitespace is True
+    assert ansi_text_wrapper_1.replace_whitespace is False
     assert ansi_text_wrapper_1.fix_sentence_endings is False
     assert ansi_text_wrapper_1.break_long_words is True
     assert ansi_text_wrapper_1.drop_whitespace is True
     assert ansi_text_wrapper_1.break_on_hyphens is True
-    assert ansi_text_wrapper_1.tabsize == 8
-    assert ansi_text_wrapper_1.max_lines is None
-    str_1 = ansi_text_wrapper_1.fill(str_0)
-    assert str_1 == "v\n?\nB\nC\na\n7\nD\n+\np\n>\nC\nG\n5\n8\nF"
-    ansi_text_wrapper_0.wrap(ansi_text_wrapper_0)
+    assert ansi_text_wrapper_1.tabsize is True
+    assert ansi_text_wrapper_1.max_lines is True
+    str_1 = "\t+}&"
+    ansi_text_wrapper_1.wrap(str_1)
 
 
-def test_case_7():
-    bytes_0 = b"[d\xae8"
-    bool_0 = False
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        fix_sentence_endings=bytes_0, max_lines=bool_0
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == 70
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings == b"[d\xae8"
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is False
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    str_0 = "Q;Ek]~#\n>mzl *J.\tT"
-    str_1 = ansi_text_wrapper_0.fill(str_0)
-    assert str_1 == "Q;Ek]~# >mzl *J.        T"
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_8():
-    str_0 = "\\\nn'mqK\n)M(^\r}\x0b\rj"
-    var_0 = module_1.purge()
-    assert module_1.ASCII == module_1.RegexFlag.ASCII
-    assert module_1.A == module_1.RegexFlag.ASCII
-    assert module_1.IGNORECASE == module_1.RegexFlag.IGNORECASE
-    assert module_1.I == module_1.RegexFlag.IGNORECASE
-    assert module_1.LOCALE == module_1.RegexFlag.LOCALE
-    assert module_1.L == module_1.RegexFlag.LOCALE
-    assert module_1.UNICODE == module_1.RegexFlag.UNICODE
-    assert module_1.U == module_1.RegexFlag.UNICODE
-    assert module_1.MULTILINE == module_1.RegexFlag.MULTILINE
-    assert module_1.M == module_1.RegexFlag.MULTILINE
-    assert module_1.DOTALL == module_1.RegexFlag.DOTALL
-    assert module_1.S == module_1.RegexFlag.DOTALL
-    assert module_1.VERBOSE == module_1.RegexFlag.VERBOSE
-    assert module_1.X == module_1.RegexFlag.VERBOSE
-    assert module_1.TEMPLATE == module_1.RegexFlag.TEMPLATE
-    assert module_1.T == module_1.RegexFlag.TEMPLATE
-    assert module_1.DEBUG == module_1.RegexFlag.DEBUG
-    bool_0 = True
+def test_case_12():
+    base_exception_0 = module_1.BaseException()
+    int_0 = 50855936
+    str_0 = "Q&u\x0b3p$"
+    none_type_0 = None
     ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
         initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == 70
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings is True
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is True
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    str_1 = "&Yo%eHq\\>"
-    str_2 = ansi_text_wrapper_0.fill(str_1)
-    assert str_2 == "\\\nn'mqK\n)M(^\r}\x0b\rj&Yo%eHq\\>"
-    str_3 = ansi_text_wrapper_0.fill(str_2)
-    assert str_3 == "\\\nn'mqK\n)M(^\r}\x0b\rj\\ n'mqK )M(^ }  j&Yo%eHq\\>"
-    str_4 = ansi_text_wrapper_0.fill(str_3)
-    assert (
-        str_4
-        == "\\\nn'mqK\n)M(^\r}\x0b\rj\\ n'mqK )M(^ }  j\\ n'mqK )M(^ }  j&Yo%eHq\\>"
-    )
-    list_0 = ansi_text_wrapper_0.wrap(str_4)
-    assert ansi_text_wrapper_0.placeholder_len == 6
-    module_0.len_without_ansi(var_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_9():
-    str_0 = "unicode_escape"
-    int_0 = module_0.len_without_ansi(str_0)
-    assert int_0 == 14
-    assert module_0.hexversion == 50987248
-    str_1 = "@Ei^2/#l"
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        initial_indent=str_1,
-        subsequent_indent=str_1,
-        fix_sentence_endings=str_0,
+        replace_whitespace=str_0,
+        drop_whitespace=none_type_0,
         max_lines=int_0,
     )
     assert (
@@ -516,246 +820,13 @@ def test_case_9():
     )
     assert ansi_text_wrapper_0.width == 70
     assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings == "unicode_escape"
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines == 14
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    none_type_0 = None
-    str_2 = ansi_text_wrapper_0.fill(str_1)
-    assert str_2 == "@Ei^2/#l@Ei^2/#l"
-    none_type_1 = None
-    bool_0 = False
-    ansi_text_wrapper_1 = module_0.AnsiTextWrapper(
-        initial_indent=str_0, break_long_words=bool_0, drop_whitespace=none_type_1
-    )
-    assert (
-        f"{type(ansi_text_wrapper_1).__module__}.{type(ansi_text_wrapper_1).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_1.width == 70
-    assert ansi_text_wrapper_1.expand_tabs is True
-    assert ansi_text_wrapper_1.replace_whitespace is True
-    assert ansi_text_wrapper_1.fix_sentence_endings is False
-    assert ansi_text_wrapper_1.break_long_words is False
-    assert ansi_text_wrapper_1.drop_whitespace is None
-    assert ansi_text_wrapper_1.break_on_hyphens is True
-    assert ansi_text_wrapper_1.tabsize == 8
-    assert ansi_text_wrapper_1.max_lines is None
-    str_3 = "D<.Za"
-    str_3.__iter__(none_type_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_10():
-    str_0 = "v?BC\n7D+pCG58F"
-    bool_0 = True
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == 70
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings is True
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is True
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    str_1 = ansi_text_wrapper_0.fill(str_0)
-    assert str_1 == "v?BC\n7D+pCG58Fv?BC 7D+pCG58F"
-    str_2 = "\teHkn-Q\x0cO111;u~]N\x0c"
-    str_3 = ansi_text_wrapper_0.fill(str_2)
-    assert str_3 == "v?BC\n7D+pCG58F        eHkn-Q O111;u~]N"
-    ansi_text_wrapper_0.fill(ansi_text_wrapper_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_11():
-    str_0 = "v?BC\n7D+pCG58F"
-    bool_0 = True
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == 70
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings is True
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is True
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    str_1 = "\t"
-    str_2 = ansi_text_wrapper_0.fill(str_1)
-    assert str_2 == ""
-    str_3 = "\teHkn-Q\x0cO111;u~]N\x0c"
-    str_4 = ansi_text_wrapper_0.fill(str_3)
-    assert str_4 == "v?BC\n7D+pCG58F        eHkn-Q O111;u~]N"
-    ansi_text_wrapper_0.fill(ansi_text_wrapper_0)
-
-
-def test_case_12():
-    str_0 = "v?BCa\n7D+p>CG58F"
-    bool_0 = True
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(str_0, break_long_words=bool_0)
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == "v?BCa\n7D+p>CG58F"
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.replace_whitespace == "Q&u\x0b3p$"
     assert ansi_text_wrapper_0.fix_sentence_endings is False
     assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.drop_whitespace is None
     assert ansi_text_wrapper_0.break_on_hyphens is True
     assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is None
+    assert ansi_text_wrapper_0.max_lines == 50855936
     assert module_0.hexversion == 50987248
     assert (
         f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
@@ -799,371 +870,23 @@ def test_case_12():
         f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
         == "_thread.RLock"
     )
-    ansi_text_wrapper_1 = module_0.AnsiTextWrapper(
-        initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_1).__module__}.{type(ansi_text_wrapper_1).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_1.width == 70
-    assert ansi_text_wrapper_1.expand_tabs is True
-    assert ansi_text_wrapper_1.replace_whitespace is True
-    assert ansi_text_wrapper_1.fix_sentence_endings is True
-    assert ansi_text_wrapper_1.break_long_words is True
-    assert ansi_text_wrapper_1.drop_whitespace is True
-    assert ansi_text_wrapper_1.break_on_hyphens is True
-    assert ansi_text_wrapper_1.tabsize == 8
-    assert ansi_text_wrapper_1.max_lines is True
-    str_1 = 'Oh~6a!2\rBb "R+Tt=*\x0b;'
-    str_2 = "\t"
-    str_3 = ansi_text_wrapper_1.fill(str_2)
-    assert str_3 == ""
-    str_4 = ansi_text_wrapper_1.fill(str_1)
-    assert str_4 == 'v?BCa\n7D+p>CG58FOh~6a!2 Bb "R+Tt=* ;'
-    list_0 = ansi_text_wrapper_1.wrap(str_4)
-    list_1 = ansi_text_wrapper_1.wrap(str_3)
-    str_5 = "F"
-    int_0 = module_0.len_without_ansi(str_5)
-    assert int_0 == 1
+    str_1 = "*=Hl"
+    str_2 = ansi_text_wrapper_0.fill(str_1)
+    assert str_2 == "Q&u\x0b3p$*=Hl"
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_13():
-    str_0 = "Convert the given ``text`` of base64 characters into the base64\n    decoded bytes.\n\n    Args:\n        text (str): The string input.  The given string input can span\n            across many lines and be indented any number of spaces.\n        errors (str): Not used.  This argument exists to meet the\n            interface requirements.  Any value given to this argument\n            is ignored.\n\n    Returns:\n        bytes: The given ``text`` converted into base64 bytes.\n        int: The length of the returned bytes.\n    "
-    bool_0 = True
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(str_0, break_long_words=bool_0)
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert (
-        ansi_text_wrapper_0.width
-        == "Convert the given ``text`` of base64 characters into the base64\n    decoded bytes.\n\n    Args:\n        text (str): The string input.  The given string input can span\n            across many lines and be indented any number of spaces.\n        errors (str): Not used.  This argument exists to meet the\n            interface requirements.  Any value given to this argument\n            is ignored.\n\n    Returns:\n        bytes: The given ``text`` converted into base64 bytes.\n        int: The length of the returned bytes.\n    "
-    )
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings is False
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is None
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    ansi_text_wrapper_1 = module_0.AnsiTextWrapper(
-        initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_1).__module__}.{type(ansi_text_wrapper_1).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_1.width == 70
-    assert ansi_text_wrapper_1.expand_tabs is True
-    assert ansi_text_wrapper_1.replace_whitespace is True
-    assert ansi_text_wrapper_1.fix_sentence_endings is True
-    assert ansi_text_wrapper_1.break_long_words is True
-    assert ansi_text_wrapper_1.drop_whitespace is True
-    assert ansi_text_wrapper_1.break_on_hyphens is True
-    assert ansi_text_wrapper_1.tabsize == 8
-    assert ansi_text_wrapper_1.max_lines is True
-    str_1 = "\t"
-    ansi_text_wrapper_1.fill(str_1)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_14():
-    str_0 = "\\\nn'mqK\n)M(^\r}\x0b\rj"
-    var_0 = module_1.purge()
-    assert module_1.ASCII == module_1.RegexFlag.ASCII
-    assert module_1.A == module_1.RegexFlag.ASCII
-    assert module_1.IGNORECASE == module_1.RegexFlag.IGNORECASE
-    assert module_1.I == module_1.RegexFlag.IGNORECASE
-    assert module_1.LOCALE == module_1.RegexFlag.LOCALE
-    assert module_1.L == module_1.RegexFlag.LOCALE
-    assert module_1.UNICODE == module_1.RegexFlag.UNICODE
-    assert module_1.U == module_1.RegexFlag.UNICODE
-    assert module_1.MULTILINE == module_1.RegexFlag.MULTILINE
-    assert module_1.M == module_1.RegexFlag.MULTILINE
-    assert module_1.DOTALL == module_1.RegexFlag.DOTALL
-    assert module_1.S == module_1.RegexFlag.DOTALL
-    assert module_1.VERBOSE == module_1.RegexFlag.VERBOSE
-    assert module_1.X == module_1.RegexFlag.VERBOSE
-    assert module_1.TEMPLATE == module_1.RegexFlag.TEMPLATE
-    assert module_1.T == module_1.RegexFlag.TEMPLATE
-    assert module_1.DEBUG == module_1.RegexFlag.DEBUG
-    bool_0 = True
-    bool_1 = False
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        bool_1,
-        break_long_words=bool_0,
-        break_on_hyphens=var_0,
-        tabsize=bool_1,
-        placeholder=var_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width is False
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings is False
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is True
-    assert ansi_text_wrapper_0.break_on_hyphens is None
-    assert ansi_text_wrapper_0.tabsize is False
-    assert ansi_text_wrapper_0.max_lines is None
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    ansi_text_wrapper_0.fill(str_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_15():
-    str_0 = "\\\nn'mqK\n)M(^}\x0b\rj"
-    var_0 = module_1.purge()
-    assert module_1.ASCII == module_1.RegexFlag.ASCII
-    assert module_1.A == module_1.RegexFlag.ASCII
-    assert module_1.IGNORECASE == module_1.RegexFlag.IGNORECASE
-    assert module_1.I == module_1.RegexFlag.IGNORECASE
-    assert module_1.LOCALE == module_1.RegexFlag.LOCALE
-    assert module_1.L == module_1.RegexFlag.LOCALE
-    assert module_1.UNICODE == module_1.RegexFlag.UNICODE
-    assert module_1.U == module_1.RegexFlag.UNICODE
-    assert module_1.MULTILINE == module_1.RegexFlag.MULTILINE
-    assert module_1.M == module_1.RegexFlag.MULTILINE
-    assert module_1.DOTALL == module_1.RegexFlag.DOTALL
-    assert module_1.S == module_1.RegexFlag.DOTALL
-    assert module_1.VERBOSE == module_1.RegexFlag.VERBOSE
-    assert module_1.X == module_1.RegexFlag.VERBOSE
-    assert module_1.TEMPLATE == module_1.RegexFlag.TEMPLATE
-    assert module_1.T == module_1.RegexFlag.TEMPLATE
-    assert module_1.DEBUG == module_1.RegexFlag.DEBUG
-    bool_0 = False
-    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_0.width == 70
-    assert ansi_text_wrapper_0.expand_tabs is True
-    assert ansi_text_wrapper_0.replace_whitespace is True
-    assert ansi_text_wrapper_0.fix_sentence_endings is False
-    assert ansi_text_wrapper_0.break_long_words is True
-    assert ansi_text_wrapper_0.drop_whitespace is False
-    assert ansi_text_wrapper_0.break_on_hyphens is True
-    assert ansi_text_wrapper_0.tabsize == 8
-    assert ansi_text_wrapper_0.max_lines is False
-    assert module_0.hexversion == 50987248
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert (
-        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
-        == "subsequent_indent_len"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
-        == "builtins.property"
-    )
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
-        == "functools.cached_property"
-    )
-    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
-    assert (
-        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
-        == "_thread.RLock"
-    )
-    str_1 = "&Yo%eHq\\>"
-    str_2 = ansi_text_wrapper_0.fill(str_1)
-    assert str_2 == "\\\nn'mqK\n)M(^}\x0b\rj&Yo%eHq\\>"
-    str_3 = ansi_text_wrapper_0.fill(str_2)
-    assert str_3 == "\\\nn'mqK\n)M(^}\x0b\rj\\ n'mqK )M(^}  j&Yo%eHq\\>"
-    str_4 = ansi_text_wrapper_0.fill(str_3)
-    assert (
-        str_4 == "\\\nn'mqK\n)M(^}\x0b\rj\\ n'mqK )M(^}  j\\ n'mqK )M(^}  j&Yo%eHq\\>"
-    )
-    str_5 = '*K2mnn01"$I,jaCC`'
-    list_0 = ansi_text_wrapper_0.wrap(str_4)
-    assert ansi_text_wrapper_0.placeholder_len == 6
-    list_1 = []
-    bool_1 = True
-    ansi_text_wrapper_1 = module_0.AnsiTextWrapper(
-        str_5,
-        expand_tabs=var_0,
-        replace_whitespace=ansi_text_wrapper_0,
-        tabsize=list_1,
-        max_lines=bool_1,
-    )
-    assert (
-        f"{type(ansi_text_wrapper_1).__module__}.{type(ansi_text_wrapper_1).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_1.width == '*K2mnn01"$I,jaCC`'
-    assert ansi_text_wrapper_1.expand_tabs is None
-    assert (
-        f"{type(ansi_text_wrapper_1.replace_whitespace).__module__}.{type(ansi_text_wrapper_1.replace_whitespace).__qualname__}"
-        == "txtutils.AnsiTextWrapper"
-    )
-    assert ansi_text_wrapper_1.fix_sentence_endings is False
-    assert ansi_text_wrapper_1.break_long_words is True
-    assert ansi_text_wrapper_1.drop_whitespace is True
-    assert ansi_text_wrapper_1.break_on_hyphens is True
-    assert ansi_text_wrapper_1.tabsize == []
-    assert ansi_text_wrapper_1.max_lines is True
-    var_0.__iter__(bool_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_16():
-    str_0 = "\\\nn'mqK\n)M(^\r}\x0b\rj"
-    var_0 = module_1.purge()
-    assert module_1.ASCII == module_1.RegexFlag.ASCII
-    assert module_1.A == module_1.RegexFlag.ASCII
-    assert module_1.IGNORECASE == module_1.RegexFlag.IGNORECASE
-    assert module_1.I == module_1.RegexFlag.IGNORECASE
-    assert module_1.LOCALE == module_1.RegexFlag.LOCALE
-    assert module_1.L == module_1.RegexFlag.LOCALE
-    assert module_1.UNICODE == module_1.RegexFlag.UNICODE
-    assert module_1.U == module_1.RegexFlag.UNICODE
-    assert module_1.MULTILINE == module_1.RegexFlag.MULTILINE
-    assert module_1.M == module_1.RegexFlag.MULTILINE
-    assert module_1.DOTALL == module_1.RegexFlag.DOTALL
-    assert module_1.S == module_1.RegexFlag.DOTALL
-    assert module_1.VERBOSE == module_1.RegexFlag.VERBOSE
-    assert module_1.X == module_1.RegexFlag.VERBOSE
-    assert module_1.TEMPLATE == module_1.RegexFlag.TEMPLATE
-    assert module_1.T == module_1.RegexFlag.TEMPLATE
-    assert module_1.DEBUG == module_1.RegexFlag.DEBUG
+    base_exception_0 = module_1.BaseException()
     bool_0 = True
     ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
-        initial_indent=str_0,
-        fix_sentence_endings=bool_0,
-        drop_whitespace=bool_0,
-        max_lines=bool_0,
+        bool_0, replace_whitespace=bool_0, fix_sentence_endings=bool_0
     )
     assert (
         f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
         == "txtutils.AnsiTextWrapper"
     )
-    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.width is True
     assert ansi_text_wrapper_0.expand_tabs is True
     assert ansi_text_wrapper_0.replace_whitespace is True
     assert ansi_text_wrapper_0.fix_sentence_endings is True
@@ -1171,6 +894,79 @@ def test_case_16():
     assert ansi_text_wrapper_0.drop_whitespace is True
     assert ansi_text_wrapper_0.break_on_hyphens is True
     assert ansi_text_wrapper_0.tabsize == 8
+    assert ansi_text_wrapper_0.max_lines is None
+    assert module_0.hexversion == 50987248
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent).__module__}.{type(module_0.AnsiTextWrapper.initial_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.initial_indent_len.attrname == "initial_indent_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.initial_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert (
+        module_0.AnsiTextWrapper.subsequent_indent_len.attrname
+        == "subsequent_indent_len"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__module__}.{type(module_0.AnsiTextWrapper.subsequent_indent_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder).__module__}.{type(module_0.AnsiTextWrapper.placeholder).__qualname__}"
+        == "builtins.property"
+    )
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len).__qualname__}"
+        == "functools.cached_property"
+    )
+    assert module_0.AnsiTextWrapper.placeholder_len.attrname == "placeholder_len"
+    assert (
+        f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
+        == "_thread.RLock"
+    )
+    str_0 = "Convert a bytes type of escaped utf8 hexadecimal to a string.\n\n    Args:\n        data (bytes or bytearray or memoryview): The escaped utf8\n            hexadecimal bytes.\n        errors (str or :obj:`~UserString`): The error checking level.\n\n    Returns:\n        str: The given ``data`` (of escaped utf8 hexadecimal bytes)\n            converted into a :obj:`str`.\n        int: The number of the given ``data`` bytes consumed.\n\n    Raises:\n         UnicodeDecodeError: if the given ``data`` contains escaped\n            utf8 hexadecimal that references invalid utf8 bytes.\n\n\n    "
+    str_1 = ansi_text_wrapper_0.fill(str_0)
+    assert (
+        str_1
+        == "C\no\nn\nv\ne\nr\nt\na\nb\ny\nt\ne\ns\nt\ny\np\ne\no\nf\ne\ns\nc\na\np\ne\nd\nu\nt\nf\n8\nh\ne\nx\na\nd\ne\nc\ni\nm\na\nl\nt\no\na\ns\nt\nr\ni\nn\ng\n.\nA\nr\ng\ns\n:\nd\na\nt\na\n(\nb\ny\nt\ne\ns\no\nr\nb\ny\nt\ne\na\nr\nr\na\ny\no\nr\nm\ne\nm\no\nr\ny\nv\ni\ne\nw\n)\n:\nT\nh\ne\ne\ns\nc\na\np\ne\nd\nu\nt\nf\n8\nh\ne\nx\na\nd\ne\nc\ni\nm\na\nl\nb\ny\nt\ne\ns\n.\ne\nr\nr\no\nr\ns\n(\ns\nt\nr\no\nr\n:\no\nb\nj\n:\n`\n~\nU\ns\ne\nr\nS\nt\nr\ni\nn\ng\n`\n)\n:\nT\nh\ne\ne\nr\nr\no\nr\nc\nh\ne\nc\nk\ni\nn\ng\nl\ne\nv\ne\nl\n.\nR\ne\nt\nu\nr\nn\ns\n:\ns\nt\nr\n:\nT\nh\ne\ng\ni\nv\ne\nn\n`\n`\nd\na\nt\na\n`\n`\n(\no\nf\ne\ns\nc\na\np\ne\nd\nu\nt\nf\n8\nh\ne\nx\na\nd\ne\nc\ni\nm\na\nl\nb\ny\nt\ne\ns\n)\nc\no\nn\nv\ne\nr\nt\ne\nd\ni\nn\nt\no\na\n:\no\nb\nj\n:\n`\ns\nt\nr\n`\n.\ni\nn\nt\n:\nT\nh\ne\nn\nu\nm\nb\ne\nr\no\nf\nt\nh\ne\ng\ni\nv\ne\nn\n`\n`\nd\na\nt\na\n`\n`\nb\ny\nt\ne\ns\nc\no\nn\ns\nu\nm\ne\nd\n.\nR\na\ni\ns\ne\ns\n:\nU\nn\ni\nc\no\nd\ne\nD\ne\nc\no\nd\ne\nE\nr\nr\no\nr\n:\ni\nf\nt\nh\ne\ng\ni\nv\ne\nn\n`\n`\nd\na\nt\na\n`\n`\nc\no\nn\nt\na\ni\nn\ns\ne\ns\nc\na\np\ne\nd\nu\nt\nf\n8\nh\ne\nx\na\nd\ne\nc\ni\nm\na\nl\nt\nh\na\nt\nr\ne\nf\ne\nr\ne\nn\nc\ne\ns\ni\nn\nv\na\nl\ni\nd\nu\nt\nf\n8\nb\ny\nt\ne\ns\n."
+    )
+    module_2.template(ansi_text_wrapper_0)
+
+
+def test_case_14():
+    bool_0 = True
+    ansi_text_wrapper_0 = module_0.AnsiTextWrapper(
+        break_long_words=bool_0,
+        drop_whitespace=bool_0,
+        tabsize=bool_0,
+        max_lines=bool_0,
+    )
+    assert (
+        f"{type(ansi_text_wrapper_0).__module__}.{type(ansi_text_wrapper_0).__qualname__}"
+        == "txtutils.AnsiTextWrapper"
+    )
+    assert ansi_text_wrapper_0.width == 70
+    assert ansi_text_wrapper_0.expand_tabs is True
+    assert ansi_text_wrapper_0.replace_whitespace is True
+    assert ansi_text_wrapper_0.fix_sentence_endings is False
+    assert ansi_text_wrapper_0.break_long_words is True
+    assert ansi_text_wrapper_0.drop_whitespace is True
+    assert ansi_text_wrapper_0.break_on_hyphens is True
+    assert ansi_text_wrapper_0.tabsize is True
     assert ansi_text_wrapper_0.max_lines is True
     assert module_0.hexversion == 50987248
     assert (
@@ -1215,15 +1011,44 @@ def test_case_16():
         f"{type(module_0.AnsiTextWrapper.placeholder_len.lock).__module__}.{type(module_0.AnsiTextWrapper.placeholder_len.lock).__qualname__}"
         == "_thread.RLock"
     )
+    str_0 = "N>c"
     str_1 = ansi_text_wrapper_0.fill(str_0)
-    assert str_1 == "\\\nn'mqK\n)M(^\r}\x0b\rj\\ n'mqK )M(^ }  j"
-    str_2 = ansi_text_wrapper_0.fill(str_1)
-    assert str_2 == "\\\nn'mqK\n)M(^\r}\x0b\rj\\ n'mqK )M(^ }  j\\ n'mqK )M(^ }  j"
-    str_3 = ansi_text_wrapper_0.fill(str_2)
-    assert (
-        str_3
-        == "\\\nn'mqK\n)M(^\r}\x0b\rj\\ n'mqK )M(^ }  j\\ n'mqK )M(^ }  j\\ n'mqK )M(^ }  j"
-    )
-    list_0 = ansi_text_wrapper_0.wrap(str_3)
+    assert str_1 == "N>c"
+    str_2 = "Convert a :obj:`str`, that may contain escaped utf8 hexadecimal, to\n    bytes of escaped utf8 hexadecimal.\n\n    Args:\n        text (str or :obj:`~UserString`): The string input.\n        errors (str or :obj:`~UserString`): The error checking level.\n\n    Returns:\n        bytes: The given ``text`` converted into escaped utf8 bytes.\n        int: The number of given ``text`` characters consumed\n\n    Raises:\n         UnicodeEncodeError: if the given ``text`` contains escaped\n            utf8 hexadecimal that references invalid utf8 bytes.\n    "
+    list_0 = ansi_text_wrapper_0.wrap(str_2)
     assert ansi_text_wrapper_0.placeholder_len == 6
-    var_0.scan(list_0)
+    var_0 = module_2.compile(str_2)
+    assert f"{type(var_0).__module__}.{type(var_0).__qualname__}" == "re.Pattern"
+    assert module_2.ASCII == module_2.RegexFlag.ASCII
+    assert module_2.A == module_2.RegexFlag.ASCII
+    assert module_2.IGNORECASE == module_2.RegexFlag.IGNORECASE
+    assert module_2.I == module_2.RegexFlag.IGNORECASE
+    assert module_2.LOCALE == module_2.RegexFlag.LOCALE
+    assert module_2.L == module_2.RegexFlag.LOCALE
+    assert module_2.UNICODE == module_2.RegexFlag.UNICODE
+    assert module_2.U == module_2.RegexFlag.UNICODE
+    assert module_2.MULTILINE == module_2.RegexFlag.MULTILINE
+    assert module_2.M == module_2.RegexFlag.MULTILINE
+    assert module_2.DOTALL == module_2.RegexFlag.DOTALL
+    assert module_2.S == module_2.RegexFlag.DOTALL
+    assert module_2.VERBOSE == module_2.RegexFlag.VERBOSE
+    assert module_2.X == module_2.RegexFlag.VERBOSE
+    assert module_2.TEMPLATE == module_2.RegexFlag.TEMPLATE
+    assert module_2.T == module_2.RegexFlag.TEMPLATE
+    assert module_2.DEBUG == module_2.RegexFlag.DEBUG
+    assert (
+        f"{type(module_2.Pattern.pattern).__module__}.{type(module_2.Pattern.pattern).__qualname__}"
+        == "builtins.member_descriptor"
+    )
+    assert (
+        f"{type(module_2.Pattern.flags).__module__}.{type(module_2.Pattern.flags).__qualname__}"
+        == "builtins.member_descriptor"
+    )
+    assert (
+        f"{type(module_2.Pattern.groups).__module__}.{type(module_2.Pattern.groups).__qualname__}"
+        == "builtins.member_descriptor"
+    )
+    assert (
+        f"{type(module_2.Pattern.groupindex).__module__}.{type(module_2.Pattern.groupindex).__qualname__}"
+        == "builtins.getset_descriptor"
+    )

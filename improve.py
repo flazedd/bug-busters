@@ -28,7 +28,8 @@ def change_constant(n):
         wfile.flush()  # Ensure changes are written to disk
         os.fsync(wfile.fileno())  # Ensure changes are written to disk
 
-runs = range(1, 7)
+i = 6
+runs = range(i, i+1)
 print(runs)
 start = time.time()
 print('[+] Starting...')

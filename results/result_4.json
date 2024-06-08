@@ -255,7 +255,7 @@
             "docstring_parser.numpydoc": 16.7,
             "docstring_parser.parser": 50.0,
             "docstring_parser.rest": 14.7,
-            "flutils.txtutils": NaN,
+            "flutils.txtutils": 64.8,
             "flutils.validators": 70.0,
             "httpie.status": 64.7,
             "isort.comments": 75.0,
@@ -399,18 +399,7 @@
                 75.0,
                 75.0,
                 75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                NaN
+                75.0
             ],
             "pymonet.immutable_list": [
                 0,

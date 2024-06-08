@@ -286,7 +286,7 @@ class PythonImplementation(LanguageImplementation):
         imports = self.get_imports(package, class_name)
         extra = (f'example response: import {class_name} as {constant.DEFAULT_IMPORT} ```\ndef test_example():\n   '
                  f' assert 1 == 1\n``` only use {constant.DEFAULT_IMPORT} in your test case. '
-                 f'insert any newly defined functions inside the test case!')
+                 f'insert any newly defined functions inside the test case or access it like module_0.function!')
         return Prompt.get_input(class_code, imports, extra)
 
     def create_file(self, folder, class_name, ai_model, run):

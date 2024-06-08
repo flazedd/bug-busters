@@ -4,322 +4,231 @@ import pytest
 import rate as module_0
 
 
+@pytest.mark.xfail(strict=True)
 def test_case_0():
-    complex_0 = 3536 + 1927.6j
-    float_0 = 3441.15
-    with pytest.raises(ValueError):
-        module_0.Rate(float_0, percentage=complex_0, percent_change=float_0)
+    str_0 = "j^Y|cn*:G"
+    module_0.Rate(percentage=str_0)
 
 
 def test_case_1():
-    none_type_0 = None
     with pytest.raises(ValueError):
-        module_0.Rate(none_type_0)
+        module_0.Rate()
 
 
+@pytest.mark.xfail(strict=True)
 def test_case_2():
-    bool_0 = False
+    str_0 = "{)d"
+    bool_0 = True
     rate_0 = module_0.Rate(bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier is False
-    var_0 = rate_0.__le__(bool_0)
-    assert var_0 is True
-    rate_1 = module_0.Rate(percent_change=bool_0)
+    assert rate_0.multiplier is True
+    var_0 = rate_0.__lt__(bool_0)
+    assert var_0 is False
+    var_1 = var_0.__gt__(str_0)
+    float_0 = -638.64
+    set_0 = {float_0, float_0, float_0}
+    int_0 = -347
+    rate_1 = module_0.Rate(percent_change=int_0)
     assert f"{type(rate_1).__module__}.{type(rate_1).__qualname__}" == "rate.Rate"
-    assert rate_1.multiplier == pytest.approx(1.0, abs=0.01, rel=0.01)
+    assert rate_1.multiplier == pytest.approx(-2.47, abs=0.01, rel=0.01)
+    rate_1.__lt__(set_0)
 
 
+@pytest.mark.xfail(strict=True)
 def test_case_3():
-    int_0 = 1776
-    rate_0 = module_0.Rate(int_0)
+    tuple_0 = ()
+    dict_0 = {tuple_0: tuple_0, tuple_0: tuple_0}
+    bool_0 = True
+    rate_0 = module_0.Rate(bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == 1776
-    var_0 = rate_0.__repr__()
-    assert var_0 == "+177600.000%"
-    var_1 = rate_0.__ne__(int_0)
-    assert var_1 is False
-    var_2 = rate_0.__float__()
-    assert var_2 == 1776
-    var_3 = rate_0.__truediv__(int_0)
-    assert var_3 == pytest.approx(1.0, abs=0.01, rel=0.01)
-    var_4 = var_1.__lt__(rate_0)
-    var_5 = var_2.__add__(int_0)
-    assert var_5 == 3552
-    var_6 = int_0.__add__(var_1)
-    assert var_6 == 1776
-    var_7 = var_1.__ge__(int_0)
-    assert var_7 is False
-    dict_0 = {}
-    var_8 = var_5.__gt__(dict_0)
-    var_9 = var_8.__eq__(var_3)
-    bool_0 = False
-    var_10 = var_1.__mul__(bool_0)
-    assert var_10 == 0
-    var_11 = var_9.__hash__()
-    assert var_11 == -9223363241368962946
-    var_12 = var_1.__float__()
-    assert var_12 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    var_13 = var_10.__float__()
-    assert var_13 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    var_14 = var_10.__ne__(var_3)
-    var_15 = var_12.__lt__(var_5)
-    assert var_15 is True
-    var_16 = var_8.__repr__()
-    assert var_16 == "NotImplemented"
+    assert rate_0.multiplier is True
+    rate_0.__gt__(dict_0)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_4():
+    str_0 = 'd\x0c9&4l"Zl;#g"I\\".P'
+    int_0 = 1842
     bool_0 = True
-    none_type_0 = None
-    rate_0 = module_0.Rate(bool_0)
+    rate_0 = module_0.Rate(percentage=bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier is True
-    rate_0.of(none_type_0)
+    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_0 = rate_0.__repr__(relative=int_0)
+    assert var_0 == "-99.000%"
+    rate_0.__ge__(str_0)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_5():
-    set_0 = set()
-    int_0 = -4332
-    rate_0 = module_0.Rate(percentage=int_0)
+    none_type_0 = None
+    none_type_1 = None
+    str_0 = 'K*k\t\\4E_{{L\x0c"}hfl`'
+    int_0 = -2553
+    int_1 = 2242
+    rate_0 = module_0.Rate(int_1)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == pytest.approx(-43.32, abs=0.01, rel=0.01)
-    rate_0.__truediv__(set_0)
+    assert rate_0.multiplier == 2242
+    var_0 = rate_0.of(int_0)
+    assert var_0 == pytest.approx(-5723826.0, abs=0.01, rel=0.01)
+    var_1 = var_0.__eq__(str_0)
+    var_2 = var_1.__ne__(none_type_1)
+    var_2.__add__(none_type_0)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_6():
     bool_0 = False
-    bool_1 = True
-    rate_0 = module_0.Rate(percentage=bool_1)
+    rate_0 = module_0.Rate(bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
-    var_0 = rate_0.__add__(bool_0)
-    assert var_0 == pytest.approx(0.01, abs=0.01, rel=0.01)
-    var_0.apply_to(bool_0)
+    assert rate_0.multiplier is False
+    var_0 = rate_0.__float__()
+    assert var_0 is False
+    var_1 = rate_0.__mul__(var_0)
+    assert var_1 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    var_2 = var_0.__add__(var_0)
+    assert var_2 == 0
+    none_type_0 = None
+    var_3 = rate_0.__ne__(var_2)
+    assert var_3 is False
+    var_4 = var_3.__truediv__(none_type_0)
+    var_4.__truediv__(rate_0)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_7():
-    int_0 = 1776
-    rate_0 = module_0.Rate(int_0)
+    bool_0 = True
+    rate_0 = module_0.Rate(percentage=bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == 1776
-    var_0 = rate_0.__le__(int_0)
+    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_0 = rate_0.__lt__(bool_0)
     assert var_0 is True
-    var_1 = rate_0.__ne__(int_0)
-    assert var_1 is False
-    var_2 = rate_0.__truediv__(int_0)
-    assert var_2 == pytest.approx(1.0, abs=0.01, rel=0.01)
-    var_3 = var_1.__add__(int_0)
-    assert var_3 == 1776
-    rate_1 = module_0.Rate(percent_change=var_2)
+    var_1 = rate_0.__le__(bool_0)
+    assert var_1 is True
+    bool_1 = False
+    rate_1 = module_0.Rate(bool_1)
     assert f"{type(rate_1).__module__}.{type(rate_1).__qualname__}" == "rate.Rate"
-    assert rate_1.multiplier == pytest.approx(1.01, abs=0.01, rel=0.01)
-    var_4 = rate_1.__ge__(int_0)
-    assert var_4 is False
-    var_5 = var_1.__ge__(var_1)
-    assert var_5 is True
-    var_6 = var_5.__eq__(var_2)
-    bool_0 = False
-    var_7 = var_1.__mul__(bool_0)
-    assert var_7 == 0
-    var_8 = var_1.__float__()
-    assert var_8 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    rate_0.__sub__(rate_0)
+    assert rate_1.multiplier is False
+    var_2 = rate_1.__truediv__(bool_0)
+    assert var_2 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    rate_1.__ne__(rate_1)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_8():
-    bool_0 = False
-    none_type_0 = None
-    rate_0 = module_0.Rate(bool_0, percentage=none_type_0)
+    str_0 = ""
+    int_0 = 1842
+    bool_0 = True
+    rate_0 = module_0.Rate(percentage=bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier is False
-    var_0 = rate_0.__ne__(bool_0)
-    assert var_0 is False
-    var_0.apply_to(bool_0)
+    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_0 = rate_0.__truediv__(int_0)
+    assert var_0 == pytest.approx(5.428881650380022e-06, abs=0.01, rel=0.01)
+    var_1 = rate_0.apply_to(var_0)
+    assert var_1 == pytest.approx(5.428881650380022e-08, abs=0.01, rel=0.01)
+    int_1 = -1205
+    var_2 = rate_0.__ge__(var_0)
+    assert var_2 is True
+    var_3 = var_2.__add__(int_1)
+    assert var_3 == -1204
+    var_4 = rate_0.__sub__(int_0)
+    assert var_4 == pytest.approx(-1841.99, abs=0.01, rel=0.01)
+    none_type_0 = None
+    var_5 = var_1.__eq__(str_0)
+    bool_1 = False
+    var_6 = rate_0.__add__(bool_1)
+    assert var_6 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_7 = var_6.__lt__(bool_0)
+    assert var_7 is True
+    var_8 = var_5.__le__(none_type_0)
+    var_9 = var_8.__le__(var_1)
+    var_5.apply_to(var_0)
 
 
 def test_case_9():
-    int_0 = 1776
-    rate_0 = module_0.Rate(int_0)
-    assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == 1776
-    var_0 = rate_0.__repr__()
-    assert var_0 == "+177600.000%"
-    var_1 = rate_0.__float__()
-    assert var_1 == 1776
-    var_2 = rate_0.__truediv__(int_0)
-    assert var_2 == pytest.approx(1.0, abs=0.01, rel=0.01)
-    var_3 = var_1.__lt__(rate_0)
-    bool_0 = False
-    var_4 = var_1.__add__(int_0)
-    assert var_4 == 3552
-    var_5 = int_0.__add__(var_3)
-    rate_1 = module_0.Rate(percent_change=bool_0)
-    assert f"{type(rate_1).__module__}.{type(rate_1).__qualname__}" == "rate.Rate"
-    assert rate_1.multiplier == pytest.approx(1.0, abs=0.01, rel=0.01)
-    var_6 = rate_1.__ge__(int_0)
-    assert var_6 is False
-    var_7 = var_5.__eq__(var_2)
-    bool_1 = False
-    var_8 = bool_0.__mul__(bool_1)
-    assert var_8 == 0
-    var_9 = var_7.__hash__()
-    assert var_9 == -9223363241368962946
-    var_10 = int_0.__float__()
-    assert var_10 == pytest.approx(1776.0, abs=0.01, rel=0.01)
-    list_0 = [int_0, int_0]
-    var_11 = var_6.__ge__(list_0)
-    var_12 = var_8.__float__()
-    assert var_12 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    var_13 = var_8.__ne__(var_11)
-    var_14 = var_10.__lt__(var_4)
-    assert var_14 is True
-    var_15 = bool_0.__repr__()
-    assert var_15 == "False"
+    str_0 = "73o"
+    with pytest.raises(ValueError):
+        module_0.Rate(str_0)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_10():
-    float_0 = 2284.086094
-    rate_0 = module_0.Rate(float_0)
+    str_0 = 'd\x0c9&4l"Zl;#g"I\\".P'
+    str_1 = ""
+    bool_0 = True
+    rate_0 = module_0.Rate(percentage=bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == pytest.approx(2284.086094, abs=0.01, rel=0.01)
-    bool_0 = False
-    var_0 = rate_0.apply_to(bool_0)
-    assert var_0 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_0 = rate_0.__truediv__(bool_0)
+    assert var_0 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_1 = rate_0.__repr__(relative=bool_0)
+    assert var_1 == "-99.000%"
+    int_0 = -1205
+    var_2 = rate_0.__ge__(var_0)
+    assert var_2 is True
+    var_3 = var_2.__add__(int_0)
+    assert var_3 == -1204
+    none_type_0 = None
+    var_4 = rate_0.__hash__()
+    assert var_4 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_5 = var_4.__eq__(str_1)
     bool_1 = False
-    var_1 = rate_0.__le__(bool_1)
-    assert var_1 is False
-    bool_2 = False
-    var_2 = rate_0.__lt__(bool_2)
-    assert var_2 is False
-    bool_3 = False
-    var_3 = var_2.__sub__(bool_3)
-    assert var_3 == 0
-    var_4 = bool_3.__gt__(var_1)
-    assert var_4 is False
-    var_5 = var_1.__ge__(bool_1)
-    assert var_5 is True
-    var_1.of(var_5)
+    var_6 = rate_0.__add__(bool_1)
+    assert var_6 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_7 = var_6.__lt__(bool_0)
+    assert var_7 is True
+    var_8 = var_5.__le__(none_type_0)
+    var_9 = var_8.__le__(var_1)
+    var_1.of(str_0)
 
 
 @pytest.mark.xfail(strict=True)
 def test_case_11():
-    int_0 = -1619
-    rate_0 = module_0.Rate(int_0)
-    assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == -1619
-    var_0 = rate_0.__sub__(int_0)
-    assert var_0 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    var_1 = var_0.__float__()
-    assert var_1 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    var_2 = rate_0.__truediv__(int_0)
-    assert var_2 == pytest.approx(1.0, abs=0.01, rel=0.01)
-    var_3 = int_0.__add__(int_0)
-    assert var_3 == -3238
-    var_4 = var_3.__truediv__(int_0)
-    assert var_4 == pytest.approx(2.0, abs=0.01, rel=0.01)
+    int_0 = 1842
     bool_0 = True
-    var_5 = rate_0.__add__(var_4)
-    assert var_5 == pytest.approx(-1617.0, abs=0.01, rel=0.01)
-    var_6 = rate_0.__add__(var_0)
-    assert var_6 == pytest.approx(-1619.0, abs=0.01, rel=0.01)
-    rate_1 = module_0.Rate(percent_change=bool_0)
-    assert f"{type(rate_1).__module__}.{type(rate_1).__qualname__}" == "rate.Rate"
-    assert rate_1.multiplier == pytest.approx(1.01, abs=0.01, rel=0.01)
-    var_7 = rate_1.__ge__(int_0)
-    assert var_7 is True
-    dict_0 = {}
-    rate_1.__gt__(dict_0)
+    rate_0 = module_0.Rate(percentage=bool_0)
+    assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
+    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_0 = rate_0.__truediv__(int_0)
+    assert var_0 == pytest.approx(5.428881650380022e-06, abs=0.01, rel=0.01)
+    var_1 = rate_0.__repr__(relative=int_0)
+    assert var_1 == "-99.000%"
+    int_1 = -1205
+    var_2 = rate_0.__repr__()
+    assert var_2 == "+1.000%"
+    var_2.__add__(int_1)
 
 
+@pytest.mark.xfail(strict=True)
 def test_case_12():
-    float_0 = 2284.086094
-    rate_0 = module_0.Rate(float_0)
+    str_0 = 'd\x0c9&4l"Zl;#g"I\\".P'
+    str_1 = ""
+    int_0 = 1842
+    bool_0 = True
+    rate_0 = module_0.Rate(percentage=bool_0)
     assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == pytest.approx(2284.086094, abs=0.01, rel=0.01)
-    bool_0 = False
-    bool_1 = False
-    var_0 = rate_0.__le__(bool_1)
-    assert var_0 is False
-    bool_2 = False
-    var_1 = rate_0.__lt__(bool_2)
-    assert var_1 is False
-    var_2 = var_1.__sub__(bool_0)
-    assert var_2 == 0
-    var_3 = var_1.__gt__(var_0)
-    assert var_3 is False
-    var_4 = var_1.__float__()
-    assert var_4 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    var_5 = var_4.__le__(var_1)
-    assert var_5 is True
-    var_6 = var_2.__ne__(var_1)
-    assert var_6 is False
-    var_7 = var_6.__gt__(var_4)
-    var_8 = rate_0.__hash__()
-    assert var_8 == pytest.approx(2284.086094, abs=0.01, rel=0.01)
-    var_9 = var_4.__add__(bool_2)
-    assert var_9 == pytest.approx(0.0, abs=0.01, rel=0.01)
-
-
-def test_case_13():
-    str_0 = "I9TxW|K@Ia41E;SW@&'r"
-    with pytest.raises(ValueError):
-        module_0.Rate(str_0, percentage=str_0, percent_change=str_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_14():
-    int_0 = 1776
-    rate_0 = module_0.Rate(int_0)
-    assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == 1776
-    var_0 = rate_0.__repr__()
-    assert var_0 == "+177600.000%"
-    rate_0.__repr__(relative=rate_0, places=var_0)
-
-
-@pytest.mark.xfail(strict=True)
-def test_case_15():
-    int_0 = 1776
-    none_type_0 = None
-    rate_0 = module_0.Rate(none_type_0, percentage=int_0, percent_change=none_type_0)
-    assert f"{type(rate_0).__module__}.{type(rate_0).__qualname__}" == "rate.Rate"
-    assert rate_0.multiplier == pytest.approx(17.76, abs=0.01, rel=0.01)
-    var_0 = rate_0.__le__(int_0)
-    assert var_0 is True
-    var_1 = rate_0.__gt__(var_0)
-    assert var_1 is True
-    var_2 = rate_0.__ne__(int_0)
+    assert rate_0.multiplier == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_0 = rate_0.__truediv__(int_0)
+    assert var_0 == pytest.approx(5.428881650380022e-06, abs=0.01, rel=0.01)
+    var_1 = rate_0.__hash__()
+    assert var_1 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    int_1 = -1205
+    var_2 = rate_0.__ge__(var_0)
     assert var_2 is True
-    var_3 = rate_0.__float__()
-    assert var_3 == pytest.approx(17.76, abs=0.01, rel=0.01)
-    var_4 = rate_0.__truediv__(int_0)
-    assert var_4 == pytest.approx(0.01, abs=0.01, rel=0.01)
-    var_5 = var_3.__add__(int_0)
-    assert var_5 == pytest.approx(1793.76, abs=0.01, rel=0.01)
-    rate_1 = module_0.Rate(percent_change=var_4)
-    assert f"{type(rate_1).__module__}.{type(rate_1).__qualname__}" == "rate.Rate"
-    assert rate_1.multiplier == pytest.approx(1.0001, abs=0.01, rel=0.01)
-    var_6 = rate_1.__ge__(int_0)
-    assert var_6 is False
-    var_7 = var_2.__ge__(var_2)
-    assert var_7 is True
-    var_8 = var_7.__eq__(var_4)
-    bool_0 = False
-    var_9 = var_2.__mul__(bool_0)
-    assert var_9 == 0
-    var_10 = var_2.__float__()
-    assert var_10 == pytest.approx(1.0, abs=0.01, rel=0.01)
-    var_11 = rate_0.__add__(int_0)
-    assert var_11 == pytest.approx(1793.76, abs=0.01, rel=0.01)
-    var_12 = rate_0.__sub__(rate_0)
-    assert var_12 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    list_0 = [int_0, int_0]
-    var_13 = var_6.__ge__(list_0)
-    var_14 = var_0.__truediv__(rate_0)
-    var_14.__sub__(var_13)
+    var_3 = var_2.__add__(int_1)
+    assert var_3 == -1204
+    var_4 = rate_0.__sub__(int_0)
+    assert var_4 == pytest.approx(-1841.99, abs=0.01, rel=0.01)
+    none_type_0 = None
+    var_5 = rate_0.__hash__()
+    assert var_5 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_6 = var_5.__eq__(str_1)
+    bool_1 = False
+    var_7 = rate_0.__add__(bool_1)
+    assert var_7 == pytest.approx(0.01, abs=0.01, rel=0.01)
+    var_8 = var_7.__lt__(bool_0)
+    assert var_8 is True
+    var_9 = var_6.__le__(none_type_0)
+    var_10 = var_9.__le__(var_1)
+    var_11 = rate_0.__le__(var_0)
+    assert var_11 is False
+    var_1.of(str_0)

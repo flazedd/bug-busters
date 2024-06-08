@@ -264,7 +264,7 @@
             "pyutils.centcount": 51.4,
             "pyutils.logical_search": 100.0,
             "pyutils.money": 52.7,
-            "pyutils.rate": NaN,
+            "pyutils.rate": 9.3,
             "pyutils.trie": 33.9,
             "typesystem.unique": 85.7
         },
