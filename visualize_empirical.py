@@ -76,7 +76,7 @@ for project_class, list_values in d_all.items():
 
 df = pd.DataFrame(data)
 # Set the figure size
-plt.figure(figsize=(25, 10))  # Adjust the width and height as needed
+plt.figure(figsize=(10, 8))  # Adjust the width and height as needed
 
 # Create a subplot without frame and axes
 ax = plt.subplot(111, frame_on=False)
