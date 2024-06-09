@@ -1,18 +1,16 @@
-import matplotlib.pyplot as plt
+import numpy as np
 
-# Generate list of lists with 5 increasing numbers
-lists = [[i, i*2, i*3, i*4, i*5] for i in range(1, 21)]
+# Sample list of lists
+list_of_lists = [
+    [1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10],
+    [11, 12, 13, 14, 15]
+]
 
-# Plot each list as a line on a graph
-for i, lst in enumerate(lists):
-    plt.plot(lst, label=f'Line {i+1}')
+# Convert the list of lists to a numpy array
+array = np.array(list_of_lists)
 
-# Add labels and legend
-plt.xlabel('Index')
-plt.ylabel('Value')
-plt.title('Graph with 5 Lines')
-plt.legend()
+# Flatten the array to a 1D list and calculate the average
+average_value = np.average(array[0])
 
-# Show the plot
-plt.grid(True)
-plt.show()
+print("Average value:", average_value)

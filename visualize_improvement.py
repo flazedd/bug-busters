@@ -22,7 +22,7 @@ for oracle in constant.ORACLES:
     data = {}
     key = oracle.__str__()
     counter = 0
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(8, 5))
     for project_class, nested_lists in combined_dict[key]["Meta_Llama_3_70B_Instruct"].items():
         counter += 1
         arr = np.array(nested_lists)
@@ -32,14 +32,14 @@ for oracle in constant.ORACLES:
         plt.plot(lst, label=f'{c_name}')
         if counter % 10 == 0:
             # Add labels and legend
-            plt.xlabel('Index')
-            plt.ylabel('Value')
+            # plt.xlabel('Amount of tests enabled')
+            # plt.ylabel('Mutation Score %')
             part = 'first' if counter < 12 else 'last'
-            ax.set_xlabel('Index')
-            ax.set_ylabel('Value')
+            ax.set_xlabel('Amount of tests enabled')
+            ax.set_ylabel('Mutation Score %')
             ax.set_title(f'{key} corpus {part} 10 classes')
-            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', title='Classes under test')
             plt.tight_layout(rect=[0, 0, 0.85, 1])
             plt.grid(True)
             plt.show()
-            fig, ax = plt.subplots(figsize=(10, 6))
+            fig, ax = plt.subplots(figsize=(8, 5))
