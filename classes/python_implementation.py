@@ -154,19 +154,20 @@ class PythonImplementation(LanguageImplementation):
                 mixed_name = f'{folder}.{class_name}'
                 if file.startswith(f"test__{class_name}") and file.endswith(f'__{run}.py'):
                     # print(file)
-                    test_name = file.split('.')[0]
-                    ai_model = test_name.split("__")[2]
-                    # print(f'[+] AI: {ai_model}')
-                    print(f'[+] Getting mutation score for {test_name}')
-                    result.setdefault(ai_model, {})
-                    result[ai_model][mixed_name] = [0]
-                    py_reader = PythonReaderTestImplementation(folder, self, test_name)
-                    amount_tests = py_reader.amount_of_tests()
-                    for i in range(1, amount_tests + 1):
-                        py_reader.partial_write(i)
-                        score = self.get_mutation_score(folder, class_name, test_name)
-                        print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
-                        result[ai_model][mixed_name].append(score)
+                    pass
+                    # test_name = file.split('.')[0]
+                    # ai_model = test_name.split("__")[2]
+                    # # print(f'[+] AI: {ai_model}')
+                    # print(f'[+] Getting mutation score for {test_name}')
+                    # result.setdefault(ai_model, {})
+                    # result[ai_model][mixed_name] = [0]
+                    # py_reader = PythonReaderTestImplementation(folder, self, test_name)
+                    # amount_tests = py_reader.amount_of_tests()
+                    # for i in range(1, amount_tests + 1):
+                    #     py_reader.partial_write(i)
+                    #     score = self.get_mutation_score(folder, class_name, test_name)
+                    #     print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
+                    #     result[ai_model][mixed_name].append(score)
                 elif file.startswith(f"test_{class_name}") and file.endswith(f'_{run}.py'):
                     test_name = file.split('.')[0]
                     print(f'[+] Getting mutation score for {test_name}')
