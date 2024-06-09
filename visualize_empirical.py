@@ -110,18 +110,17 @@ auto_adjust_column_widths(table, df)
 
 # Color cells green if value exceeds 0.05
 for i in range(len(df)):
-    for j in range(len(df.columns)):
-        cell_val = df.iloc[i, j]
-        col_name = df.columns[j]
-        if 'p-value' in col_name and isinstance(cell_val, (int, float)) and 0.0 <= cell_val < 0.05:
-            cell = table[(i + 1, j)]
-            e_cell = table[(i + 1, j + 1)]
-            e_val = df.iloc[i, j + 1]
-            if e_val < 0.5:
-                cell.set_facecolor('lightgreen')
-                e_cell.set_facecolor('lightgreen')
-            elif e_val > 0.5:
-                cell.set_facecolor((1, 0.8, 0.8, 1))
-                e_cell.set_facecolor((1, 0.8, 0.8, 1))
+    val_30s = df.iloc[i, 2]
+    val_60s = df.iloc[i, 3]
+    val_90s = df.iloc[i, 4]
+    if val_30s == max(val_30s, val_60s, val_90s):
+        cell = table[(i + 1, 2)]
+        cell.set_facecolor('lightgreen')
+    if val_60s == max(val_30s, val_60s, val_90s):
+        cell = table[(i + 1, 3)]
+        cell.set_facecolor('lightgreen')
+    if val_90s == max(val_30s, val_60s, val_90s):
+        cell = table[(i + 1, 4)]
+        cell.set_facecolor('lightgreen')
 
 plt.show()

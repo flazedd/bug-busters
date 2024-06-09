@@ -8,8 +8,8 @@ MODEL = 1
 JSON_NAME = 'result'
 SLEEP = 2
 # ORACLES = [JavaImplementation()]
-ORACLES = [PythonImplementation()]
-# ORACLES = [JavaImplementation(), PythonImplementation()]
+# ORACLES = [PythonImplementation()]
+ORACLES = [JavaImplementation(), PythonImplementation()]
 PYNGUIN_MAX_SEARCH = '90'
 DEFAULT_IMPORT = 'module_0'
 

@@ -1,20 +1,18 @@
-def change_constant(n):
-    file_path = './config/constant.py'  # Renamed to avoid conflict
-    modified_lines = []
+import matplotlib.pyplot as plt
 
-    # Read the file and modify the necessary line
-    with open(file_path, 'r') as file:
-        for line in file:
-            if line.startswith('ITERATION = '):
-                print('[+] Changing line!')
-                modified_lines.append(f'ITERATION = {n}\n')  # Added newline character
-            else:
-                modified_lines.append(line)
+# Generate list of lists with 5 increasing numbers
+lists = [[i, i*2, i*3, i*4, i*5] for i in range(1, 21)]
 
-    # Write the modified lines back to the file
-    with open(file_path, 'w') as wfile:
-        wfile.writelines(modified_lines)
+# Plot each list as a line on a graph
+for i, lst in enumerate(lists):
+    plt.plot(lst, label=f'Line {i+1}')
 
+# Add labels and legend
+plt.xlabel('Index')
+plt.ylabel('Value')
+plt.title('Graph with 5 Lines')
+plt.legend()
 
-# Example usage
-change_constant(3)
+# Show the plot
+plt.grid(True)
+plt.show()

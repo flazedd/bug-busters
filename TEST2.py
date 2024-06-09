@@ -1,31 +1,26 @@
-def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
-    """
-    Adjust the elements of list2 by adding a small epsilon value if the difference between corresponding elements of list1 and list2 is zero.
+import matplotlib.pyplot as plt
 
-    Parameters:
-    list1 (list): The first list of values.
-    list2 (list): The second list of values.
-    epsilon (float): The small value to add to elements in list2 if the difference is zero (default is 1e-10).
+# Generate list of lists with 20 increasing numbers
+lists = [[i, i*2, i*3, i*4, i*5] for i in range(1, 21)]
 
-    Returns:
-    tuple: Two lists, the original list1 and the adjusted list2.
-    """
-    if len(list1) != len(list2):
-        raise ValueError("Both lists must have the same length.")
+# Create a figure and axis
+fig, ax = plt.subplots(figsize=(10, 6))  # Increase the figure size
 
-    adjusted_list2 = [
-        val2 + epsilon if val1 == val2 else val2
-        for val1, val2 in zip(list1, list2)
-    ]
+# Plot each list as a line on a graph
+for i, lst in enumerate(lists):
+    ax.plot(lst, label=f'Line {i+1}')
 
-    return list1, adjusted_list2
+# Add labels and title
+ax.set_xlabel('Index')
+ax.set_ylabel('Value')
+ax.set_title('Graph with 20 Lines')
 
+# Place the legend outside the plot area
+ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 
-# Example usage
-before_treatment = [85, 78, 92, 88, 76, 80]
-after_treatment = [88, 79, 94, 91, 77, 80]  # Note the last pair has zero difference
+# Adjust layout to make room for the legend
+plt.tight_layout(rect=[0, 0, 0.85, 1])
 
-adjusted_before, adjusted_after = adjust_for_zero_differences(before_treatment, after_treatment)
-
-print("Original list:", before_treatment)
-print("Adjusted list:", adjusted_after)
+# Show the plot
+plt.grid(True)
+plt.show()
