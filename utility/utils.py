@@ -4,8 +4,12 @@ import json
 import os
 from datetime import datetime
 import time
+from typing import List
+
 from utility import credentails
 from config import constant
+import numpy as np
+from scipy.stats import rankdata
 
 
 def get_most_recent_file(directory):
@@ -81,8 +85,32 @@ def load_results(highest_number):
                 data = json.load(f)
                 results.append(data)
         except FileNotFoundError:
+            print(f'[+] File {filename} not found')
             pass  # Skip if file doesn't exist
     return results
+
+
+def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
+    """
+    Adjust the elements of list2 by adding a small epsilon value if the difference between corresponding elements of list1 and list2 is zero.
+
+    Parameters:
+    list1 (list): The first list of values.
+    list2 (list): The second list of values.
+    epsilon (float): The small value to add to elements in list2 if the difference is zero (default is 1e-10).
+
+    Returns:
+    tuple: Two lists, the original list1 and the adjusted list2.
+    """
+    if len(list1) != len(list2):
+        raise ValueError("Both lists must have the same length.")
+
+    adjusted_list2 = [
+        val2 + epsilon if val1 == val2 else val2
+        for val1, val2 in zip(list1, list2)
+    ]
+
+    return list1, adjusted_list2
 
 def get_identifier(ai_model_name):
     start_index = ai_model_name.find('/')
@@ -102,6 +130,18 @@ def get_class_names_from_file(file_path):
     class_names = [node.name for node in ast.walk(parsed_ast) if isinstance(node, ast.ClassDef)]
 
     return class_names
+
+
+def vargha_delaney_effect_size(x: List, y: List) -> float:
+    """
+    Calculate the Vargha-Delaney A effect size.
+    """
+    m = len(x)
+    n = len(y)
+    r = rankdata(np.concatenate([x, y]))
+    r1 = np.sum(r[:m])
+    A = (r1 / m - (m + 1) / 2) / n
+    return A
 
 
 # expects tuple with (folder, file_name, model_number)
@@ -171,7 +211,7 @@ def worker(folder, class_name, selection, oracle, run):
             tests_required -= 1
     end = time.time()
     with constant.PRINT_LOCK:
-        print(f'[+] {folder} finished in {(end - start)/60:.2f} minutes. '
+        print(f'[+] {folder} finished in {(end - start) / 60:.2f} minutes. '
               f'Iterations: {iterations}. ',
               f'Stricly needed iterations: {constant.RETRIES}. '
               f'Tests that failed:  {failing_tests}. '

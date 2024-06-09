@@ -1,29 +1,26 @@
-import numpy as np
-from scipy.stats import wilcoxon
-import warnings
+from typing import List
 
-# Function to compute Vargha-Delaney A measure
-def vargha_delaney_A(x, y):
-    n1 = len(x)
-    n2 = len(y)
-    combined = np.concatenate([x, y])
-    ranks = np.argsort(np.argsort(combined))
-    r1 = np.sum(ranks[:n1])
-    A = (r1 - n1 * (n1 + 1) / 2) / (n1 * n2)
+import numpy as np
+from scipy.stats import rankdata
+
+
+def vargha_delaney_effect_size(x: List, y: List) -> float:
+    """
+    Calculate the Vargha-Delaney A effect size.
+    """
+    m = len(x)
+    n = len(y)
+    r = rankdata(np.concatenate([x, y]))
+    r1 = np.sum(r[:m])
+    A = (r1 / m - (m + 1) / 2) / n
     return A
 
-# Generate 1000 random samples for two groups
-np.random.seed(42)  # For reproducibility
-sn = 1
-x = np.random.normal(loc=0, scale=1, size=sn)
-y = np.random.normal(loc=1, scale=1, size=sn)
 
+# Example data
+group1 = [89995, 9978, 99992, 88999, 999]
+group2 = [3, 4, 3, 2, 1]
 
-w_stat, p_value = wilcoxon(x, y)
+# Calculate the Vargha-Delaney effect size
+A = vargha_delaney_effect_size(group2, group1)
 
-# Calculate Vargha-Delaney A measure
-A = vargha_delaney_A(x, y)
-
-print(f"Wilcoxon signed-rank test statistic: {w_stat}")
-print(f"P-value: {p_value}")
-print(f"Vargha-Delaney A measure: {A}")
+print('Vargha-Delaney A effect size: %.3f' % A)

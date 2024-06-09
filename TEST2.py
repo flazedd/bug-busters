@@ -1,46 +1,31 @@
-import numpy as np
-import scipy.stats as stats
-import matplotlib.pyplot as plt
+def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
+    """
+    Adjust the elements of list2 by adding a small epsilon value if the difference between corresponding elements of list1 and list2 is zero.
 
-# Sample data
-data = np.random.normal(loc=0, scale=1, size=6)  # Replace this with your data
-print(data)
-print(type(data))
-# Visual Inspection
-# Histogram
-plt.figure(figsize=(12, 6))
-plt.hist(data, bins=30, density=True, alpha=0.6, color='g', edgecolor='black')
+    Parameters:
+    list1 (list): The first list of values.
+    list2 (list): The second list of values.
+    epsilon (float): The small value to add to elements in list2 if the difference is zero (default is 1e-10).
 
-# Overlay the normal distribution
-xmin, xmax = plt.xlim()
-x = np.linspace(xmin, xmax, 100)
-p = stats.norm.pdf(x, np.mean(data), np.std(data))
-plt.plot(x, p, 'k', linewidth=2)
-plt.title('Histogram and Normal Distribution')
-plt.show()
+    Returns:
+    tuple: Two lists, the original list1 and the adjusted list2.
+    """
+    if len(list1) != len(list2):
+        raise ValueError("Both lists must have the same length.")
 
-# Q-Q Plot
-plt.figure(figsize=(6, 6))
-stats.probplot(data, dist="norm", plot=plt)
-plt.title('Q-Q Plot')
-plt.show()
+    adjusted_list2 = [
+        val2 + epsilon if val1 == val2 else val2
+        for val1, val2 in zip(list1, list2)
+    ]
 
-# Statistical Tests
-# Shapiro-Wilk Test
-shapiro_stat, shapiro_p = stats.shapiro(data)
-print(f"Shapiro-Wilk Test: Statistics={shapiro_stat}, p-value={shapiro_p}")
+    return list1, adjusted_list2
 
-# Kolmogorov-Smirnov Test
-ks_stat, ks_p = stats.kstest(data, 'norm', args=(np.mean(data), np.std(data)))
-print(f"Kolmogorov-Smirnov Test: Statistics={ks_stat}, p-value={ks_p}")
 
-# Anderson-Darling Test
-ad_stat, _, _ = stats.anderson(data, dist='norm')
-print(f"Anderson-Darling Test: Statistics={ad_stat}")
+# Example usage
+before_treatment = [85, 78, 92, 88, 76, 80]
+after_treatment = [88, 79, 94, 91, 77, 80]  # Note the last pair has zero difference
 
-# Interpretation
-alpha = 0.05
-if shapiro_p > alpha and ks_p > alpha and ad_stat < stats.anderson(data, dist='norm').critical_values[2]:
-    print("Data is normally distributed (Fail to reject H0)")
-else:
-    print("Data is not normally distributed (Reject H0)")
+adjusted_before, adjusted_after = adjust_for_zero_differences(before_treatment, after_treatment)
+
+print("Original list:", before_treatment)
+print("Adjusted list:", adjusted_after)

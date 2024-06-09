@@ -1,25 +1,19 @@
-import concurrent.futures
-import time
+import json
 
-def function_to_run(arg1, arg2):
-    # Simulating a long-running process and printing the arguments
-    print(f"Function called with arguments: {arg1}, {arg2}")
-    time.sleep(5)  # Simulate a long-running process
-    return "Completed"
+# Loop through the JSON files 1.json to 6.json
+for i in range(1, 7):
+    # Read the JSON file
+    with open(f'./results/result_{i}.json', 'r') as infile:
+        data = json.load(infile)
 
-def run_with_timeout(func, timeout, *args):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future = executor.submit(func, *args)
-        try:
-            result = future.result(timeout=timeout)
-            return result
-        except concurrent.futures.TimeoutError:
-            print(f"Function call timed out after {timeout} seconds. Retrying...")
-            return run_with_timeout(func, timeout, *args)
+    # Extract the value for dict['Java']['EvoSuite']
+    evo_suite_data = data['Java']['EvoSuite']
 
-if __name__ == "__main__":
-    timeout = 7  # 1 minute
-    arg1 = "Hello"
-    arg2 = "World"
-    result = run_with_timeout(function_to_run, timeout, arg1, arg2)
-    print(result)
+    # Prepare the output dictionary
+    output_data = {'EvoSuite': evo_suite_data}
+
+    # Write the extracted data to a new JSON file
+    with open(f'./results/evosuite_run_{i}.json', 'w') as outfile:
+        json.dump(evo_suite_data, outfile, indent=4)
+
+print("Extraction and writing completed successfully.")

@@ -8,6 +8,7 @@ import statistics
 import utility.utils
 from config import constant
 from utility import utils
+from scipy.stats import wilcoxon
 
 combined_dict = {}
 
@@ -21,7 +22,6 @@ for d in all_dicts:
             for metric, value in tool_data.items():
                 combined_dict[key][tool].setdefault(metric, [])
                 combined_dict[key][tool][metric].append(value)
-                pass
 
 objects = {}
 for oracle in constant.ORACLES:
@@ -45,7 +45,8 @@ for oracle in constant.ORACLES:
 #         'City': ['New York', 'Los Angeles', 'Chicago']}
 # Adjust pandas display options globally
 pd.set_option('display.max_columns', None)
-
+with open(f'Mdumpdata.json', 'w') as json_file:
+    json.dump(objects, json_file, indent=4)
 for oracle in constant.ORACLES:
     data = {}
     key = oracle.__str__()
@@ -60,32 +61,42 @@ for oracle in constant.ORACLES:
         data.setdefault(class_column, [])
         data[class_column].append(c_name)
         for tool, tool_data in value.items():
-            ndv = np.array(tool_data)
+            ndv = tool_data
             name = f'{tool}\n Median Mutation Score'
             data.setdefault(name, [])
-            data[name].append(statistics.mean(ndv))
+            data[name].append(round(np.median(ndv), 4))
             groups.append(ndv)
-            shapiro_stat, shapiro_p = stats.shapiro(ndv)
-            shap_name = f'{tool}\np-value Shapiro-Wilk'
-            data.setdefault(shap_name, [])
-            data[shap_name].append(round(shapiro_p, 4))
-            # ndv = np.array(tool_data)
-            ks_stat, ks_p = stats.kstest(ndv, 'norm', args=(np.mean(ndv), np.std(ndv)))
-            ks_name = f'{tool}\np-value Kolmogorov-Smirnov'
-            data.setdefault(ks_name, [])
-            data[ks_name].append(round(ks_p, 4))
-        levene_column = 'p-value\nLevene'
-        levene_stat, levene_p = stats.levene(groups[0], groups[1])
-        data.setdefault(levene_column, [])
-        data[levene_column].append(round(levene_p, 4))
-        t_column = 'p-value\nt-test'
-        t_statistic, tp_value = stats.ttest_ind(groups[0], groups[1])
-        data.setdefault(t_column, [])
-        data[t_column].append(round(tp_value, 4))
-        p_column = 'p-value\nMann-Whitney U'
-        u_statistic, p_value = stats.mannwhitneyu(groups[0], groups[1])
-        data.setdefault(p_column, [])
-        data[p_column].append(round(p_value, 4))
+            # shapiro_stat, shapiro_p = stats.shapiro(ndv)
+            # shap_name = f'{tool}\np-value Shapiro-Wilk'
+            # data.setdefault(shap_name, [])
+            # data[shap_name].append(round(shapiro_p, 4))
+            # # ndv = np.array(tool_data)
+            # ks_stat, ks_p = stats.kstest(ndv, 'norm', args=(np.mean(ndv), np.std(ndv)))
+            # ks_name = f'{tool}\np-value Kolmogorov-Smirnov'
+            # data.setdefault(ks_name, [])
+            # data[ks_name].append(round(ks_p, 4))
+        # levene_column = 'p-value\nLevene'
+        # levene_stat, levene_p = stats.levene(groups[0], groups[1])
+        # data.setdefault(levene_column, [])
+        # data[levene_column].append(round(levene_p, 4))
+        # t_column = 'p-value\nt-test'
+        # t_statistic, tp_value = stats.ttest_ind(groups[0], groups[1])
+        # data.setdefault(t_column, [])
+        # data[t_column].append(round(tp_value, 4))
+        # p_column = 'p-value\nMann-Whitney U'
+        # u_statistic, p_value = stats.mannwhitneyu(groups[0], groups[1])
+        # data.setdefault(p_column, [])
+        # data[p_column].append(round(p_value, 4))
+        wilcox_column = 'p-value\nWilcoxon'
+        g1, g2 = utils.adjust_for_zero_differences(groups[0], groups[1])
+        wilcox_stat, wilcox_p = wilcoxon(g1, g2)
+        data.setdefault(wilcox_column, [])
+        data[wilcox_column].append(round(wilcox_p, 4))
+        vargha_column = 'Vargha-Delaney\neffect size'
+        vd_a = utils.vargha_delaney_effect_size(g1, g2)
+        data.setdefault(vargha_column, [])
+        data[vargha_column].append(round(vd_a, 4))
+
     # Save dictionary to JSON file
     with open(f'{tool} data.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)
@@ -130,7 +141,8 @@ for oracle in constant.ORACLES:
     for i in range(len(df)):
         for j in range(len(df.columns)):
             cell_val = df.iloc[i, j]
-            if isinstance(cell_val, (int, float)) and 0.05 < cell_val <= 1:
+            col_name = df.columns[j]
+            if 'p-value' in col_name and isinstance(cell_val, (int, float)) and 0.0 <= cell_val < 0.05:
                 cell = table[(i + 1, j)]
                 cell.set_facecolor('lightgreen')
 
