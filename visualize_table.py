@@ -10,18 +10,11 @@ from config import constant
 from utility import utils
 from scipy.stats import wilcoxon
 
-combined_dict = {}
 
-all_dicts = utility.utils.load_results(6)
-for d in all_dicts:
-    for oracle in constant.ORACLES:
-        key = oracle.__str__()
-        combined_dict.setdefault(key, {})
-        for tool, tool_data in d[key].items():
-            combined_dict[key].setdefault(tool, {})
-            for metric, value in tool_data.items():
-                combined_dict[key][tool].setdefault(metric, [])
-                combined_dict[key][tool][metric].append(value)
+utils.compute_combined_results()
+
+with open(f'./results/combined.json', 'r') as json_file:
+    combined_dict = json.load(json_file)
 
 objects = {}
 for oracle in constant.ORACLES:
@@ -66,27 +59,6 @@ for oracle in constant.ORACLES:
             data.setdefault(name, [])
             data[name].append(round(np.median(ndv), 4))
             groups.append(ndv)
-            # shapiro_stat, shapiro_p = stats.shapiro(ndv)
-            # shap_name = f'{tool}\np-value Shapiro-Wilk'
-            # data.setdefault(shap_name, [])
-            # data[shap_name].append(round(shapiro_p, 4))
-            # # ndv = np.array(tool_data)
-            # ks_stat, ks_p = stats.kstest(ndv, 'norm', args=(np.mean(ndv), np.std(ndv)))
-            # ks_name = f'{tool}\np-value Kolmogorov-Smirnov'
-            # data.setdefault(ks_name, [])
-            # data[ks_name].append(round(ks_p, 4))
-        # levene_column = 'p-value\nLevene'
-        # levene_stat, levene_p = stats.levene(groups[0], groups[1])
-        # data.setdefault(levene_column, [])
-        # data[levene_column].append(round(levene_p, 4))
-        # t_column = 'p-value\nt-test'
-        # t_statistic, tp_value = stats.ttest_ind(groups[0], groups[1])
-        # data.setdefault(t_column, [])
-        # data[t_column].append(round(tp_value, 4))
-        # p_column = 'p-value\nMann-Whitney U'
-        # u_statistic, p_value = stats.mannwhitneyu(groups[0], groups[1])
-        # data.setdefault(p_column, [])
-        # data[p_column].append(round(p_value, 4))
         wilcox_column = 'p-value\nWilcoxon'
         g1, g2 = utils.adjust_for_zero_differences(groups[0], groups[1])
         wilcox_stat, wilcox_p = wilcoxon(g1, g2)
@@ -155,9 +127,3 @@ for oracle in constant.ORACLES:
 
 
     plt.show()
-
-# # Save dictionary to JSON file
-# with open('yyydata.json', 'w') as json_file:
-#     json.dump(objects, json_file, indent=4)
-#
-# print("Data saved to data.json")

@@ -9,12 +9,18 @@
             "docstring_parser.numpydoc": 14.8,
             "docstring_parser.parser": 16.7,
             "docstring_parser.rest": 21.8,
+            "flutils.txtutils": 43.1,
             "flutils.validators": 75.0,
             "httpie.status": 76.5,
             "isort.comments": 70.0,
             "pymonet.immutable_list": 21.9,
             "pyutils.bst": 100.0,
-            "pyutils.centcount": 50.0
+            "pyutils.centcount": 50.0,
+            "pyutils.logical_search": 0.0,
+            "pyutils.money": 51.4,
+            "pyutils.rate": 39.5,
+            "pyutils.trie": 96.1,
+            "typesystem.unique": 60.0
         }
     }
 }

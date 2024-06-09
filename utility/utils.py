@@ -170,6 +170,23 @@ def get_class_names_from_file(file_path):
     return class_names
 
 
+def compute_combined_results() -> None:
+    combined_dict = {}
+
+    all_dicts = load_results(6)
+    for d in all_dicts:
+        for oracle in constant.ORACLES:
+            key = oracle.__str__()
+            combined_dict.setdefault(key, {})
+            for tool, tool_data in d[key].items():
+                combined_dict[key].setdefault(tool, {})
+                for metric, value in tool_data.items():
+                    combined_dict[key][tool].setdefault(metric, [])
+                    combined_dict[key][tool][metric].append(value)
+
+    with open(f'./results/combined.json', 'w') as json_file:
+        json.dump(combined_dict, json_file, indent=4)
+
 def vargha_delaney_effect_size(x: List, y: List) -> float:
     """
     Calculate the Vargha-Delaney A effect size.
