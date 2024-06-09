@@ -1,0 +1,20 @@
+{
+    "Python": {
+        "Pynguin": {
+            "codetiming.timers": 47.4,
+            "dataclasses_json.stringcase": 90.0,
+            "docstring_parser.common": 44.0,
+            "docstring_parser.epydoc": 18.1,
+            "docstring_parser.google": 14.2,
+            "docstring_parser.numpydoc": 14.8,
+            "docstring_parser.parser": 16.7,
+            "docstring_parser.rest": 21.8,
+            "flutils.validators": 75.0,
+            "httpie.status": 76.5,
+            "isort.comments": 70.0,
+            "pymonet.immutable_list": 21.9,
+            "pyutils.bst": 100.0,
+            "pyutils.centcount": 50.0
+        }
+    }
+}
