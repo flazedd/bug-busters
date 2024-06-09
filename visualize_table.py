@@ -134,7 +134,7 @@ for oracle in constant.ORACLES:
     for (i, j), cell in table.get_celld().items():
         if i == 0:  # Header row
             cell.set_text_props(fontsize=12)  # Set header text size
-            cell.set_height(0.2)  # Adjust header height as needed
+            cell.set_height(0.1)  # Adjust header height as needed
     auto_adjust_column_widths(table, df)
 
     # Color cells green if value exceeds 0.05
@@ -144,7 +144,15 @@ for oracle in constant.ORACLES:
             col_name = df.columns[j]
             if 'p-value' in col_name and isinstance(cell_val, (int, float)) and 0.0 <= cell_val < 0.05:
                 cell = table[(i + 1, j)]
-                cell.set_facecolor('lightgreen')
+                e_cell = table[(i + 1, j + 1)]
+                e_val = df.iloc[i, j + 1]
+                if e_val < 0.5:
+                    cell.set_facecolor('lightgreen')
+                    e_cell.set_facecolor('lightgreen')
+                elif e_val > 0.5:
+                    cell.set_facecolor((1, 0.8, 0.8, 1))
+                    e_cell.set_facecolor((1, 0.8, 0.8, 1))
+
 
     plt.show()
 

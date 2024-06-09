@@ -90,27 +90,65 @@ def load_results(highest_number):
     return results
 
 
+# def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
+#     """
+#     Adjust the elements of list2 by adding a small epsilon value if the difference between corresponding elements of list1 and list2 is zero.
+#
+#     Parameters:
+#     list1 (list): The first list of values.
+#     list2 (list): The second list of values.
+#     epsilon (float): The small value to add to elements in list2 if the difference is zero (default is 1e-10).
+#
+#     Returns:
+#     tuple: Two lists, the original list1 and the adjusted list2.
+#     """
+#     if len(list1) != len(list2):
+#         raise ValueError("Both lists must have the same length.")
+#
+#     adjusted_list2 = [
+#         val2 + epsilon if val1 == val2 else val2
+#         for val1, val2 in zip(list1, list2)
+#     ]
+#
+#     return list1, adjusted_list2
+
+
 def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
     """
-    Adjust the elements of list2 by adding a small epsilon value if the difference between corresponding elements of list1 and list2 is zero.
+    Adjust the elements of list1 and list2 by adding a small epsilon value if the difference between corresponding elements of list1 and list2 is zero.
+    Alternates between adding epsilon to val1 and val2.
 
     Parameters:
     list1 (list): The first list of values.
     list2 (list): The second list of values.
-    epsilon (float): The small value to add to elements in list2 if the difference is zero (default is 1e-10).
+    epsilon (float): The small value to add to elements in list1 and list2 if the difference is zero (default is 1e-10).
 
     Returns:
-    tuple: Two lists, the original list1 and the adjusted list2.
+    tuple: Two lists, the adjusted list1 and the adjusted list2.
     """
     if len(list1) != len(list2):
         raise ValueError("Both lists must have the same length.")
 
-    adjusted_list2 = [
-        val2 + epsilon if val1 == val2 else val2
-        for val1, val2 in zip(list1, list2)
-    ]
+    adjusted_list1 = []
+    adjusted_list2 = []
 
-    return list1, adjusted_list2
+    add_to_val1 = True  # Start by adding epsilon to val1
+
+    for val1, val2 in zip(list1, list2):
+        if val1 == val2:
+            if add_to_val1:
+                adjusted_list1.append(val1 + epsilon)
+                adjusted_list2.append(val2)
+            else:
+                adjusted_list1.append(val1)
+                adjusted_list2.append(val2 + epsilon)
+            add_to_val1 = not add_to_val1  # Alternate adding epsilon to val1 and val2
+        else:
+            adjusted_list1.append(val1)
+            adjusted_list2.append(val2)
+
+    return adjusted_list1, adjusted_list2
+
 
 def get_identifier(ai_model_name):
     start_index = ai_model_name.find('/')
