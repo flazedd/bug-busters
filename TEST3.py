@@ -1,16 +1,36 @@
-import numpy as np
+import radon
+from radon.complexity import cc_visit, cc_rank
 
-# Sample list of lists
-list_of_lists = [
-    [1, 2, 3, 4, 5],
-    [6, 7, 8, 9, 10],
-    [11, 12, 13, 14, 15]
-]
+from config import constant
 
-# Convert the list of lists to a numpy array
-array = np.array(list_of_lists)
+def compute_mccabe_complexity(file_path):
+    with open(file_path, 'r') as f:
+        code = f.read()
+    try:
+        complexity = cc_visit(code)
+        lines_of_code = code.count('\n') + 1
+        average_complexity = sum([block.complexity for block in complexity]) / len(complexity)
+        highest_complexity = max([block.complexity for block in complexity])
+        return lines_of_code, average_complexity, highest_complexity
+    except Exception as e:
+        print("Error:", e)
+        return None
 
-# Flatten the array to a 1D list and calculate the average
-average_value = np.average(array[0])
+for oracle in constant.ORACLES:
+    if oracle.__str__() == 'Python':
+        args = oracle.get_args()
+        for arg in args:
+            project = arg[0]
+            class_name = arg[1]
+            file_path = f'./PythonPUT/{project}/{class_name}.py'
+            loc, mccabe_complexity, highest_complexity = compute_mccabe_complexity(file_path)
+            if mccabe_complexity is not None:
+                # print("McCabe's complexity:", mccabe_complexity)
+                print(f'arg: {arg}, highest_mccabe_complexity: {highest_complexity} loc: {loc}')
+                # print("Highest McCabe's complexity:", highest_complexity)
+                # print("LOC:", loc)
 
-print("Average value:", average_value)
+
+
+file_path = './PythonPUT/docstring_parser/common.py'  # Change this to the path of your Python file
+

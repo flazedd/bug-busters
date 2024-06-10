@@ -1,0 +1,21 @@
+﻿Project;Version;Class;Highest CC;LOC
+codetiming;1.4.0;timers;3;77
+dataclasses_json;0.6.7;stringcase;3;130
+docstring_parser;0.16;common;5;228
+docstring_parser;0.16;epydoc;39;268
+docstring_parser;0.16;google;27;408
+docstring_parser;0.16;numpydoc;38;532
+docstring_parser;0.16;parser;6;98
+docstring_parser;0.16;rest;25;259
+flutils;0.7;txtutils;31;424
+flutils;0.7;validators;10;82
+httpie;3.2.2;status;5;40
+isort;5.13.2;comments;5;32
+pymonet;0.12.0;immutable_list;5;166
+pyutils;0.0.14;bst;23;352
+pyutils;0.0.14;centcount;8;373
+pyutils;0.0.14;logical_search;22;306
+pyutils;0.0.14;money;9;370
+pyutils;0.0.14;rate;6;131
+pyutils;0.0.14;trie;9;398
+typesystem;0.4.1;unique;8;60
