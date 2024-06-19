@@ -10,7 +10,7 @@ SLEEP = 2
 # ORACLES = [JavaImplementation()]
 # ORACLES = [PythonImplementation()]
 ORACLES = [JavaImplementation(), PythonImplementation()]
-PYNGUIN_MAX_SEARCH = '90'
+PYNGUIN_MAX_SEARCH = '30'
 DEFAULT_IMPORT = 'module_0'
 
 # Choose 0 for: CohereForAI/c4ai-command-r-plus

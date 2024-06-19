@@ -168,7 +168,7 @@ class PythonImplementation(LanguageImplementation):
                         score = self.get_mutation_score(folder, class_name, test_name)
                         print(f'[+] Mutation score for {test_name} is: {score}% with {i} tests enabled')
                         result[ai_model][mixed_name].append(score)
-                elif file.startswith(f"test_{class_name}") and file.endswith(f'_{run}.py'):
+                elif file.startswith(f"test_{class_name}") and file.endswith(f'_{constant.PYNGUIN_MAX_SEARCH}_{run}.py'):
                     test_name = file.split('.')[0]
                     print(f'[+] Getting mutation score for {test_name}')
                     result.setdefault('Pynguin', {})
@@ -385,7 +385,7 @@ class PythonImplementation(LanguageImplementation):
         while True:
             print(f'[+] Running Pynguin on {folder}/{class_name} on try {iteration}')
             iteration += 1
-            timeout = int(constant.PYNGUIN_MAX_SEARCH) + 30
+            timeout = int(constant.PYNGUIN_MAX_SEARCH) + 60
             result = self.run_with_timeout(self.pynguin, timeout, folder, class_name)
             # result = self.pynguin(folder, class_name)
             print(f'[+] stdout: {result.stdout}')
