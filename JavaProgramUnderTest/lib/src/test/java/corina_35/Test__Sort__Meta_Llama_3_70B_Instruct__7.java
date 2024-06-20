@@ -36,6 +36,7 @@ public void testSort() {
     assertEquals(20, students.get(1).getAge());
     assertEquals(18, students.get(2).getAge());
 }
+
 @Test
 public void testSortEmptyList() {
     class Employee {
@@ -58,6 +59,7 @@ public void testSortEmptyList() {
 
     assertEquals(0, employees.size());
 }
+
 @Test
 public void testSortNullField() {
     class Person {
@@ -85,6 +87,7 @@ public void testSortNullField() {
     assertEquals(20, people.get(1).getAge());
     assertNull(people.get(2).getAge());
 }
+
 @Test
 public void testSortNoGetterMethod() {
     class Person {
@@ -109,6 +112,7 @@ public void testSortNoGetterMethod() {
         assertEquals("No method 'getAge()' exists in class " + Person.class.getName() + "!", e.getMessage());
     }
 }
+
 @Test
 public void testSortEmptyListWithField() {
     class Employee {
@@ -131,6 +135,7 @@ public void testSortEmptyListWithField() {
 
     assertEquals(0, employees.size());
 }
+
 @Test
 public void testSortListWithDuplicateElements() {
     class Employee {
@@ -158,6 +163,7 @@ public void testSortListWithDuplicateElements() {
     assertEquals(20, employees.get(1).getSalary());
     assertEquals(20, employees.get(2).getSalary());
 }
+
 @Test
 public void testSort_1() {
     class Person {
@@ -185,6 +191,7 @@ public void testSort_1() {
     assertEquals(25, ((Person) people.get(1)).getAge());
     assertEquals(20, ((Person) people.get(2)).getAge());
 }
+
 @Test
 public void testSort_3() {
     class Employee {
@@ -212,4 +219,6 @@ public void testSort_3() {
     assertEquals(40000, ((Employee) employees.get(1)).getSalary());
     assertEquals(30000, ((Employee) employees.get(2)).getSalary());
 }
+
+
 }

@@ -15,7 +15,7 @@ dir_components = []
 # base_dir = os.path.join("C:", "Users", "reini", "Downloads", "results", "results", "default120")
 base_dir = r'C:\Users\reini\Downloads\results\results\default120'
 def gen_es_tests(folder, class_name):
-    for i in range(1, 9):
+    for i in range(10, 13):
         num = folder.split('_')[1]
         path = os.path.join(base_dir, num)
         for item in os.listdir(path):
@@ -65,6 +65,10 @@ for oracle in oracles:
     args = oracle.get_args()
     # arg = ('templateit_5', 'OpMatcher', 1)
     # gen_es_tests(arg[0], arg[1])
+    name = oracle.__str__()
+    print(name)
+    if name != 'Java':
+        continue
     for arg in args:
         # print(arg)
         gen_es_tests(arg[0], arg[1])

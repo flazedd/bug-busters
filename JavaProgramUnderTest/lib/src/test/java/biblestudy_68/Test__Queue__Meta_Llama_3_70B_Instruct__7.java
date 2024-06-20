@@ -11,6 +11,7 @@ public void testEnqueueAndDequeue() {
     queue.enqueue("Item2");
     assertEquals("Item1", queue.dequeue());
 }
+
 @Test
 public void testRemove() {
     Queue queue = new Queue();
@@ -20,6 +21,7 @@ public void testRemove() {
     assertEquals(2, queue.remove("Item1"));
     assertEquals(1, queue.getNumberItems());
 }
+
 @Test
 public void testRefreshElement() {
     Queue queue = new Queue();
@@ -29,6 +31,7 @@ public void testRefreshElement() {
     assertEquals("Item2", queue.dequeue());
     assertEquals("Item1", queue.dequeue());
 }
+
 @Test
 public void testGetObjects() {
     Queue queue = new Queue();
@@ -41,6 +44,7 @@ public void testGetObjects() {
     assertTrue(objects.contains("Item2"));
     assertTrue(objects.contains("Item3"));
 }
+
 @Test
 public void testIsEmpty() {
     Queue queue = new Queue();
@@ -48,6 +52,7 @@ public void testIsEmpty() {
     queue.enqueue("Item1");
     assertTrue(!queue.isEmpty());
 }
+
 @Test
 public void testGetPeakNumberItems() {
     Queue queue = new Queue();
@@ -59,6 +64,7 @@ public void testGetPeakNumberItems() {
     queue.dequeue();
     assertEquals(2, queue.getPeakNumberItems());
 }
+
 @Test
 public void testToString() {
     Queue queue = new Queue();
@@ -67,6 +73,7 @@ public void testToString() {
     String expected = "biblestudy_68.Queue:[numItems=2, maxNumItems=2, maxCapacity=-1, getObjects()=[Item1, Item2]\r\n]";
     assertEquals(expected, queue.toString());
 }
+
 @Test
 public void testGetNumberItems() {
     Queue queue = new Queue();
@@ -76,4 +83,6 @@ public void testGetNumberItems() {
     queue.enqueue("Item2");
     assertEquals(2, queue.getNumberItems());
 }
+
+
 }

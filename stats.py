@@ -11,7 +11,7 @@ from config.constant import ORACLES
 obj: dict = {}
 start = time.time()
 # run = constant.ITERATION
-runs = range(7, 9)
+runs = list(range(7, 13))
 print(runs)
 for run in runs:
     for oracle in ORACLES:
