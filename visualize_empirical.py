@@ -23,13 +23,13 @@ for key, value in combined_dict.items():
     median_value = statistics.median(value)
     d30[key] = median_value
 
-with open(f'./results/result_8.json', 'r') as json_file:
+with open(f'./empirical_evidence/result_8.json', 'r') as json_file:
     d60 = json.load(json_file)
 
 d60 = d60['Python']['Pynguin']
 
 
-with open(f'./results/result_7.json', 'r') as json_file:
+with open(f'./empirical_evidence/result_7.json', 'r') as json_file:
     d90 = json.load(json_file)
 
 d90 = d90['Python']['Pynguin']

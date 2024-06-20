@@ -39,8 +39,9 @@ public void testGetRhymeKey9() {
     assertEquals("2", word.getRhymeKey(false));
 }
 @Test
-public void testGetRhymeKeyExample() {
-    bcWord word = new bcWord("example", "ex 0 am ple");
-    assertEquals("0 am ple", word.getRhymeKey(true));
+public void testRhymeKey() {
+    bcWord word = new bcWord("battlecry", "b  AE1 t  l  k r ai");
+    String rhymeKey = word.getRhymeKey(true);
+    assertEquals("AE1 t  l  k r ai", rhymeKey);
 }
 }

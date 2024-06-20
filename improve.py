@@ -32,7 +32,7 @@ while True:
     try:
         # i = 7
         # runs = range(i, i+1)
-        runs = range(9, 11)
+        runs = range(7, 13)
         print(runs)
         start = time.time()
         print('[+] Starting...')

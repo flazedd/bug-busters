@@ -13,32 +13,33 @@ import shutil
 class JavaImplementation(LanguageImplementation):
 
     def get_code(self, ai_output):
-        # start = ai_output.find('```java')
-        # if start == -1:
-        #     print('[+] begin java code not found')
-        #     return None
         begin = ai_output.find("@Test")
         if begin == -1:
             print('[+] @Test annotation not found')
             return None  # @Test not found
 
+        # Initialize counters and state variables
         counter = 0
         end = begin
         brace_seen = False
+
+        # Traverse the string starting from the @Test annotation
         for char in ai_output[begin:]:
             if char == "{":
                 brace_seen = True
                 counter += 1
-            elif char == "}":
+            if char == "}":
                 counter -= 1
 
-            if (counter == 0 and brace_seen) or char == '`':
-                return ai_output[begin:end+1]
+            # If we are inside the method and all braces are closed, stop
+            if brace_seen and counter == 0:
+                return ai_output[begin:end + 1]
 
             end += 1
 
-        return ai_output[begin:end]
-
+        # Return the code block from @Test to the end of the method
+        # return ai_output[begin:end]
+        return ''
     def get_args(self):
         directory = 'JavaProgramUnderTest/lib/src/main/java'
         args = []

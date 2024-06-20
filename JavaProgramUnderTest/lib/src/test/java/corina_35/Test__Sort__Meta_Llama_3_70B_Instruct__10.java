@@ -1,13 +1,13 @@
 package corina_35;
-import org.junit.jupiter.api.Test;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Comparator;
-import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Comparator;
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.Collections;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 public class Test__Sort__Meta_Llama_3_70B_Instruct__10 {
 @Test
 public void testSort() {
@@ -114,18 +114,123 @@ public void testSortSameValues() {
     assertEquals(90, students.get(2).getGrade());
 }
 @Test
-public void testSort() {
-    List<MyObject> data = new ArrayList<>();
-    data.add(new MyObject(5));
-    data.add(new MyObject(2));
-    data.add(new MyObject(8));
-    data.add(new MyObject(3));
+public void testSorting() {
+    class Person {
+        private String name;
+        private int age;
 
-    Sort.sort(data, "value", false);
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
 
-    assertEquals(2, data.get(0).getValue());
-    assertEquals(3, data.get(1).getValue());
-    assertEquals(5, data.get(2).getValue());
-    assertEquals(8, data.get(3).getValue());
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+    }
+
+    List<Person> people = new java.util.ArrayList<>();
+    people.add(new Person("John", 25));
+    people.add(new Person("Alice", 30));
+    people.add(new Person("Bob", 20));
+
+    Sort.sort(people, "age", true);
+
+    assertEquals(30, people.get(0).getAge());
+    assertEquals(25, people.get(1).getAge());
+    assertEquals(20, people.get(2).getAge());
+}
+@Test
+public void testSortingByName() {
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+    }
+
+    List<Person> people = new java.util.ArrayList<>();
+    people.add(new Person("Alice", 25));
+    people.add(new Person("Bob", 30));
+    people.add(new Person("Charlie", 20));
+
+    Sort.sort(people, "name", false);
+
+    assertEquals("Alice", people.get(0).getName());
+    assertEquals("Bob", people.get(1).getName());
+    assertEquals("Charlie", people.get(2).getName());
+}
+@Test
+public void testSortingEmptyList() {
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+    }
+
+    List<Person> people = new java.util.ArrayList<>();
+
+    Sort.sort(people, "age", true);
+
+    assertEquals(0, people.size());
+}
+@Test
+public void testSortingByNonExistingField() {
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+    }
+
+    List<Person> people = new java.util.ArrayList<>();
+    people.add(new Person("Alice", 25));
+    people.add(new Person("Bob", 30));
+    people.add(new Person("Charlie", 20));
+
+    try {
+        Sort.sort(people, "nonExistingField", true);
+        fail("Expected IllegalArgumentException for non-existing field");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
 }
 }

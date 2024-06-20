@@ -9,7 +9,7 @@
             "docstring_parser.numpydoc": 15.6,
             "docstring_parser.parser": 16.7,
             "docstring_parser.rest": 37.0,
-            "flutils.txtutils": NaN,
+            "flutils.txtutils": 68.0,
             "flutils.validators": 70.6,
             "httpie.status": 58.8,
             "isort.comments": 70.0,

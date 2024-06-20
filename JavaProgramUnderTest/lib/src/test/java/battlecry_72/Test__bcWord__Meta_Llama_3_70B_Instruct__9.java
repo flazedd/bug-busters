@@ -42,9 +42,8 @@ public void testGetRhymeKeyWorld() {
     assertEquals("1", rhymeKey);
 }
 @Test
-public void testGetRhymeKeyCloud() {
-    bcWord word = new bcWord("cloud", "kl a ud 1");
-    String rhymeKey = word.getRhymeKey(true);
-    assertEquals("1", rhymeKey);
+public void testGetRhymeKeyForBattlecry() {
+    bcWord word = new bcWord("battlecry", "b  AE1 t  t  l  k r aI 0");
+    assertEquals("AE1 t  t  l  k r aI 0", word.getRhymeKey(false));
 }
 }
