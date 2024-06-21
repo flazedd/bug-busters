@@ -78,7 +78,8 @@ for oracle in constant.ORACLES:
         vargha_column = 'Vargha-Delaney\neffect size'
         vd_a = utils.vargha_delaney_effect_size(g1, g2)
         data.setdefault(vargha_column, [])
-        data[vargha_column].append(round(vd_a, 4))
+        formatted_vd_a = utils.categorize(round(vd_a, 4))
+        data[vargha_column].append(formatted_vd_a)
 
     # Save dictionary to JSON file
     with open(f'{tool} data.json', 'w') as json_file:
@@ -129,6 +130,7 @@ for oracle in constant.ORACLES:
                 cell = table[(i + 1, j)]
                 e_cell = table[(i + 1, j + 1)]
                 e_val = df.iloc[i, j + 1]
+                e_val = utils.extract_number_from_brackets(e_val)
                 if e_val < 0.5:
                     cell.set_facecolor('lightgreen')
                     e_cell.set_facecolor('lightgreen')

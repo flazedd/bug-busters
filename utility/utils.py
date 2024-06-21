@@ -111,7 +111,38 @@ def load_results(highest_number):
 #     ]
 #
 #     return list1, adjusted_list2
+def extract_number_from_brackets(string):
+    # Find the positions of the opening and closing brackets
+    start = string.find('(')
+    end = string.find(')')
 
+    # Check if both brackets are found and are in the correct order
+    if start != -1 and end != -1 and start < end:
+        try:
+            # Extract the substring containing the number
+            number_str = string[start + 1:end]
+            # Convert the extracted substring to a float and return it
+            return float(number_str)
+        except ValueError:
+            return "Invalid format: content inside brackets is not a float"
+    else:
+        return "Invalid format: brackets not found or incorrect order"
+
+
+# Test cases
+print(extract_number_from_brackets("M (0.7)"))  # Should return 0.7
+print(extract_number_from_brackets("L (0.2)"))  #
+
+
+def categorize(x):
+    if (0 <= x <= 0.25) or (0.75 <= x <= 1.00):
+        return f"L ({x})"
+    elif (0.25 < x <= 0.35) or (0.65 <= x < 0.75):
+        return f"M ({x})"
+    elif (0.35 < x <= 0.45) or (0.55 <= x < 0.65):
+        return f"S ({x})"
+    else:
+        return f"- ({x})"
 
 def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
     """
