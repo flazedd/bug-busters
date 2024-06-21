@@ -127,6 +127,8 @@ def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
     tuple: Two lists, the adjusted list1 and the adjusted list2.
     """
     if len(list1) != len(list2):
+        print(f'List1 is: {list1} with length {len(list1)}')
+        print(f'List2 is: {list2} with length {len(list2)}')
         raise ValueError("Both lists must have the same length.")
 
     adjusted_list1 = []
@@ -173,7 +175,7 @@ def get_class_names_from_file(file_path):
 def compute_combined_results() -> None:
     combined_dict = {}
 
-    all_dicts = load_results(6)
+    all_dicts = load_results(12)
     for d in all_dicts:
         for oracle in constant.ORACLES:
             key = oracle.__str__()

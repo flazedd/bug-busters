@@ -25,4 +25,4 @@ pytest PythonPUT/isort/test__comments__Meta_Llama_3_70B_Instruct__4.py
 
 pynguin --project-path PythonPUT/flutils --module-name txtutils --output-path PythonPUT/flutils --assertion-generation SIMPLE --algorithm DYNAMOSA --maximum-search-time 30
 
-mut.py --target PythonPUT/flutils/txtutils.py  --unit-test PythonPUT/flutils/test_txtutils_30_9.py --runner pytest
+mut.py --target PythonPUT/pymonet/immutable_list.py  --unit-test PythonPUT/pymonet/test_immutable_list_30_9.py --runner pytest

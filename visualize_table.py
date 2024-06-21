@@ -16,6 +16,17 @@ utils.compute_combined_results()
 with open(f'./results/combined.json', 'r') as json_file:
     combined_dict = json.load(json_file)
 
+
+for key, value in combined_dict['Python']['Meta_Llama_3_70B_Instruct'].items():
+    for kk in value:
+        nx = len(kk)
+        if nx != 9:
+            print(key)
+            print(value)
+            print(kk)
+        # print(len(list))
+
+
 objects = {}
 for oracle in constant.ORACLES:
     key = oracle.__str__()
