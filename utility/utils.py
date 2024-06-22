@@ -10,6 +10,9 @@ from utility import credentails
 from config import constant
 import numpy as np
 from scipy.stats import rankdata
+from bisect import bisect_left
+from typing import List
+import scipy.stats as ss
 
 
 def get_most_recent_file(directory):
@@ -134,15 +137,57 @@ print(extract_number_from_brackets("M (0.7)"))  # Should return 0.7
 print(extract_number_from_brackets("L (0.2)"))  #
 
 
-def categorize(x):
-    if (0 <= x <= 0.25) or (0.75 <= x <= 1.00):
-        return f"L ({x})"
-    elif (0.25 < x <= 0.35) or (0.65 <= x < 0.75):
-        return f"M ({x})"
-    elif (0.35 < x <= 0.45) or (0.55 <= x < 0.65):
-        return f"S ({x})"
+def VD_A(treatment: List[float], control: List[float]):
+    """
+    Computes Vargha and Delaney A index
+    A. Vargha and H. D. Delaney.
+    A critique and improvement of the CL common language
+    effect size statistics of McGraw and Wong.
+    Journal of Educational and Behavioral Statistics, 25(2):101-132, 2000
+    The formula to compute A has been transformed to minimize accuracy errors
+    See: http://mtorchiano.wordpress.com/2014/05/19/effect-size-of-r-precision/
+    :param treatment: a numeric list
+    :param control: another numeric list
+    :returns the value estimate and the magnitude
+    """
+    m = len(treatment)
+    n = len(control)
+
+    if m != n:
+        raise ValueError("Data d and f must have the same length")
+
+    r = ss.rankdata(treatment + control)
+    r1 = sum(r[0:m])
+
+    # Compute the measure
+    # A = (r1/m - (m+1)/2)/n # formula (14) in Vargha and Delaney, 2000
+    A = (2 * r1 - m * (m + 1)) / (2 * n * m)  # equivalent formula to avoid accuracy errors
+
+    levels = [0.147, 0.33, 0.474]  # effect sizes from Hess and Kromrey, 2004
+    magnitude = ["negligible", "small", "medium", "large"]
+    scaled_A = (A - 0.5) * 2
+
+    magnitude = magnitude[bisect_left(levels, abs(scaled_A))]
+    estimate = A
+
+    return estimate, magnitude
+
+def transform_string(input_str):
+    if input_str == "negligible":
+        return "-"
     else:
-        return f"- ({x})"
+        return input_str[0].upper()
+
+# def categorize(x):
+#     if (0 <= x <= 0.25) or (0.75 <= x <= 1.00):
+#         return f"L ({x})"
+#     elif (0.25 < x <= 0.35) or (0.65 <= x < 0.75):
+#         return f"M ({x})"
+#     elif (0.35 < x <= 0.45) or (0.55 <= x < 0.65):
+#         return f"S ({x})"
+#     else:
+#         return f"- ({x})"
+
 
 def adjust_for_zero_differences(list1, list2, epsilon=1e-10):
     """
@@ -220,16 +265,17 @@ def compute_combined_results() -> None:
     with open(f'./results/combined.json', 'w') as json_file:
         json.dump(combined_dict, json_file, indent=4)
 
-def vargha_delaney_effect_size(x: List, y: List) -> float:
-    """
-    Calculate the Vargha-Delaney A effect size.
-    """
-    m = len(x)
-    n = len(y)
-    r = rankdata(np.concatenate([x, y]))
-    r1 = np.sum(r[:m])
-    A = (r1 / m - (m + 1) / 2) / n
-    return A
+
+# def vargha_delaney_effect_size(x: List, y: List) -> float:
+#     """
+#     Calculate the Vargha-Delaney A effect size.
+#     """
+#     m = len(x)
+#     n = len(y)
+#     r = rankdata(np.concatenate([x, y]))
+#     r1 = np.sum(r[:m])
+#     A = (r1 / m - (m + 1) / 2) / n
+#     return A
 
 
 # expects tuple with (folder, file_name, model_number)

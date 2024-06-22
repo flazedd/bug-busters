@@ -16,10 +16,10 @@ pitest {
     junit5PluginVersion = '1.2.1'
     pitestVersion = '1.15.2'
     // Define the target classes for mutation testing
-    targetClasses = ['fim1_73.StringEncoder64']
+    targetClasses = ['corina_35.Sort']
 
     // Define the target tests for mutation testing
-    targetTests = ['fim1_73.StringEncoder64_ESTest_7']
+    targetTests = ['corina_35.Sort_ESTest_1']
 
     // Optionally configure any other Pitest options
     // For example:

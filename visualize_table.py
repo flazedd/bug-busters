@@ -76,10 +76,12 @@ for oracle in constant.ORACLES:
         data.setdefault(wilcox_column, [])
         data[wilcox_column].append(round(wilcox_p, 4))
         vargha_column = 'Vargha-Delaney\neffect size'
-        vd_a = utils.vargha_delaney_effect_size(g1, g2)
+        # vd_a = utils.vargha_delaney_effect_size(g1, g2)
+        estimate, magnitude = utils.VD_A(g1, g2)
+        single_letter = utils.transform_string(magnitude)
         data.setdefault(vargha_column, [])
-        formatted_vd_a = utils.categorize(round(vd_a, 4))
-        data[vargha_column].append(formatted_vd_a)
+        # formatted_vd_a = utils.categorize(round(vd_a, 4))
+        data[vargha_column].append(f'{single_letter} ({round(estimate, 4)})')
 
     # Save dictionary to JSON file
     with open(f'{tool} data.json', 'w') as json_file:
